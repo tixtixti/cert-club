@@ -6,7 +6,7 @@
     "type": "single",
     "domain": "configuration-and-knowledge-management",
     "difficulty": "medium",
-    "status": "draft",
+    "status": "reviewed",
     "stem": "A content marketing team configures a Claude Project to produce promotional articles across several product lines. The team requires Claude to consistently maintain an informal, engaging tone under 300 words, while drawing upon detailed technical product specifications that update bi-weekly. What is the most effective Project configuration strategy?",
     "options": [
       {
@@ -29,14 +29,539 @@
     "correct": [
       "instructions-style-knowledge-specs"
     ],
-    "explanation": "Project instructions should contain persistent behavioral rules, tone preferences, and formatting constraints that govern every conversation, while Project knowledge should hold reference documents and technical facts that change or update over time.",
+    "explanation": "Project instructions tell Claude how to respond in every chat in this project. The product specifications are reference material: uploading them to project knowledge makes them available across those chats, and the team can replace a specification without editing its writing rules.",
     "distractorNotes": {
-      "embed-both-in-project-instructions": "Placing dynamic technical specifications in Project instructions clutters persistent directives and complicates routine document updates.",
-      "upload-all-to-project-knowledge": "Uploading behavioral constraints as knowledge files fails to enforce them as persistent instructions across every session turn.",
-      "require-per-prompt-style-definitions": "Relying on manual per-prompt pasting creates workflow friction and leads to inconsistent tone across team members."
+      "embed-both-in-project-instructions": "Putting everything in the instructions gives writers a single setup, but even a routine specification update then requires editing the standing directives.",
+      "upload-all-to-project-knowledge": "A single reference file is convenient to distribute, but it leaves the tone and length rules in supporting material rather than setting them as instructions for each project chat.",
+      "require-per-prompt-style-definitions": "Pasting both inputs lets a writer specify them for one article, but makes consistency depend on each writer supplying the same rules again."
     },
     "sourceUrl": "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects",
-    "sourceNote": "Claude Help Center guide on project instructions and knowledge base configuration",
+    "sourceNote": "Add content to project knowledge: uploading reference documents and setting instructions that apply to all chats in the project.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-002",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An adviser works on two unrelated bids. Each has its own Claude Project and should remember decisions between bid sessions. The adviser also wants to keep using memory for general work. With the current project memory controls, which setup keeps the three bodies of remembered context separate?",
+    "options": [
+      { "id": "separate-by-name", "text": "Keep the default memory settings and identify the bid by its project name at the start of each chat." },
+      { "id": "disable-account-link", "text": "Keep memory active and turn off use of account memory in each of the two bid projects." },
+      { "id": "disable-bid-chats", "text": "Leave both projects linked to account memory and start each bid chat with memory switched off." },
+      { "id": "separate-chats", "text": "Use one project with account memory turned off and keep a separate conversation for each bid." }
+    ],
+    "correct": ["disable-account-link"],
+    "explanation": "Each project has its own memory, but by default it can use account memory and its saved context can inform chats outside the project. Turning off use of account memory for each bid preserves continuity inside that bid while separating it from general work.",
+    "distractorNotes": {
+      "separate-by-name": "A name identifies the work for the adviser; it does not change which memories Claude can use.",
+      "disable-bid-chats": "A chat started with memory off neither uses nor adds to project memory, so it loses the requested continuity.",
+      "separate-chats": "Those conversations would still contribute to the same project memory, mixing the two bids."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects",
+    "sourceNote": "Manage Claude’s memory in projects: project-specific memory, account memory, and per-chat controls.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-003",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A buyer must keep each supplier’s terms in a separate Claude Project. When comparing a renewal offer, she applies the same sequence of checks and records exceptions in the same table. Most chats in those projects are about deliveries. Where should she put the comparison procedure so she can maintain it once?",
+    "options": [
+      { "id": "project-knowledge", "text": "Place a copy of the comparison checklist beside the terms in each supplier’s project knowledge." },
+      { "id": "common-project", "text": "Move the supplier terms into a renewals project and set the checklist as that project’s instructions." },
+      { "id": "account-default", "text": "Make the comparison table her account’s default response format, with an exception for delivery chats." },
+      { "id": "comparison-skill", "text": "Create a renewal-comparison Skill that applies the procedure when she asks to assess an offer." }
+    ],
+    "correct": ["comparison-skill"],
+    "explanation": "The reusable part is a method, not a supplier fact. A Skill can supply the comparison steps when relevant across projects, while the terms stay with the supplier and routine delivery chats keep their own format.",
+    "distractorNotes": {
+      "project-knowledge": "The buyer would have to maintain the same procedure in several places whenever a check changed.",
+      "common-project": "This centralizes the procedure by pooling the very supplier information the buyer has chosen to keep separate.",
+      "account-default": "This makes a specialized task the default even for unrelated work; an exception for deliveries does not fix that wider scope."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/12512176-what-are-skills",
+    "sourceNote": "Skills compared to other Claude capabilities: dynamically activated procedures versus project knowledge and broad instructions.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-004",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An events team settled the seating zones for an exhibition during a long planning chat. Each coordinator will use a fresh chat in a shared Claude Project to prepare signs. Claude needs the approved zone list as a reference in each chat, without the rejected layouts or a summary reconstructed from memory. How should the lead prepare the project?",
+    "options": [
+      { "id": "move-planning-chat", "text": "Move the planning chat into the shared project and give the coordinators the title of that chat." },
+      { "id": "retain-description", "text": "Record the approved zones in the project description so coordinators can see them when they enter." },
+      { "id": "add-approved-list", "text": "Add the signed-off zone list to project knowledge as a reference for the coordinators’ chats." },
+      { "id": "upload-transcript", "text": "Upload the full layout discussion to project knowledge and ask coordinators to use its last proposal." }
+    ],
+    "correct": ["add-approved-list"],
+    "explanation": "Files in project knowledge provide context across the project's chats. Adding the approved list gives each coordinator the same decision to work from without making Claude infer which proposed layout won.",
+    "distractorNotes": {
+      "move-planning-chat": "Organizing a chat in the project does not make its final zone list a shared reference file for fresh chats.",
+      "retain-description": "The project description helps people identify the project, but Claude does not have access to it as project context.",
+      "upload-transcript": "The transcript adds the rejected layouts and treats recency as evidence of approval when the signed-off list is available."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects",
+    "sourceNote": "How to create a project; Add content to project knowledge: description visibility and references used across project chats.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-005",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "In a shared Team Project, branch managers need to run their own planning chats against a common handbook. A deputy takes over maintaining the handbook and project instructions during holidays. Which access assignments let everyone do their job and keep edits to the shared configuration with its maintainers? Select TWO.",
+    "options": [
+      { "id": "manager-view", "text": "Give branch managers view access so they can use the project knowledge in their own chats." },
+      { "id": "deputy-view", "text": "Give the deputy view access and have them upload revisions in a chat inside the project." },
+      { "id": "manager-edit", "text": "Give branch managers edit access so they can change the planning assumptions in their own chats." },
+      { "id": "deputy-edit", "text": "Give the deputy edit access so they can maintain the shared files and project instructions." },
+      { "id": "send-chat", "text": "Send branch managers a finished planning chat instead of giving them access to the project." }
+    ],
+    "correct": ["manager-view", "deputy-edit"],
+    "explanation": "A project viewer can consult project contents and chat in the project. The deputy needs edit access because replacing shared knowledge and changing project instructions are configuration changes, not chat activities.",
+    "distractorNotes": {
+      "deputy-view": "An attachment supplied for a chat is not an edit to the shared handbook. The deputy still lacks the permission needed for maintenance.",
+      "manager-edit": "Managers can supply local assumptions in their chats as viewers. Edit permission would also let them change the shared configuration.",
+      "send-chat": "One finished analysis is not the project workspace in which managers need to run their own planning requests."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects",
+    "sourceNote": "Share projects: what members with Can view and Can edit can do with chats, instructions, and knowledge.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-006",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "Each week a planner uses a private Claude Project to compare the latest delivery promises with those made at contract signing. Dispatch revises the same Google Doc throughout the week. The planner also has a verified text export from signing day. Which pair of project sources will support the recurring comparison without weekly uploads?",
+    "options": [
+      { "id": "two-exports", "text": "Upload the signing export and an export of today’s Doc, labeling each with the date it was captured." },
+      { "id": "snapshot-and-live", "text": "Upload the signing export as the baseline and add the dispatch Doc from Drive as the current source." },
+      { "id": "same-link-twice", "text": "Add the dispatch Doc from Drive for both roles, labeling one reference with the contract signing date." },
+      { "id": "live-baseline", "text": "Use the dispatch Doc from Drive for the signing baseline and upload today’s text export for current promises." }
+    ],
+    "correct": ["snapshot-and-live"],
+    "explanation": "The export preserves the promises that were actually made at signing. A Google Doc added from Drive to a private project syncs with the underlying document, which is desirable for the current position but not for the baseline.",
+    "distractorNotes": {
+      "two-exports": "Both dates are clear, but the supposedly current source would still describe today's position after dispatch makes further changes.",
+      "same-link-twice": "A signing-date label does not freeze the contents of a reference that syncs with the live Doc.",
+      "live-baseline": "This reverses the two roles: the baseline would change and the current source would stand still."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/10166901-use-google-workspace-connectors",
+    "sourceNote": "Add Google Drive files to projects: Google Docs added from Drive sync directly with their latest version.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-007",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A programme officer puts alternative workshop dates on the calendar while she negotiates with venues by email. Attendees can accept a calendar hold before a venue agrees. Staff maintain the booking register in Google Docs. Which sources should Claude compare to flag an agreed date change that is missing from the register? Select TWO.",
+    "options": [
+      { "id": "venue-requests", "text": "Search sent mail for the officer’s final request to each venue specifying the revised workshop date." },
+      { "id": "venue-replies", "text": "Search Gmail for replies from the venues confirming changes for the relevant workshops." },
+      { "id": "calendar-changes", "text": "Check the workshop calendar for revised invitations that the registered attendees have accepted." },
+      { "id": "doc-metadata", "text": "Check the register’s modification time to see whether staff updated it after each venue replied." },
+      { "id": "register-content", "text": "Read the booking Doc from Drive to identify the accepted changes already recorded by staff." }
+    ],
+    "correct": ["venue-replies", "register-content"],
+    "explanation": "The comparison needs two different records: what the venues confirmed and what staff recorded. Gmail can retrieve the venue replies; Drive can retrieve the booking document itself. A disagreement between those sources is what the officer wants to investigate.",
+    "distractorNotes": {
+      "venue-requests": "The officer’s sent message establishes which date she requested, but not whether the venue agreed to it.",
+      "calendar-changes": "Attendee acceptance indicates that participants can make the new date. It does not establish that the venue agreed to host on that date.",
+      "doc-metadata": "A modification time indicates that the register changed, not which bookings it now contains."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/10166901-use-google-workspace-connectors",
+    "sourceNote": "What you can do: search Gmail messages, list saved drafts, retrieve documents and file metadata from Drive, and view calendar events.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-008",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A large Claude Project uses retrieval to answer questions about store fit-outs. Different floor types have different fastening requirements. The correct manuals are present, but almost every upload is named Installation Notes and answers sometimes cite the manual for a different floor. All floor types remain in use. Which changes address source selection? Select TWO.",
+    "options": [
+      { "id": "descriptive-names", "text": "Give the manuals descriptive filenames that distinguish the floor type covered by each." },
+      { "id": "sort-by-upload", "text": "Upload the most frequently used manual last so that its position identifies it as the preferred source." },
+      { "id": "name-target", "text": "Ask for requirements from the named manual that corresponds to the floor on the work order." },
+      { "id": "collect-extras", "text": "Add installation quotes from past jobs to give retrieval more examples of fastening terminology." },
+      { "id": "use-newest", "text": "Set a standing instruction to use the most recently revised manual when two requirements differ." }
+    ],
+    "correct": ["descriptive-names", "name-target"],
+    "explanation": "Project retrieval searches for relevant material. Descriptive filenames distinguish the sources; naming the intended manual in the request focuses the search on the work order's floor type. Neither depends on dropping manuals that still apply elsewhere.",
+    "distractorNotes": {
+      "sort-by-upload": "The manual most often used might not apply to this floor, and upload order does not say which floor it covers.",
+      "collect-extras": "Past quotes add similar vocabulary without making the applicable manual easier to identify.",
+      "use-newest": "A recent revision to one floor's manual does not supersede valid requirements for another floor."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/11473015-retrieval-augmented-generation-rag-for-projects",
+    "sourceNote": "How RAG works; Best practices for RAG projects: descriptive filenames and referencing specific documents by name.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-009",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A venue guide is maintained in Google Docs. Claude can retrieve its room descriptions through Drive, but omits the step-free routes shown on an embedded map. Future staff should be able to ask about the routes using that same connected guide. What should the guide’s owner change?",
+    "options": [
+      { "id": "transcribe-routes", "text": "Add verified room-to-room route descriptions as text beside the map in the maintained Doc." },
+      { "id": "target-heading", "text": "Give the map its own heading and point future requests to that section of the connected Doc." },
+      { "id": "enlarge-map", "text": "Replace the map with a higher-resolution image so that the connector can distinguish the arrows." },
+      { "id": "connect-directly", "text": "Add the Doc to each chat using its exact Drive URL instead of finding the guide with a search." }
+    ],
+    "correct": ["transcribe-routes"],
+    "explanation": "When Claude reads a file through Google Drive it extracts text; it does not process images embedded in the document. Describing the verified routes in the document's text makes the information available through the same maintained source.",
+    "distractorNotes": {
+      "target-heading": "A heading makes the map easier to locate but does not express which rooms the routes connect.",
+      "enlarge-map": "Resolution would matter to a reader processing the image. Here the embedded image is not being processed.",
+      "connect-directly": "The room descriptions already establish that Claude has found the right document. Using its URL does not change what Claude can read from it."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/10166901-use-google-workspace-connectors",
+    "sourceNote": "What you can do — Google Drive: text extraction and the limitation on images embedded in documents.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-010",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A cover planner is taking over the staffing forecast. Her Drive connector retrieves other work files, but she cannot open the staffing register in Google Drive itself. The outgoing planner can retrieve it through Claude. The register must remain live, and the cover planner is authorized to request access. What is the next step?",
+    "options": [
+      { "id": "reconnect", "text": "Reconnect the same Google account to Claude and repeat the search using the register’s exact title." },
+      { "id": "project-edit", "text": "Make the cover planner a project editor so she can use its instructions to retrieve the live register." },
+      { "id": "export-register", "text": "Have the outgoing planner upload a dated register export and use that as the handover reference." },
+      { "id": "source-access", "text": "Have the register owner grant her work account access in Drive, then retry using that account’s connector." }
+    ],
+    "correct": ["source-access"],
+    "explanation": "The Google connector inherits the connected account's permissions. Because the cover planner cannot open the register in Drive, access to that source needs to be granted there before her connector can retrieve the live file.",
+    "distractorNotes": {
+      "reconnect": "Reauthentication can fix a broken connection, but her connector already works and her account lacks access to this document.",
+      "project-edit": "Editing Claude project settings does not confer permission to open another owner's Google document.",
+      "export-register": "An authorized export could support a one-time handover but would stop tracking later revisions to the forecast."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/10166901-use-google-workspace-connectors",
+    "sourceNote": "Privacy and data handling: Google Workspace connector access mirrors the connected Google account’s existing permissions.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-011",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "In a grants Project, assessors want every review to distinguish evidence in the application from the assessor’s interpretation. They work in parallel on different applications, and each assessor decides which issue warrants closer attention. How should they divide the work between project instructions and the individual request?",
+    "options": [
+      { "id": "specific-with-default", "text": "Save the evidence rule and one application as project defaults; ask other assessors to override the application." },
+      { "id": "split-rule", "text": "Set the issue for the current review in project instructions; put the evidence rule and application in each chat." },
+      { "id": "principle-and-case", "text": "Set the evidence distinction in project instructions; supply the application and issue in the assessor’s request." },
+      { "id": "request-only", "text": "Store the applications as project files; leave each assessor to specify the evidence distinction and issue anew." }
+    ],
+    "correct": ["principle-and-case"],
+    "explanation": "Project instructions apply across the project's chats. The evidence distinction belongs there because it holds for every assessor; the application and issue vary between simultaneous reviews and belong with the request that uses them.",
+    "distractorNotes": {
+      "specific-with-default": "One assessor’s application is not a useful default for the others. A missed override would point the review at the wrong case.",
+      "split-rule": "Putting a changing issue in the shared instructions would let one assessor’s choice affect another review.",
+      "request-only": "This makes the common requirement depend on each assessor remembering and restating it."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/10185728-understanding-claude-s-personalization-features",
+    "sourceNote": "Project instructions: guidelines and requirements for a particular workflow across chats within the same project.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-012",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A designer wants Claude to expand acronyms on first use whenever she works, including outside projects. A separate brief-writing Project has a standing requirement to present proposals from the visitor’s point of view. Which settings give each instruction the intended scope? Select TWO.",
+    "options": [
+      { "id": "account-viewpoint", "text": "Save the visitor’s point of view in her account instructions as her usual drafting perspective." },
+      { "id": "account-acronyms", "text": "Set acronym expansion in her account instructions as a general communication preference." },
+      { "id": "project-viewpoint", "text": "Set the visitor’s perspective in the instructions for the project where she prepares the briefs." },
+      { "id": "project-acronyms", "text": "Set acronym expansion in the brief-writing project as the main place where she drafts documents." },
+      { "id": "combined-skill", "text": "Put both preferences in a brief-writing Skill so they are applied when that task is recognized." }
+    ],
+    "correct": ["account-acronyms", "project-viewpoint"],
+    "explanation": "Account instructions apply to the designer's conversations generally, which fits acronym expansion. Project instructions can define a role or perspective for a specific set of tasks, so the visitor perspective can stay with the briefs.",
+    "distractorNotes": {
+      "account-viewpoint": "A general drafting perspective would carry the visitor's point of view into work for which it was not requested.",
+      "project-acronyms": "The preference would be set in the right place for briefs but not for the designer's standalone conversations.",
+      "combined-skill": "A task-specific Skill couples two requirements that must also work independently: acronym expansion is needed outside brief writing."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/10185728-understanding-claude-s-personalization-features",
+    "sourceNote": "Instructions for Claude; Project instructions; Skills: account-wide preferences, project roles, and on-demand behavior.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-013",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A dispatch Project turns shift notes into handover entries. Its saved examples all show a late truck and a named replacement driver. In the pilot, Claude sometimes puts a replacement driver in entries even when none was assigned. Which revision best preserves the consistent format without teaching that accidental pattern?",
+    "options": [
+      { "id": "rare-only", "text": "Replace the examples with unassigned shifts, showing a pending driver in a range of handover formats." },
+      { "id": "cover-variation", "text": "Show assigned and unassigned shifts in the same format, including the required entry when no driver is named." },
+      { "id": "more-names", "text": "Add handovers from several depots in the standard format, sampling a different replacement driver at each depot." },
+      { "id": "completed-handovers", "text": "Pair notes from before a driver was assigned with the completed handovers that later recorded who took each shift." }
+    ],
+    "correct": ["cover-variation"],
+    "explanation": "Examples can teach incidental patterns as well as intended ones. Varying whether a driver is assigned while holding the entry format steady demonstrates both valid situations and shows Claude how to express missing information.",
+    "distractorNotes": {
+      "rare-only": "This trades one one-sided example set for another and makes the required format less clear.",
+      "more-names": "Changing the driver's identity retains the unintended pattern that a replacement is present.",
+      "completed-handovers": "Completed handovers are real records, but their later assignments were not known when the notes were written. These pairs would still teach Claude to supply a driver missing from its input."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "sourceNote": "General principles — Use examples effectively: relevant, diverse examples cover edge cases and avoid unintended patterns.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-014",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A repair desk keeps the update date and pickup location on file throughout each job. A customer still waiting on a part received directions to the depot; another whose repair was on the pickup shelf was told when to expect an update. Which standing Project instruction would prevent both errors?",
+    "options": [
+      { "id": "branch-on-status", "text": "Use the job status: for awaiting parts, give the next update date; for ready to collect, give the pickup location." },
+      { "id": "prefer-date", "text": "Give the update date for jobs awaiting parts; for collection jobs, give the location once the update date is cleared." },
+      { "id": "prefer-location", "text": "Lead with the pickup location when the record contains one; give the next update date if the location is blank." },
+      { "id": "require-both", "text": "Use the next update date and pickup location as standard fields; include each detail if it appears in the record." }
+    ],
+    "correct": ["branch-on-status"],
+    "explanation": "The condition that changes the required reply is job status, not the presence of a field. Explicitly linking each status to its output tells Claude what to do even when the record contains both details.",
+    "distractorNotes": {
+      "prefer-date": "The desk retains the update date even for a ready-to-collect repair. Waiting for that field to clear would withhold the pickup location when the customer needs it.",
+      "prefer-location": "A collection location can be recorded while a part is still on order. It does not tell the customer when to expect an update.",
+      "require-both": "When both fields exist, the reply would present both rather than selecting the next step appropriate to the repair."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
+    "sourceNote": "General principles — Be clear and direct: state the desired output and its constraints explicitly.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-015",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An organization on Claude Team has adopted the practice of marking estimated figures as estimates. It wants the guidance to apply in standalone chats and projects as soon as analysts join the team. Analysts should still be able to choose a personal date format. How should the owner implement the change?",
+    "options": [
+      { "id": "individual-rollout", "text": "Distribute personal instruction text covering estimates and ask new analysts to add it when setting their date format." },
+      { "id": "shared-project", "text": "Put both conventions in a shared reporting project and make that project the starting point for the analyst team." },
+      { "id": "report-skill", "text": "Publish an estimates-labeling Skill for reporting tasks and let analysts set their preferred date format in their accounts." },
+      { "id": "org-rule", "text": "Set estimate labeling in organization instructions and leave date format to individual instructions." }
+    ],
+    "correct": ["org-rule"],
+    "explanation": "Organization instructions give the owner a setting that applies across members and conversations. Individual instructions can still govern matters that the organization instruction does not address, including date format here.",
+    "distractorNotes": {
+      "individual-rollout": "A personal setting can produce the result for one analyst but relies on each current and future employee configuring it.",
+      "shared-project": "Putting the rule in one project leaves standalone work outside that configuration and makes date format a shared decision.",
+      "report-skill": "A reporting Skill applies to the relevant task; the estimate convention also matters in conversations that are not reporting tasks."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/14546867-set-organization-instructions",
+    "sourceNote": "How organization and user instructions interact: organization-wide guidance and individual preferences for matters it does not address.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-016",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "At a release review, an author demonstrates a submitted change to the ticket-closing Skill using her own copy. A colleague runs the organization’s library Skill on the same ticket and gets the previous checklist. Staff need the revision through the library entry they already use. What should the team do?",
+    "options": [
+      { "id": "reinstall", "text": "Have staff reinstall the Skill from the organization library to pick up the author’s saved changes." },
+      { "id": "approve-release", "text": "Have the reviewer assess the submitted update, then retest the library Skill after approval." },
+      { "id": "fix-loader", "text": "Revise the Skill description to trigger on a broader set of tickets, then repeat the staff test." },
+      { "id": "share-revision", "text": "Have the author share her revised copy directly with staff, then retest their installed library Skill." }
+    ],
+    "correct": ["approve-release"],
+    "explanation": "A published Skill is managed by the organization. Where review is required, users of the published Skill stay on the approved version while a new version is pending, even though the author can use her edited copy.",
+    "distractorNotes": {
+      "reinstall": "Reinstalling from the library still gives staff the approved release, not an update awaiting review.",
+      "fix-loader": "Staff are already receiving the old checklist from the Skill. That points to the version in use rather than a failure to recognize the task.",
+      "share-revision": "Direct sharing would give staff access to the author’s copy. It would not replace the approved version served by their existing library entry."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/12512180-use-skills-in-claude",
+    "sourceNote": "Publish a skill to your organization: author copies, update review, and continued use of the approved version.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-017",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "After a regional returns policy was replaced, some replies in the current-policy Project still give the former return window. Their citations point to an older manual that remains in project knowledge alongside its replacement. Staff keep a separate archive for historical cases. Which maintenance change most directly fixes the source of the errors?",
+    "options": [
+      { "id": "increase-detail", "text": "Ask Claude to quote more of the policy in replies so reviewers can see how it reached the return window." },
+      { "id": "reverse-upload", "text": "Upload another copy of the replacement so the current manual appears more often in project searches." },
+      { "id": "remove-retired", "text": "Remove the superseded manual from this project and verify a fresh answer against the approved replacement." },
+      { "id": "date-first", "text": "Leave both manuals available and ask for the customer’s purchase date before answering current-policy questions." }
+    ],
+    "correct": ["remove-retired"],
+    "explanation": "Project search retrieves relevant material from the uploaded set. The bad answers identify an obsolete upload as their source. Since this project is for current cases and history lives elsewhere, removing the obsolete manual addresses the cause without sacrificing a required reference.",
+    "distractorNotes": {
+      "increase-detail": "Longer quotations may make the error easier to audit but can still quote the superseded manual.",
+      "reverse-upload": "Duplicating a current source does not remove the conflicting one or explain which version is authoritative.",
+      "date-first": "Dates would be useful for a historical-policy workflow. This project is already limited to the current policy."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/11473015-retrieval-augmented-generation-rag-for-projects",
+    "sourceNote": "How RAG works; Using projects with RAG: search retrieves relevant information from uploaded documents, and content can be added or removed.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-018",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A planner’s new chats keep directing delivery notices to a depot that closed. The planner deleted the chat where the depot came up, but the old routing detail is still visible as a topic in Manage memory. Other saved details remain accurate. Which action corrects future chats while keeping those useful memories?",
+    "options": [
+      { "id": "correct-topic", "text": "Edit the saved routing topic to replace the closed depot with the approved destination." },
+      { "id": "pause-memory", "text": "Pause memory for a correction chat, describe the new route there, and resume memory afterward." },
+      { "id": "delete-search", "text": "Turn off past-chat search so the deleted depot conversation cannot supply its old routing details." },
+      { "id": "reset-account", "text": "Reset memory and continue from the existing chat history so useful routing context can be rebuilt." }
+    ],
+    "correct": ["correct-topic"],
+    "explanation": "In the memory experience that lists individual topics, deleting a conversation does not remove the memory entry it generated. Editing the identified topic corrects the fact for future conversations and preserves unrelated memories.",
+    "distractorNotes": {
+      "pause-memory": "A conversation while memory is paused does not update the saved entry. The obsolete route would still be there on resumption.",
+      "delete-search": "The old route is present as a memory topic, independent of whether Claude retrieves the original conversation through search.",
+      "reset-account": "Resetting discards the useful entries as well as the bad one; rebuilding them is unnecessary when the affected topic is known."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context",
+    "sourceNote": "Data retention and privacy; View and manage your memory: deleting chats versus updating individual memory topics.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-019",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An owner added a concise-writing rule to organization instructions. Since then, training walkthroughs sometimes omit necessary steps. Reviewing the settings reveals a cap of one sentence per reply next to the existing requirement to explain each requested step. Announcements still need to be short. Which actions would address and test the regression? Select TWO.",
+    "options": [
+      { "id": "personal-exception", "text": "Have trainers set a conflicting personal length preference when they need a detailed walkthrough." },
+      { "id": "scope-cap", "text": "Replace the blanket cap with distinct guidance for brief announcements and complete walkthroughs." },
+      { "id": "repeat-instruction", "text": "Repeat the walkthrough rule at the end of the instructions while retaining the general sentence cap." },
+      { "id": "test-both", "text": "Start fresh conversations for an announcement and a walkthrough and check each against its own requirement." },
+      { "id": "test-patched", "text": "Test a walkthrough by including a one-off length exception in the request and checking the resulting steps." }
+    ],
+    "correct": ["scope-cap", "test-both"],
+    "explanation": "The blanket cap conflicts with the completeness requirement. Scoping the two directions to their intended tasks removes the conflict. Trying both kinds of work in fresh chats tests whether the revised configuration supports the original use as well as the one that regressed.",
+    "distractorNotes": {
+      "personal-exception": "Organization instructions generally take precedence over contrary personal instructions. The shared conflict would still be present.",
+      "repeat-instruction": "Repetition does not tell Claude which rule applies to which task, so the two requirements still compete.",
+      "test-patched": "The extra wording changes the request. Success would not show that an ordinary walkthrough request works, or that announcements remain brief."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/14546867-set-organization-instructions",
+    "sourceNote": "Best practices: avoid conflicting instructions and test in new conversations across different kinds of questions.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-020",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A team used to ask for a stocktake and now calls the same job a shelf count. When someone names the approved counting Skill, it produces the right worksheet. With ordinary shelf-count requests, Claude no longer loads it. What should its maintainer change first?",
+    "options": [
+      { "id": "add-example-output", "text": "Add completed shelf-count worksheets to the Skill’s resources so it has more examples of the expected result." },
+      { "id": "adjust-inventory", "text": "Rename the inventory uploads in project knowledge so the worksheet can be matched to the right stock list." },
+      { "id": "revise-steps", "text": "Rewrite the worksheet steps inside the Skill to use the new terminology while leaving its description as it is." },
+      { "id": "revise-trigger", "text": "Update the Skill description to cover shelf-count requests and check that ordinary variations now trigger it." }
+    ],
+    "correct": ["revise-trigger"],
+    "explanation": "The worksheet is correct when the Skill runs, so its procedure is not the first suspect. Claude uses the Skill description to decide when to load it. Updating the description and testing representative requests addresses recognition of the team's new terminology.",
+    "distractorNotes": {
+      "add-example-output": "Examples could improve the worksheet after the Skill has loaded. They do not resolve the observed failure to load it.",
+      "adjust-inventory": "The same uploads already support a correct worksheet when staff name the Skill. There is no evidence of a wrong stock list.",
+      "revise-steps": "The body guides execution once the Skill is selected. The problem occurs before those steps are used."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/12512198-how-to-create-custom-skills",
+    "sourceNote": "Required metadata fields; Test your skill: descriptions govern invocation; test with different prompts and iterate on the description.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-021",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A project analyst suspects earlier conversations are making Claude treat a trial schedule as permanent. The current project files and instructions look right. She wants to compare an ordinary run with one that excludes remembered conversation context, keeping the same project, prompt and references. Which comparison best tests her suspicion?",
+    "options": [
+      { "id": "standalone-test", "text": "Compare the project reply with an incognito chat outside the project, using the same request and schedule file." },
+      { "id": "paired-chats", "text": "Use two fresh project chats with the same inputs, switching memory off in one before sending its first message." },
+      { "id": "remove-files", "text": "Keep memory on in both project chats but remove the schedule file before making the comparison request." },
+      { "id": "disconnect-account", "text": "Compare two fresh project chats before and after disconnecting account memory, leaving the project’s own memory on." }
+    ],
+    "correct": ["paired-chats"],
+    "explanation": "Starting a project chat with memory off excludes both account and project memory for that chat and prevents past-chat search from it. Keeping the project and request fixed makes a difference in the replies evidence worth investigating, without editing shared sources or deleting memory.",
+    "distractorNotes": {
+      "standalone-test": "Moving outside the project also changes its standing instructions and available project knowledge, so the comparison changes more than remembered context.",
+      "remove-files": "This tests dependence on a reference document while leaving the suspected remembered context in place.",
+      "disconnect-account": "This can isolate account memory specifically, but a trial assumption learned inside the project would remain available in both chats."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context",
+    "sourceNote": "Turn off memory for a single chat; Chats with memory turned off: project and account memory and past-chat search.",
     "sourceCheckedAt": "2026-11-21"
   }
 ]

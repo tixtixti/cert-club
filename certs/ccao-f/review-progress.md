@@ -9,8 +9,9 @@ Foundations Exam Guide v1.1 (Effective December 7, 2026, Exam code: CCAO-F).
 
 ## Bank status: `draft`
 
-`manifest.status` is `draft`. The bank holds 6 initial seed questions (1 per domain,
-all `status: "draft"`), serving as the smoke test of the sourcing plan.
+`manifest.status` is `draft`. All 140 questions are `reviewed` and each domain meets
+its 2× allocation. The next decision is the human coverage and promotion review;
+item review does not promote the bank.
 
 Promote to `stable` only when coverage is genuinely proportional across all domains,
 judged per domain against the manifest weights rather than by total question count.
@@ -33,7 +34,7 @@ The certification assessment reached a **GO-WITH-CONSTRAINTS** verdict:
 
 The guide publishes exact domain weights in Section 5. Domain weights sum to 100% with no rounding needed:
 
-| Domain | Slug | Weight | Target (1x: 70) | Target (2x: 140) | Bank Questions |
+| Domain | Slug | Weight | Target (1x: 70) | Target (2x: 140) | Initial seeds |
 | --- | --- | ---: | ---: | ---: | ---: |
 | Task Definition and Prompting | `task-definition-and-prompting` | 15% | 11 | 21 | 1 |
 | Output Evaluation and Quality Control | `output-evaluation-and-quality-control` | 20% | 14 | 28 | 1 |
@@ -79,11 +80,11 @@ Evaluated against the repository's two non-negotiable tests (Gate and Authority)
 
 ## Official sample question inventory
 
-Section 7 of the exam guide provides 3 official scenario-based sample questions, establishing the cognitive-level anchor for the bank:
-
-1. **Sample 1** (Domain 2 – Output Evaluation and Quality Control): Marketing manager receives Claude draft of competitive brief with market-share percentages and a CEO quotation. Key: check cited figures and quotation against source documents or authoritative sources before external distribution.
-2. **Sample 2** (Domain 5 – Configuration and Knowledge Management): Client Proposals Project starts citing a retired pricing schedule and terminology from an unrelated client engagement. Key: replace the retired pricing document in Project knowledge and delete cross-client memories.
-3. **Sample 3** (Domain 6 – Responsible Use, Data Protection, and Governance): HR partner uses Claude code execution to analyze employee exit spreadsheet with employee names, home addresses, salaries, performance ratings, and free-text comments. Key: de-identify export before uploading (remove names/IDs, screen comments) and set memory controls.
+Section 7 of the exam guide has three official samples, one each in domains 2, 5 and 6.
+They ask a business practitioner to choose an action under concrete workplace constraints.
+Use that decision depth for the unsampled domains too: alternatives should be plausible
+in a different situation, and the stated constraint should distinguish the best response.
+This is a format and difficulty anchor, not a source of scenarios or tested facts.
 
 ## Calibration record
 
@@ -91,13 +92,75 @@ Section 7 of the exam guide provides 3 official scenario-based sample questions,
 - Calibration firewall: Affirmed. Cognitive level, question style, and scenario depth are anchored directly on the official guide's 3 scenario samples and candidate profile (business analysts, project managers, marketing/operations leads).
 - Low sample count constraint: The guide publishes only 3 sample items (compared to 12 in `ccar-f`), so authors should lean on the detailed task statements in Section 5 and the AI Fluency Framework parameters for difficulty calibration.
 
-## Initial seed smoke test
+## 2× authoring and verification — 2026-11-21
 
-One draft question per domain was seeded on 2026-11-21 to verify the sourcing plan across all six domains:
+Each domain began with one draft seed (001) to test the sourcing plan. Six
+independent domain batches added 134 originals. The IDs below are suffixes within
+each domain. The ranges map the finished batches to the skill names above **in guide
+order**; they are coverage evidence, not vendor-published skill weights.
 
-- `ccao-f-task-definition-and-prompting-001`: Prompt structuring with XML tags to separate instructions from raw user feedback and prevent injection (`platform.claude.com`).
-- `ccao-f-output-evaluation-and-quality-control-001`: Differentiating review depth and human accountability between internal brainstorming drafts and external regulatory filings (`support.claude.com`).
-- `ccao-f-capability-model-and-context-selection-001`: Incognito chat to prevent history retention and memory updates during sensitive exploratory scenarios (`support.claude.com`).
-- `ccao-f-workflow-design-and-integration-001`: Evaluating customer dispute workflow steps under Delegation criteria to retain high-stakes, low-reversibility empathetic steps for human staff (`cc.sj-cdn.net`).
-- `ccao-f-configuration-and-knowledge-management-001`: Project configuration division of labor between persistent behavioral instructions and dynamic reference knowledge (`support.claude.com`).
-- `ccao-f-responsible-use-data-protection-and-governance-001`: Anthropic Usage Policy high-risk requirements for meaningful human oversight in automated employment decision pipelines (`anthropic.com/legal/aup`).
+| Domain | Added | Total | IDs by blueprint skill |
+| --- | ---: | ---: | --- |
+| Task Definition and Prompting | 20 | 21 | 001–007; 008–014; 015–021 |
+| Output Evaluation and Quality Control | 27 | 28 | 002–008; 009–015; 001 and 016–021; 022–028 |
+| Capability, Model, and Context Selection | 20 | 21 | 002–008; 009–015; 001 and 016–021 |
+| Workflow Design and Integration | 24 | 25 | 002–007; 001 and 008–013; 014–019; 020–025 |
+| Configuration and Knowledge Management | 20 | 21 | 001–005; 006–010; 011–015; 016–021 |
+| Responsible Use, Data Protection, and Governance | 23 | 24 | 001–008; 009–016; 017–024 |
+
+Two seeds changed during authoring. Output Evaluation 001 now grounds review depth in
+Anthropic's diligence tutorial rather than attributing it to the Artifacts help page.
+Workflow 001 uses the platform's customer-support guidance for its handoff decision,
+rather than asking a blueprint objective to substantiate product guidance. Product
+behavior elsewhere is sourced to the Help Center and platform docs; applied practices
+to public Anthropic tutorials and research; policy obligations to the Usage Policy and
+Commercial Terms. The guide is used for blueprint-level judgments, not as a source of
+sample scenarios.
+
+### Independent cold evaluation
+
+Reviewers recorded full answer sets from the stems, choices and public sources
+before comparing stored keys or reading explanations. All 140 keys matched,
+including the complete sets for all 32 multi-select items. In the table, unlisted
+IDs were confirmed as written (108); listed IDs were fixed and reconfirmed against
+the same key (32). No items were left unsupported or awaiting review.
+
+| Domain | Fixed and reconfirmed | What changed |
+| --- | --- | --- |
+| Task Definition and Prompting | 001, 020 | XML separates feedback from instructions; it is not an injection guarantee. The pooled-count alternative uses labels actually supplied in the scenario. |
+| Output Evaluation and Quality Control | 005, 012, 016, 021, 025 | Distinguished detecting discrepancies from locating them, allowed for zero actual downtime, and confined the order risk to stock that cannot be returned. Removed a distractor tell and separated two calculation checks that could mask each other's errors. |
+| Capability, Model, and Context Selection | 001, 005, 008, 020 | Distinguished history from memory, attaching images to chat from adding project files, a search preview from the retrieved page, and project instructions from project memory. |
+| Workflow Design and Integration | 003, 005, 010, 012, 014, 017–019, 022 | Distinguished web from connected evidence, blanks from missing records, and a handoff from an error-free outcome. Tightened the checkpoint, permission, Skill selection/release and pilot-measurement alternatives. |
+| Configuration and Knowledge Management | 001, 003, 004, 006, 007, 009, 015, 017 | Made project scope, separation, freshness and onboarding constraints explicit; narrowed notes on Gmail retrieval, Drive images and project content management. |
+| Responsible Use, Data Protection, and Governance | 001, 006, 010, 011 | Scoped policy claims to the actual recommendation and product; distinguished indirect identification from name removal and disabled connectors from unused ones. |
+
+### Difficulty calibration
+
+The comparison used the recorded workplace decision depth, directly for domains
+2, 5 and 6 and by analogy for the unsampled domains. Within each row all IDs not
+listed as hardened were assessed and left unchanged.
+
+| Domain | Hardened IDs | Decision against the sample anchor |
+| --- | --- | --- |
+| Task Definition and Prompting | 005, 012, 016, 017, 021 | At the anchor. Removed a role cue and tightened alternatives around article boundaries, optional attendance, exception routing, and the fit between an instruction and its example. |
+| Output Evaluation and Quality Control | None (001–028 calibrated) | Above the anchor overall. Separate publications need not mean independent trials, and checking a count is not the same as testing that its errors cannot cancel out. |
+| Capability, Model, and Context Selection | 001, 009, 013, 014, 018, 019, 021 | At the anchor. Replaced labels that gave away privacy or model trade-offs. Alternatives now distinguish which response receives more effort, where a chat can be found, what deleting history removes, and which context to carry into a fresh chat. |
+| Workflow Design and Integration | 003, 019, 020 | At the anchor. Removed cues that named the deliverable or release mechanism. Alternatives now also recognize the access limit but differ on how to obtain evidence outside it. |
+| Configuration and Knowledge Management | 007, 013, 014, 016 | At the anchor. Made the decision turn on who supplied the evidence, when an example's facts were known, what an exception rule handles, or which installed Skill release changes. |
+| Responsible Use, Data Protection, and Governance | None (001–024 calibrated) | Above the anchor overall. Some checks are direct, but the harder decisions combine constraints such as privacy and test usefulness, or distinguish evidence at the point of approval from evidence collected afterward. |
+
+Fresh reviewers then solved all 19 hardened items without the stored answers.
+All 19 matched, with no additional edits. The other 121 items needed no hardening.
+
+### Bank checks
+
+- Strict 2× balance: 140/140, zero short or surplus in every domain. The bank has
+  108 single-select items, 31 select-two items and one select-three item.
+- All three bias guards passed. Single-select key positions were 29/28/24/27;
+  keys averaged 1.43 characters shorter than distractors and were uniquely longest
+  on 20/108 single-select items (18.5%). Every distractor has a rationale.
+- The strict network check resolved all 54 distinct citation pages and the exam
+  guide; none were stale. The advisory claims scan had no figures, quotes or
+  identifiers to check. Source support was established by the cold reads.
+- `npm run check` passed (457 tests), as did the production build. Its preview
+  served all six domain files with 140 reviewed items and a `draft` manifest.

@@ -6,16 +6,16 @@
     "type": "single",
     "domain": "responsible-use-data-protection-and-governance",
     "difficulty": "medium",
-    "status": "draft",
-    "stem": "A recruiting team proposes an automated pipeline using Claude to screen job applicants. Under the proposal, Claude evaluates candidate resumes against job criteria and automatically transmits final rejection letters to candidates who score below a set threshold, without human recruiter review. How does this use case align with the Anthropic Usage Policy?",
+    "status": "reviewed",
+    "stem": "A recruiting team proposes using Claude to judge how closely each applicant's experience meets the job criteria and assign a score. The system sends a final rejection to anyone below a set threshold without a recruiter reviewing the score. How does this proposal align with the Anthropic Usage Policy?",
     "options": [
       {
         "id": "violates-high-risk-employment-policy",
-        "text": "It is inappropriate because using AI as the sole automated decision-maker for employment opportunities requires meaningful human review."
+        "text": "It is inappropriate: a qualified reviewer who can change the recommendation must assess it before a rejection is sent."
       },
       {
         "id": "permitted-if-scoring-rubric-provided",
-        "text": "It is permitted provided the prompt contains an objective scoring rubric that eliminates subjective recruiter bias from the ranking."
+        "text": "It is permitted if recruiters approve the scoring rubric in advance and Claude applies it consistently across applicants."
       },
       {
         "id": "permitted-with-incognito-processing",
@@ -23,20 +23,624 @@
       },
       {
         "id": "requires-paid-enterprise-subscription",
-        "text": "It is permitted only if the organization operates on an Enterprise plan that signs a dedicated commercial recruitment addendum."
+        "text": "It is permitted on an Enterprise plan if the recruiting lead audits a sample of rejected applications after each hiring round."
       }
     ],
     "correct": [
       "violates-high-risk-employment-policy"
     ],
-    "explanation": "The Anthropic Usage Policy requires meaningful human oversight for high-risk applications, including employment and hiring decisions. Fully automated pipelines that reject job applicants without human evaluation are prohibited.",
+    "explanation": "Claude judges each applicant's experience, so its score is a high-risk employment recommendation. A fixed cutoff does not remove that judgment. Before using the score to reject the applicant, a qualified person must meaningfully review the recommendation and have authority to change it. The policy also requires telling the affected applicant that AI was used.",
     "distractorNotes": {
-      "permitted-if-scoring-rubric-provided": "Objective prompt rubrics do not substitute for the human review required in employment decisions.",
-      "permitted-with-incognito-processing": "Incognito sessions protect conversation privacy but do not permit prohibited autonomous decision-making.",
-      "requires-paid-enterprise-subscription": "Enterprise licensing does not waive policy prohibitions on unreviewed automated hiring decisions."
+      "permitted-if-scoring-rubric-provided": "Approving the criteria standardizes screening, but Claude still judges how well each applicant meets them.",
+      "permitted-with-incognito-processing": "Keeping a résumé out of chat memory addresses data handling, not who reviews the recommendation before rejection.",
+      "requires-paid-enterprise-subscription": "An Enterprise team's audit may uncover scoring problems, but it takes place after applicants have already been rejected."
     },
     "sourceUrl": "https://www.anthropic.com/legal/aup",
     "sourceNote": "Anthropic Usage Policy on high-risk use case requirements and human oversight in employment",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-002",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A benefits editor wants Claude to draft a glossary explaining how investment funds work. The same glossary goes to the whole workforce; it neither collects employee details nor suggests what to buy. The editor will check it before publication. How should the editor classify this use under Anthropic's high-risk recommendation rules?",
+    "options": [
+      { "id": "workplace-benefit", "text": "It is a high-risk employment recommendation because the employer distributes it as part of a benefit." },
+      { "id": "financial-subject", "text": "It is a high-risk finance recommendation because readers may use the glossary when choosing a fund." },
+      { "id": "general-education", "text": "It is general financial education because it explains concepts without advising an individual what to buy." },
+      { "id": "editor-exemption", "text": "It is a personalized finance recommendation that falls outside the rules once the editor checks the text." }
+    ],
+    "correct": ["general-education"],
+    "explanation": "The policy distinguishes teaching how investing works from recommending a specific investment for an individual. An employee might use the glossary to make a choice, but the glossary itself makes no recommendation about that choice.",
+    "distractorNotes": {
+      "workplace-benefit": "The employer is distributing information, not making a decision about an employee's job or compensation.",
+      "financial-subject": "The subject matter and the reader's later use do not turn general education into individualized advice.",
+      "editor-exemption": "Review is a safeguard for a high-risk recommendation; it does not determine whether the content is one."
+    },
+    "sourceUrl": "https://www.anthropic.com/legal/aup",
+    "sourceNote": "High-risk AI Recommendations: Finance, and Exclusions: general information or educational content",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-003",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A housing cooperative proposes using Claude to recommend a ranking for each rental application. Local law permits this use. A qualified housing officer currently checks that forms are complete but cannot change the ranking; the applicant's decision notice does not mention AI. Which changes does the Usage Policy require for this workflow? Select TWO.",
+    "options": [
+      { "id": "review-on-appeal", "text": "Give the housing officer the power to change a ranking when an applicant appeals the decision." },
+      { "id": "review-before-use", "text": "Have the housing officer assess the recommendation and be able to change it before it is acted on." },
+      { "id": "staff-disclosure", "text": "Add a statement about AI-assisted ranking to the case record read by the cooperative's staff." },
+      { "id": "applicant-disclosure", "text": "Tell the affected applicant clearly that AI contributed to the decision made about their application." },
+      { "id": "benchmark-ranking", "text": "Compare a sample of proposed rankings with independent officer rankings before opening applications." }
+    ],
+    "correct": ["review-before-use", "applicant-disclosure"],
+    "explanation": "Ranking an individual's housing application is high risk. The qualified reviewer must evaluate the recommendation and be able to change it before the cooperative uses it. The cooperative must also disclose AI involvement to the individual whose application is decided.",
+    "distractorNotes": {
+      "review-on-appeal": "An appeal gives a person authority after implementation, too late for the required review.",
+      "staff-disclosure": "An internal record informs staff but does not tell the applicant.",
+      "benchmark-ranking": "Testing the method before launch does not establish review of the recommendation about an individual."
+    },
+    "sourceUrl": "https://www.anthropic.com/legal/aup",
+    "sourceNote": "High-risk Use Case Requirements: qualified human review, disclosure and housing recommendations",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-004",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A team is considering a custom Skill from an unfamiliar publisher to lay out purchasing reports. A sample report looks right, and the main instructions describe ordinary formatting. The package also contains scripts and reference files. What evidence should the team seek before trusting it with business documents?",
+    "options": [
+      { "id": "more-samples", "text": "Have several buyers test different sample reports and check that the finished documents match the originals." },
+      { "id": "description-review", "text": "Confirm that the published description and main instructions agree on when the Skill should be used." },
+      { "id": "output-review", "text": "Have the report owner sign off on the sample's formatting and inspect it for visible changes to figures." },
+      { "id": "package-review", "text": "Establish the package's provenance and review its bundled files for actions unrelated to report formatting." }
+    ],
+    "correct": ["package-review"],
+    "explanation": "A Skill can contain executable code and instructions in several files. A good-looking report establishes that formatting worked on that input; it says little about other actions the Skill might take. Anthropic recommends trusted sources and a thorough audit before using an unfamiliar Skill.",
+    "distractorNotes": {
+      "more-samples": "Broader output testing still observes results rather than reviewing what the package is allowed or instructed to do.",
+      "description-review": "Agreement between two descriptions leaves the scripts and other resources unexamined.",
+      "output-review": "Sign-off on the report's accuracy is useful but does not establish trust in the software that produced it."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview.md",
+    "sourceNote": "Security considerations: trusted sources and review of all files bundled with a Skill",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-005",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "Regional buyers may read their own region's contracts. A custom connector for drafting renewal briefs signs in to the contract store with one shared account that can read every region. The pilot worked for the global purchasing director. Which condition should govern extending it to regional buyers?",
+    "options": [
+      { "id": "read-only", "text": "Limit the connector to reading contracts; it then preserves the regional boundaries because buyers cannot edit records." },
+      { "id": "scope-reads", "text": "Require the connector to enforce each buyer's permitted reads; the shared account can otherwise reach other regions." },
+      { "id": "director-scope", "text": "Keep the director as connector owner; their successful pilot establishes the access boundary for the regional rollout." },
+      { "id": "regional-label", "text": "Create a project for each region with the region in its instructions; keep the shared account for source access." }
+    ],
+    "correct": ["scope-reads"],
+    "explanation": "A custom connector using a shared credential can reach what that credential can read. The director's pilot did not test the narrower permissions of a regional buyer. Use a design that enforces those permissions, such as individual authentication to the source service.",
+    "distractorNotes": {
+      "read-only": "Cross-region disclosure is a read problem; blocking writes does not limit which contracts can be read.",
+      "director-scope": "The director was entitled to global access, so their results cannot show whether the connector isolates regions.",
+      "regional-label": "Project instructions describe the intended task but do not restrict the credential's source-system access."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities",
+    "sourceNote": "What are connectors? Shared credentials versus permissions inherited from each person's connected account",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-006",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A workshop organizer wants feedback on a new class. Participants agreed to recording for training evaluation. The proposed workflow would infer each participant's emotions from the video and report group totals. There is no medical or safety purpose. Which recommendation fits Anthropic's Usage Policy?",
+    "options": [
+      { "id": "use-reported-feedback", "text": "Reject the emotion-inference step; invite participants to describe their experience and summarize their responses with permission." },
+      { "id": "aggregate-result", "text": "Approve the analysis provided the organizer receives totals for the group rather than emotion labels for named participants." },
+      { "id": "review-labels", "text": "Approve a pilot if an instructor independently reviews the inferred emotions before they enter the workshop evaluation." },
+      { "id": "obtain-consent", "text": "Seek specific consent for automated emotion recognition, then proceed with the proposed individual analysis for participants who opt in." }
+    ],
+    "correct": ["use-reported-feedback"],
+    "explanation": "Anthropic's policy prohibits using its products to build or support systems that infer a person's emotions except for medical or safety reasons. Reporting group totals would still require inferring each participant's emotions first. Summarizing what participants choose to report does not require that inference.",
+    "distractorNotes": {
+      "aggregate-result": "The group report would still depend on first inferring emotions about individuals.",
+      "review-labels": "A human checking labels does not change the purpose or remove the emotion-recognition step.",
+      "obtain-consent": "Permission for analysis does not turn a workshop evaluation into the stated medical or safety exception."
+    },
+    "sourceUrl": "https://www.anthropic.com/legal/aup",
+    "sourceNote": "Universal Usage Standards: restriction on emotion recognition except for medical or safety reasons",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-007",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A team wants to use a directory connector to look up shipping estimates. Policy permits sending order details only to a US processor and permits lookups but not changes to bookings. Claude already uses US-only inference. Which checks directly address whether the connector fits this use? Select TWO.",
+    "options": [
+      { "id": "processor", "text": "Check where the connected service processes order details under its own terms." },
+      { "id": "directory", "text": "Check that the directory includes the connector in its list of business applications." },
+      { "id": "actions", "text": "Check whether booking changes can be blocked while estimate lookups remain available." },
+      { "id": "encryption", "text": "Check whether order details are encrypted in transit to the connected service." },
+      { "id": "sample-result", "text": "Check that a test lookup in a buyer's account returns an accurate shipping estimate." }
+    ],
+    "correct": ["processor", "actions"],
+    "explanation": "US-only inference governs where Claude runs inference, not where the connector provider processes data. The team also needs a way to enforce permitted actions; connector action restrictions can allow reads while blocking writes.",
+    "distractorNotes": {
+      "directory": "A directory listing does not establish the processor's location or the actions permitted in this rollout.",
+      "encryption": "Transport protection is useful, but an encrypted transfer can still go to a processor outside the permitted region.",
+      "sample-result": "An accurate result tests the lookup's usefulness, not whether the connector could also change a booking."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities",
+    "sourceNote": "Security and privacy: third-party processing location; Restrict actions within connected services",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-008",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A purchasing team licenses a price index for staff to read. It wants Claude, under Anthropic's Commercial Terms, to compare the index with internal forecasts. The team has not established whether its license permits submitting the index to a processing service. Which fact should determine whether to proceed with that input?",
+    "options": [
+      { "id": "output-ownership", "text": "Whether the company owns the forecast commentary Claude would generate from the index." },
+      { "id": "limited-audience", "text": "Whether the resulting comparison will circulate only among staff licensed to read the index." },
+      { "id": "no-training", "text": "Whether the team's commercial agreement prevents Anthropic from training on customer content." },
+      { "id": "submission-rights", "text": "Whether the company has the rights and permissions needed to submit the licensed index to Claude." }
+    ],
+    "correct": ["submission-rights"],
+    "explanation": "The Commercial Terms require the customer to have the rights and permissions needed to submit its inputs. Rights to use an output and Anthropic's restriction on training do not establish what the price-index license permits.",
+    "distractorNotes": {
+      "output-ownership": "Output ownership between the customer and Anthropic does not settle rights to a third party's input.",
+      "limited-audience": "Internal distribution restricts who reads the comparison, not where the index may be processed.",
+      "no-training": "Processing the index for a response and training a model on it are different uses."
+    },
+    "sourceUrl": "https://www.anthropic.com/legal/commercial-terms",
+    "sourceNote": "L.1 Warranties: rights and permissions to submit inputs; B. Customer Content",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-009",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A city events team wants Claude to turn its schedule into a visitor guide. Public event details are approved for upload; supplier rates are restricted. A workbook contains both, and the visitor-facing view hides the rates. Which input should the editor provide?",
+    "options": [
+      { "id": "hidden-rates", "text": "The workbook with the visitor view selected and the supplier-rate columns hidden from that view." },
+      { "id": "approved-extract", "text": "A separate export checked to contain just the approved event details needed for the visitor guide." },
+      { "id": "read-only", "text": "A read-only copy of the workbook, with editing disabled for the worksheet that holds supplier rates." },
+      { "id": "review-output", "text": "The complete schedule, with a publication review to remove supplier rates if they appear in the draft." }
+    ],
+    "correct": ["approved-extract"],
+    "explanation": "The city's rule applies to what is uploaded. A checked export keeps the restricted rates out of the input while preserving the public details needed for the guide. A view, an edit restriction, or a later publication review leaves the rates in the submitted workbook.",
+    "distractorNotes": {
+      "hidden-rates": "The view hides fields; it does not remove them from the workbook being submitted.",
+      "read-only": "Preventing edits protects integrity, not the confidentiality of data included in the file.",
+      "review-output": "A clean final document would not undo submission of restricted input."
+    },
+    "sourceUrl": "https://cc.sj-cdn.net/instructor/6nizmqk8tpzpfjvt6qmmav7rh/public/1794946609/Claude_Certified_Associate_-_Foundations_Exam_Guide_Updated_Dec_7.pdf",
+    "sourceNote": "Section 5, Domain 6: Data Protection in Practice — classification, redaction and upload judgment under organizational policy",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-010",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A staff survey workbook has a ratings sheet and a comments sheet. Names were removed from the ratings, but some role-and-site combinations identify a single employee. Several comments name their authors and describe incidents that identify them even without their names. The analysis needs satisfaction totals by division. Policy bars uploading data that identifies a respondent. Which changes together prepare the workbook for upload? Select TWO.",
+    "options": [
+      { "id": "aggregate", "text": "Replace the ratings sheet with division totals, checking that reported groups do not single out employees." },
+      { "id": "randomize", "text": "Randomize the order of the individual responses so readers cannot match them to the submission list." },
+      { "id": "replace-names", "text": "Replace each author name in the comments with a respondent code and preserve the role-and-site fields." },
+      { "id": "omit-comments", "text": "Exclude the original comment text from the file sent for analysis; it is unnecessary for division totals." },
+      { "id": "restrict-report", "text": "Limit the completed report to division managers and request that it contain totals rather than quotations." }
+    ],
+    "correct": ["aggregate", "omit-comments"],
+    "explanation": "Removing a name does not anonymize a response if other fields still identify the person. Checked division totals remove the need for identifiable rows, and leaving out the comments removes their identifying text. Both steps happen before the file reaches Claude.",
+    "distractorNotes": {
+      "randomize": "Changing row order leaves identifying roles, sites and text intact.",
+      "replace-names": "Replacing names in the comments leaves the descriptions that identify the authors; a code does not remove those details.",
+      "restrict-report": "Controlling who receives the report does not satisfy the organization's restriction on identifiable inputs."
+    },
+    "sourceUrl": "https://cc.sj-cdn.net/instructor/6nizmqk8tpzpfjvt6qmmav7rh/public/1794946609/Claude_Certified_Associate_-_Foundations_Exam_Guide_Updated_Dec_7.pdf",
+    "sourceNote": "Section 5, Domain 6: Data Protection in Practice — applying redaction and anonymization consistent with policy",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-011",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A cost analyst has permission to use Claude's code execution on an internal CSV, provided the computing environment cannot send data to internet destinations. The calculation works with preinstalled packages, and no connectors are enabled. Which configuration allows the analysis on those terms?",
+    "options": [
+      { "id": "package-managers", "text": "Keep code execution on and restrict internet access to approved package managers for this analysis." },
+      { "id": "monitor-calls", "text": "Keep code execution on with internet access and have the analyst monitor requests while the calculation runs." },
+      { "id": "egress-off", "text": "Keep code execution on with network egress disabled and calculate the results using the uploaded CSV." },
+      { "id": "approved-domain", "text": "Keep code execution on and limit outbound requests to the company's approved reporting service." }
+    ],
+    "correct": ["egress-off"],
+    "explanation": "Disabling network egress keeps preinstalled packages available while preventing the code-execution environment from communicating with internet destinations. This task needs local computation on an approved file, not a network connection.",
+    "distractorNotes": {
+      "package-managers": "Approved package sites are still internet destinations, and the analyst does not need additional packages.",
+      "monitor-calls": "Monitoring can reveal an unexpected action; it does not make an outbound request impossible.",
+      "approved-domain": "An allowlisted endpoint remains reachable, whereas the permission here requires no internet destination to be reachable."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude",
+    "sourceNote": "Configuring network access and how disabling network access affects code execution and file creation",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-012",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A facilitator drafting an invitation to an internal listening session says employees can use incognito chats on the company's Team plan and that account owners will have no record of those chats. What should the facilitator tell participants instead?",
+    "options": [
+      { "id": "history-versus-export", "text": "The chats stay out of personal history and memory, but are retained and included in organizational data exports." },
+      { "id": "training-versus-export", "text": "Because the chats are excluded from training, their content is also excluded from the account owner's data export." },
+      { "id": "while-open", "text": "The owner could export an incognito chat while it is open, but closing it removes it from organizational records." },
+      { "id": "memory-choice", "text": "Export visibility depends on whether the employee enabled account memory before opening the incognito conversation." }
+    ],
+    "correct": ["history-versus-export"],
+    "explanation": "Incognito controls personal history and memory. On Team plans an incognito chat is still retained and included in organizational data exports available to owners. The invitation should not promise confidentiality from those owners.",
+    "distractorNotes": {
+      "training-versus-export": "Exclusion from model training is separate from organizational export and retention.",
+      "while-open": "Closing the chat prevents the employee from reopening it; it does not erase the retained record.",
+      "memory-choice": "Owner exports include incognito chats even though those chats do not contribute to memory."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/12260368-use-incognito-chats",
+    "sourceNote": "What are incognito chats? and Important information for Team and Enterprise plans",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-013",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A coordinator uses the current topic-based memory experience, with memory on. A completed pilot's internal label appears in one saved chat and in a memory topic generated from it. Policy calls for removing the source chat and that saved memory while preserving unrelated work. Which actions fit? Select TWO.",
+    "options": [
+      { "id": "pause", "text": "Pause account memory until the coordinator finishes working on other active pilots." },
+      { "id": "delete-chat", "text": "Delete the conversation that contains the internal label from the coordinator's chat history." },
+      { "id": "disable-search", "text": "Turn off the ability for Claude to search and reference earlier chats on the account." },
+      { "id": "reset", "text": "Reset account memory so Claude starts fresh when the coordinator begins the next pilot." },
+      { "id": "delete-topic", "text": "Remove the pilot label from saved memory by editing or deleting the relevant topic." }
+    ],
+    "correct": ["delete-chat", "delete-topic"],
+    "explanation": "With topic-based memory, deleting the source chat does not remove a memory entry generated from it. Managing the particular topic as well as the chat addresses both locations without resetting unrelated memory.",
+    "distractorNotes": {
+      "pause": "Pausing memory preserves the existing entries rather than removing the pilot label.",
+      "disable-search": "A search setting changes how chats can be found, not whether this chat or topic remains saved.",
+      "reset": "A reset removes unrelated memories too, and does not replace deletion of the source conversation."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context",
+    "sourceNote": "Current memory experience: Data retention and privacy; View and manage your memory; Pause versus reset",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-014",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "Two clinics use separate Claude Enterprise organizations. One clinic accepted Anthropic's Business Associate Agreement (BAA) and activated HIPAA compliance for its organization. The other wants to process protected health information in its own chat under the same agreement. What should the second clinic establish before submitting records?",
+    "options": [
+      { "id": "same-configuration", "text": "That its owner has matched the first clinic's retention and sharing settings for the proposed chats." },
+      { "id": "staff-access", "text": "That its staff doing the work also hold authorized seats in the clinic that accepted the agreement." },
+      { "id": "listed-feature", "text": "That chat is listed as an eligible Enterprise feature and is enabled in both clinics' organizations." },
+      { "id": "own-coverage", "text": "That its own HIPAA-ready organization has activated compliance and accepted a BAA covering the intended use." }
+    ],
+    "correct": ["own-coverage"],
+    "explanation": "A BAA covers the organization that accepted it. An eligible feature or an Enterprise plan alone does not provide coverage. For Enterprise chat, the Primary Owner activates HIPAA compliance in the HIPAA-ready organization and accepts the agreement.",
+    "distractorNotes": {
+      "same-configuration": "Matching operational settings is not acceptance of an agreement for the second organization.",
+      "staff-access": "A seat at another clinic does not transfer that clinic's BAA to a separate organization.",
+      "listed-feature": "Feature eligibility matters once the organization has coverage; availability does not create that coverage."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/8114513-business-associate-agreements-baa-for-commercial-customers",
+    "sourceNote": "BAA activation for HIPAA-ready Enterprise, scope of the accepting organization, and eligible chat features",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-015",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An analyst is cleared to run code on a public delivery log. The usual Claude project also holds confidential supplier contracts that policy says must not be accessible to this analysis. The analyst has disabled network access and wants to avoid copying the contracts. Where should the analysis run?",
+    "options": [
+      { "id": "isolated-runtime", "text": "In the usual project, since an isolated computing environment can read the attached log but not project files." },
+      { "id": "clean-context", "text": "In a separate chat with just the approved log and no connected sources or project files containing the contracts." },
+      { "id": "no-network", "text": "In the usual project with network access off, since reading project documents requires an outbound connection." },
+      { "id": "narrow-request", "text": "In a new chat inside the usual project, specifying the log as the sole source to consult for the analysis." }
+    ],
+    "correct": ["clean-context"],
+    "explanation": "Claude's computing environment can access project files. Disabling internet access limits outbound communication, not which project files are in scope. Running the task where the contracts are absent meets the stated access restriction.",
+    "distractorNotes": {
+      "isolated-runtime": "Isolation of the computing environment does not imply isolation from the files supplied by its project.",
+      "no-network": "Project files are available to the computing environment; disabling egress does not remove them.",
+      "narrow-request": "Asking Claude to use the log is an instruction about use, not a limit on accessible files."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude",
+    "sourceNote": "Project files integration; Security considerations — data accessible through prompts, projects and connections",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-016",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An analyst needs Claude to help design a spreadsheet that flags backdated adjustments. The rule depends on the relative order of dates, missing dates and ties. Policy permits sharing the column definitions but keeps rows derived from real transactions in the accounting system. What should the analyst use to test the proposed rule with Claude?",
+    "options": [
+      { "id": "coded-rows", "text": "A sample of transaction rows with account numbers replaced by codes, keeping the original event dates and amounts." },
+      { "id": "monthly-totals", "text": "An approved table of monthly transaction totals with counts of adjustments, so the model can infer the ordering rule." },
+      { "id": "synthetic-cases", "text": "Invented rows using the approved definitions, with expected results for reversed dates, missing dates and ties." },
+      { "id": "masked-amounts", "text": "Actual rows with amounts removed and equal offsets applied to dates, so the sequence still resembles a real ledger." }
+    ],
+    "correct": ["synthetic-cases"],
+    "explanation": "The task is to test a rule rather than report on actual transactions. Invented cases can exercise the relevant date relationships without submitting source records. Totals protect more detail but remove the relationships needed to test the rule.",
+    "distractorNotes": {
+      "coded-rows": "Replacing account numbers does not meet the stated restriction on sharing actual transaction rows.",
+      "monthly-totals": "Totals do not show the paired dates or missing values that should trigger the flag on a row.",
+      "masked-amounts": "Transformed accounting rows are still derived from actual transactions, which the scenario reserves for the accounting system."
+    },
+    "sourceUrl": "https://cc.sj-cdn.net/instructor/6nizmqk8tpzpfjvt6qmmav7rh/public/1794946609/Claude_Certified_Associate_-_Foundations_Exam_Guide_Updated_Dec_7.pdf",
+    "sourceNote": "Section 5, Domain 6: Data Protection in Practice — upload judgment for analysis consistent with organizational policy",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-017",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A purchasing policy requires data-owner approval before submitting supplier correspondence to Claude, even if the summary is for internal use. New buyers consistently skip that step. In interviews they can find the policy and approval form, but mistake internal circulation for an exemption. Experienced buyers apply the rule correctly. What action best addresses the finding?",
+    "options": [
+      { "id": "new-rule", "text": "Ask the policy owner to draft a new rule defining whether internally circulated summaries need supplier-data approval." },
+      { "id": "better-form", "text": "Make the approval form easier to find from the procurement workspace and remind buyers where it is stored." },
+      { "id": "output-screen", "text": "Add a review when summaries are circulated to check whether anyone outside the purchasing group will see them." },
+      { "id": "practice-rule", "text": "Coach new buyers on contrasting cases and check that they obtain approval before their next qualifying submission." }
+    ],
+    "correct": ["practice-rule"],
+    "explanation": "The policy resolves the case and the form is accessible. The evidence points to a training gap: new buyers misapply an existing rule. Practice followed by a check on actual submissions tests whether that misunderstanding has been corrected.",
+    "distractorNotes": {
+      "new-rule": "The existing rule already covers this precise use, including internal circulation.",
+      "better-form": "The interviews ruled out difficulty finding the form as the cause of the missed approvals.",
+      "output-screen": "A circulation check comes after the submission that required approval."
+    },
+    "sourceUrl": "https://cc.sj-cdn.net/instructor/6nizmqk8tpzpfjvt6qmmav7rh/public/1794946609/Claude_Certified_Associate_-_Foundations_Exam_Guide_Updated_Dec_7.pdf",
+    "sourceNote": "Section 5, Domain 6: Policy, Ethics, and Diligence — distinguishing a training gap from a policy gap",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-018",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "At a design agency, one policy permits approved Claude chats to use internal briefs. A second policy restricts sending briefs to external services. Neither says who may approve a new connector that would pass a brief from a chat to a translation service. Staff know both rules and have paused the rollout. What should the agency do next?",
+    "options": [
+      { "id": "resolve-authority", "text": "Ask the policy owners to settle the connector case, name who can approve the transfer and communicate that decision." },
+      { "id": "retrain-briefs", "text": "Retrain the team on the existing permission to use internal briefs in approved chats and repeat the knowledge check." },
+      { "id": "follow-strict", "text": "Treat the pause as a permanent agency-wide ban on translation connectors and record it in the project handover." },
+      { "id": "sample-vote", "text": "Compare how other design teams interpret the two rules and use the most common interpretation for the rollout." }
+    ],
+    "correct": ["resolve-authority"],
+    "explanation": "Staff understand the written rules. What is missing is an authorized decision about this external transfer. Pausing protects the brief in the meantime; clarifying the rule and its owner closes the policy gap for future teams.",
+    "distractorNotes": {
+      "retrain-briefs": "Training on chat approval does not decide whether that approval extends to the translation service.",
+      "follow-strict": "A temporary pause is appropriate, but the project team has no stated authority to declare a permanent agency rule.",
+      "sample-vote": "Common practice is evidence of how people act, not authority to resolve policy scope."
+    },
+    "sourceUrl": "https://cc.sj-cdn.net/instructor/6nizmqk8tpzpfjvt6qmmav7rh/public/1794946609/Claude_Certified_Associate_-_Foundations_Exam_Guide_Updated_Dec_7.pdf",
+    "sourceNote": "Section 5, Domain 6: Policy, Ethics, and Diligence — diagnosing policy gaps and choosing a corrective action",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-019",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A venue planner's diligence statement already says that Claude grouped accessibility requests by theme and that the planner owns the final brief. In fact, the planner checked the groupings against the original submissions and split a theme that had mixed up two distinct needs. Which additions would best document the planner's contribution? Select TWO.",
+    "options": [
+      { "id": "model-selection", "text": "The reason the planner selected Claude rather than another tool for grouping the requests." },
+      { "id": "verify-groups", "text": "How the planner checked the proposed groupings against what participants actually submitted." },
+      { "id": "general-policy", "text": "A reference to the venue's general policy of human review for AI-assisted planning documents." },
+      { "id": "change-theme", "text": "Which distinction the planner restored when revising the theme that combined different needs." },
+      { "id": "task-description", "text": "A more detailed description of the categories Claude was originally asked to propose for the brief." }
+    ],
+    "correct": ["verify-groups", "change-theme"],
+    "explanation": "The reader already knows the tool, the delegated task and who is responsible. What is missing is the review that actually took place and the change made through human judgment. Describing the source check and the corrected grouping supplies both.",
+    "distractorNotes": {
+      "model-selection": "The choice of tool does not show how the planner evaluated or revised its output.",
+      "general-policy": "A policy describes expected behavior, not what the planner did on this brief.",
+      "task-description": "More detail about the original request still leaves the verification and correction undocumented."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/writing-an-ai-diligence-statement",
+    "sourceNote": "Anatomy of a strong AI diligence statement: what you reviewed, what you changed and who is responsible",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-020",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A customer-care team uses Claude to suggest whether a complaint needs an urgent callback. Policy bases urgency on loss of service. In matched examples describing the same outage, complaints written in regional dialect repeatedly get a lower priority than those written in standard English. What response addresses the risk before staff rely on the suggestions?",
+    "options": [
+      { "id": "overall-average", "text": "Raise the overall urgency threshold until the total number of callbacks matches the historical service average." },
+      { "id": "remove-identities", "text": "Remove customer names and locations, then accept the priority suggestions if the resulting records are anonymous." },
+      { "id": "correct-and-retest", "text": "Hold the affected suggestions, apply the loss-of-service criterion and retest matched complaints across dialects." },
+      { "id": "change-explanation", "text": "Require the callback note to describe the outage in neutral language while retaining the suggested priority." }
+    ],
+    "correct": ["correct-and-retest"],
+    "explanation": "The complaints differ in wording, not in the factor the policy authorizes. The disparity affects service timing, so correcting the written note or concealing identity does not correct the decision. Reassessing the suggestions and testing equivalent complaints checks whether the policy is now applied consistently.",
+    "distractorNotes": {
+      "overall-average": "A team-wide average can look right even when equivalent complaints receive different treatment.",
+      "remove-identities": "The observed difference follows the wording, which remains after names and locations are removed.",
+      "change-explanation": "Neutral language in a note leaves the difference in callback priority untouched."
+    },
+    "sourceUrl": "https://cc.sj-cdn.net/instructor/6nizmqk8tpzpfjvt6qmmav7rh/public/1794946609/Claude_Certified_Associate_-_Foundations_Exam_Guide_Updated_Dec_7.pdf",
+    "sourceNote": "Section 5, Domain 6: Policy, Ethics, and Diligence — identify bias against policy and choose corrective action",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-021",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An adoption lead reviews authorized chat excerpts. Staff often challenge Claude's reasoning and revise their prompts. The lead wants to report that clients therefore receive appropriate disclosures of AI involvement. What additional evidence would best support that conclusion?",
+    "options": [
+      { "id": "client-deliverables", "text": "Review a permitted sample of what clients actually received for project-specific disclosures of AI involvement." },
+      { "id": "longer-history", "text": "Review a larger sample of staff chats to confirm that questioning and revision persist across different projects." },
+      { "id": "better-instructions", "text": "Count how often staff mention the client audience and request a disclosure paragraph in their original prompts." },
+      { "id": "disclosure-draft", "text": "Check whether Claude routinely includes a disclosure paragraph in its final response to each project team." }
+    ],
+    "correct": ["client-deliverables"],
+    "explanation": "The AI Fluency Index distinguishes observable chat behavior from diligence that happens outside the chat, including honesty about AI's role. A requested or generated disclosure can be lost during editing or delivery. Checking what clients received addresses the claim directly.",
+    "distractorNotes": {
+      "longer-history": "More evidence of in-chat revision still does not show whether clients were informed.",
+      "better-instructions": "A request to draft a disclosure is evidence of intent, not delivery.",
+      "disclosure-draft": "The generated draft is one step closer, but it is not the communication received by the client."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/the-ai-fluency-index",
+    "sourceNote": "Measuring AI fluency and Limitations: disclosure and responsible sharing are not directly observable in chats",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-022",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A firm is rolling out a handbook assistant under Anthropic's Commercial Terms. During onboarding, users are told the answers are AI-generated, and the firm tests common questions before launch. Employees will use factual answers when planning business travel. What instruction about relying on answers is still needed?",
+    "options": [
+      { "id": "report-conflicts", "text": "Rely on an answer unless it conflicts with prior experience, in which case send it to the handbook editor." },
+      { "id": "consistent-answer", "text": "Ask the assistant to answer in a fresh chat and rely on the advice when the two responses agree." },
+      { "id": "tested-subjects", "text": "Rely on answers about subjects covered in launch testing and request independent review for unfamiliar subjects." },
+      { "id": "check-source", "text": "Check factual claims independently against the current handbook or its owner before relying on them." }
+    ],
+    "correct": ["check-source"],
+    "explanation": "The Commercial Terms require customers to notify users that factual assertions should not be relied on without independently checking their accuracy. A notice that AI generated the answer identifies its origin; it does not tell the employee how to handle a claim that may be incomplete or outdated.",
+    "distractorNotes": {
+      "report-conflicts": "An incorrect or obsolete answer may sound familiar and never trigger this check.",
+      "consistent-answer": "Two answers from the same assistant can repeat the same error; agreement is not independent evidence.",
+      "tested-subjects": "Testing a subject at launch does not establish the accuracy of the particular answer the employee received."
+    },
+    "sourceUrl": "https://www.anthropic.com/legal/commercial-terms",
+    "sourceNote": "D.3 Limitations of Outputs; Notice to Users — independent accuracy checks before reliance",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-023",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A communications team permits AI-assisted editing. Writers describe it candidly to peers but leave it out of their handovers because managers seem to regard disclosure as poor workmanship. Which changes would make accurate, useful diligence statements routine? Select TWO.",
+    "options": [
+      { "id": "leaders-model", "text": "Have managers show their own deliverables and explain where they used AI and what they changed." },
+      { "id": "uniform-text", "text": "Append the same broadly worded AI-and-human-review notice to each handover to avoid singling writers out." },
+      { "id": "usage-dashboard", "text": "Publish team-level AI usage counts so colleagues can see that AI-assisted writing is common." },
+      { "id": "private-report", "text": "Have writers report AI use privately to a central group rather than describing it in their handovers." },
+      { "id": "template-fields", "text": "Build prompts for the actual AI contribution and the writer's review into the handover template." }
+    ],
+    "correct": ["leaders-model", "template-fields"],
+    "explanation": "Managers can make disclosure a professional norm by modeling it, while a handover template gives each writer a place to record the specifics. Together these changes address both the perceived penalty and the everyday workflow.",
+    "distractorNotes": {
+      "uniform-text": "Identical notices hide differences in what AI did and what the writer actually reviewed.",
+      "usage-dashboard": "Counts describe adoption but do not model how to acknowledge AI's role in a particular deliverable.",
+      "private-report": "A private reporting channel might collect information, but it leaves the recipients of each handover uninformed."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/writing-an-ai-diligence-statement",
+    "sourceNote": "Building an organizational culture of diligence and FAQ on reusing a structure with project-specific details",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-024",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A ticket office's customer-facing chat answers questions about opening hours. When asked, it accurately says it is AI. Its ordinary greeting gives no indication that it is automated, and the only written explanation is in a separate help article. What change addresses the Usage Policy disclosure gap?",
+    "options": [
+      { "id": "more-specific-help", "text": "Name the model and provider in the separate help article so a customer who looks it up can identify the service." },
+      { "id": "visible-disclosure", "text": "Identify the chat as AI in the chat interface or at the start of each session so customers know who is responding." },
+      { "id": "escalation-notice", "text": "Add an AI disclosure when a chat is transferred to staff so customers can distinguish the two stages of support." },
+      { "id": "confirmation-email", "text": "Identify automated responses in the transcript emailed after the session so customers retain a record of the exchange." }
+    ],
+    "correct": ["visible-disclosure"],
+    "explanation": "A consumer-facing chatbot that communicates directly with external users must disclose that they are interacting with AI. The notice belongs in the product interface or at the beginning of each chat. It need not identify the model or Anthropic.",
+    "distractorNotes": {
+      "more-specific-help": "Naming the model in a separate article adds detail without putting the disclosure where the interaction happens.",
+      "escalation-notice": "Some chats will never be transferred, and customers who are transferred have already interacted with the bot.",
+      "confirmation-email": "A transcript arrives after the interaction rather than informing the customer during it."
+    },
+    "sourceUrl": "https://www.anthropic.com/legal/aup",
+    "sourceNote": "Additional Use Case Guidelines: disclosure for consumer-facing chatbots that communicate directly with external users",
     "sourceCheckedAt": "2026-11-21"
   }
 ]

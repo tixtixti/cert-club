@@ -6,24 +6,24 @@
     "type": "single",
     "domain": "capability-model-and-context-selection",
     "difficulty": "medium",
-    "status": "draft",
+    "status": "reviewed",
     "stem": "An operations manager wants to explore several sensitive reorganization scenarios with Claude. Company policy requires that this exploratory session must leave no trace in the account's historical conversation list and must not influence Claude's contextual recall during future work. Which approach meets both requirements?",
     "options": [
       {
         "id": "enable-incognito-mode",
-        "text": "Start an incognito chat, which avoids recording the session in chat history and excludes it from memory."
+        "text": "Start an incognito chat for the exploratory discussion and close it after reviewing the scenarios."
       },
       {
         "id": "disable-memory-toggle",
-        "text": "Disable memory in account settings, which prevents memory retention while retaining the full chat transcript."
+        "text": "Turn off memory for this chat before sending the first message, then discuss the scenarios there."
       },
       {
         "id": "create-restricted-project",
-        "text": "Set up a private Project, which isolates the discussion while preserving the conversation log for team members."
+        "text": "Discuss the scenarios in a private Project so that access to the workspace is restricted."
       },
       {
         "id": "delete-messages-manually",
-        "text": "Conduct a normal conversation and manually delete each message pair after reviewing Claude's recommendations."
+        "text": "Use a regular chat with memory on and delete the conversation after reviewing Claude's recommendations."
       }
     ],
     "correct": [
@@ -31,12 +31,538 @@
     ],
     "explanation": "Incognito chats are designed for temporary sessions: they are excluded from the user's chat history and do not update or consult Claude's memory.",
     "distractorNotes": {
-      "disable-memory-toggle": "Disabling memory prevents memory updates but still saves the entire conversation transcript to past chat history.",
-      "create-restricted-project": "Projects isolate files and custom instructions but continue recording all session chats in the project history.",
-      "delete-messages-manually": "Deleting messages after the fact is error-prone and does not prevent the ongoing session from being recorded or feeding memory while active."
+      "disable-memory-toggle": "Turning off memory for this chat keeps it out of memory, but the chat remains in history and can still turn up in a past-chat search.",
+      "create-restricted-project": "A private Project limits who can access the workspace; the manager's conversation still appears in its chat history.",
+      "delete-messages-manually": "Deleting the chat removes the transcript from history, but it does not guarantee that memory entries already generated from the discussion are removed."
     },
     "sourceUrl": "https://support.claude.com/en/articles/12260368-use-incognito-chats",
     "sourceNote": "Claude Help Center guide on incognito chat behavior, retention, and memory controls",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-002",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A museum educator has sketched a gallery activity. Visitors should be able to choose a route on screen and see the clues for that route. The educator wants to try the activity, revise individual clues with Claude, then share the working activity rather than the design discussion. What should the educator ask Claude to produce?",
+    "options": [
+      { "id": "walkthrough", "text": "A chat walkthrough that plays the visitor, taking a different route on each run." },
+      { "id": "artifact", "text": "An interactive artifact with route choices that open the corresponding clues." },
+      { "id": "skill", "text": "A custom Skill that writes route-specific clues in response to the educator's prompts." },
+      { "id": "diagram", "text": "A downloadable diagram showing each visitor choice and the clues it leads to." }
+    ],
+    "correct": ["artifact"],
+    "explanation": "The educator needs the activity itself: something a visitor can operate independently of the conversation. An artifact can be a small interactive tool, and its author can test, revise, and share it.",
+    "distractorNotes": {
+      "walkthrough": "Role-playing tests the script, but leaves the visitor experience inside a conversation.",
+      "skill": "The Skill would help the educator generate content for the routes; it would not supply the specified visitor interface.",
+      "diagram": "A map can validate the branching logic, but it reveals the paths rather than responding to a visitor's choices."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them",
+    "sourceNote": "What is an artifact?; Edit and iterate; Share an artifact",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-003",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A stockroom has CSV exports from two counts of the same shelves. Rows are in different orders, and a bin identifier can appear on several rows. The supervisor needs a file listing bins whose totals changed, with the exact difference for each. Which request gives Claude the right means to produce it?",
+    "options": [
+      { "id": "model", "text": "Use higher effort to compare the rows in reading order and write a table of discrepancies." },
+      { "id": "visual", "text": "Plot each export as a distribution and list bins where the two plotted distributions diverge." },
+      { "id": "method", "text": "Develop spreadsheet formulas for matching bin totals and describe how to apply them to the exports." },
+      { "id": "compute", "text": "Run code on both exports to total by bin, match the totals by identifier, and save the differences." }
+    ],
+    "correct": ["compute"],
+    "explanation": "Claude can run code on uploaded CSV files and return the results as a file. Grouping before matching accounts for repeated identifiers; matching by identifier rather than row position preserves the meaning of the comparison.",
+    "distractorNotes": {
+      "model": "Extra reasoning does not make row order a valid matching key when the counts were sorted differently.",
+      "visual": "Two distributions can look alike even when particular bins have exchanged quantities. A distribution is not a per-bin reconciliation.",
+      "method": "A formula specification could be useful for a recurring count, but it leaves the supervisor to execute the comparison."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude",
+    "sourceNote": "Key capabilities: Advanced data analysis; FAQ: How does file creation work?, Can Claude work with more than one file at a time?",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-004",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A packaging buyer is investigating why several suppliers have stopped offering a material. Public notices mention different causes; internal sourcing notes may identify upstream producers the buyer hasn't thought to check. The buyer has enabled the relevant connectors in Claude on the web. Which approach best lets what Claude discovers determine where it looks next?",
+    "options": [
+      { "id": "snapshot", "text": "Upload the notices already collected and have Claude rank the explanations against the internal notes." },
+      { "id": "queries", "text": "Draft a query for each known supplier, run those searches, and have Claude summarize the returned pages." },
+      { "id": "research", "text": "Use Research to investigate across the web and connected notes, following leads that emerge in the findings." },
+      { "id": "internal", "text": "Search the connected notes for upstream names and ask Claude which explanation the notes support best." }
+    ],
+    "correct": ["research"],
+    "explanation": "Research builds searches on the results of earlier searches. In Claude on the web it can use both web sources and tools connected to the chat, so an internal lead can change the public investigation.",
+    "distractorNotes": {
+      "snapshot": "A comparison of documents in hand is useful once the evidence set is settled. Here the buyer expects that set to grow.",
+      "queries": "This covers suppliers the buyer already knows, but the search list is fixed before the findings come in.",
+      "internal": "The notes can reveal new names, but this plan stops before checking what public evidence those names lead to."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/11088861-use-research-on-claude",
+    "sourceNote": "Use research on Claude: successive searches and research across web and connected tools",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-005",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A wayfinding designer has two PNG mockups of a sign. Their wording is identical; what varies is where the arrows sit relative to the labels. The designer needs one inline comparison of the layouts for a meeting, with no ongoing reference collection. How should the designer give Claude the evidence?",
+    "options": [
+      { "id": "images", "text": "Attach both PNGs to the chat and ask Claude to compare the positions of the arrows and labels." },
+      { "id": "embed", "text": "Embed the PNGs in a Word document and upload that document to Claude with captions identifying each layout." },
+      { "id": "table", "text": "Transcribe the labels into a table with one column per mockup and ask Claude to compare the columns." },
+      { "id": "description", "text": "Add the mockups to a Project's reference files and ask for a layout comparison in a chat there." }
+    ],
+    "correct": ["images"],
+    "explanation": "Claude accepts PNG images directly in individual chats, so it can inspect the spatial relationships the designer wants compared. Uploading a non-PDF document instead gives Claude extracted text rather than its embedded images.",
+    "distractorNotes": {
+      "embed": "A person opening the document would see the mockups, but in this upload path the text is extracted and the embedded images are not interpreted.",
+      "table": "The table would preserve wording, the part that is identical, while discarding the layout being judged.",
+      "description": "Project files can supply persistent references, but that upload path extracts text except for multimodal PDFs. It is the positions in the PNGs that matter here."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/8241126-upload-files-to-claude",
+    "sourceNote": "Supported file types: Images; How to upload files; Tips for best results: non-PDF documents",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-006",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "Editors at a small press request corrections from different Claude Projects. Each request should become a ticket in the existing tracker, following the press's conventions for grouping corrections. Those conventions should load for ticket writing without shaping unrelated editorial work. Which capabilities together meet the need? Select TWO.",
+    "options": [
+      { "id": "procedure", "text": "An approved custom Skill containing the rules for turning editorial corrections into tickets." },
+      { "id": "preferences", "text": "An account-wide instruction defining the correction categories for the editor's conversations." },
+      { "id": "artifact", "text": "A shared artifact that displays the proposed tickets in the order the editors should submit them." },
+      { "id": "connection", "text": "An approved connector that lets Claude create the resulting tickets in the press's tracker." },
+      { "id": "knowledge", "text": "A reference Project containing representative tickets for editors to consult when filing corrections." }
+    ],
+    "correct": ["procedure", "connection"],
+    "explanation": "A Skill supplies the procedure when the task calls for it across Projects. A connector supplies access to the external tool. Knowing how the press groups corrections and being able to create a ticket in its tracker are distinct requirements.",
+    "distractorNotes": {
+      "preferences": "A broad instruction would carry the ticket conventions into work that has nothing to do with ticket writing.",
+      "artifact": "A display of proposed tickets leaves the submission step to the editors.",
+      "knowledge": "A reference Project can hold examples, but its contents do not act as an on-demand procedure in the other Projects where editors work."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/12512176-what-are-skills",
+    "sourceNote": "Custom skills; Skills compared to projects, MCP, and custom instructions",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-007",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An interpreter offered two appointment windows in a reply this morning. The coordinator needs to find which of those windows still works for both staff members. Their calendars are shared with the coordinator, and the older proposal is in Drive. Which retrievals should the coordinator request before booking? Select TWO.",
+    "options": [
+      { "id": "proposal", "text": "Use the Drive connector to read the windows in the original proposal sent to the interpreter." },
+      { "id": "mail", "text": "Use the Gmail connector to retrieve the windows the interpreter offered in the latest reply." },
+      { "id": "history", "text": "Search earlier planning chats for the staff members' usual availability for these appointments." },
+      { "id": "draft", "text": "Use the Gmail connector to find the outgoing request and extract the coordinator's preferred times." },
+      { "id": "calendar", "text": "Use the Calendar connector to check the staff members' mutual availability during the offered windows." }
+    ],
+    "correct": ["mail", "calendar"],
+    "explanation": "The latest email establishes what the interpreter offered. Calendar supplies the staff members' current availability. Neither source answers the scheduling question by itself.",
+    "distractorNotes": {
+      "proposal": "The original proposal predates the reply; it establishes what was proposed rather than what the interpreter offered back.",
+      "history": "Usual availability does not account for conflicting events on the dates in question.",
+      "draft": "Retrieving the correct correspondence system is not enough if the coordinator retrieves the request instead of its answer."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/10166901-use-google-workspace-connectors",
+    "sourceNote": "What you can do: Gmail search and reading; Google Calendar shared calendars and mutual availability",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-008",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "easy",
+    "status": "reviewed",
+    "stem": "A grant writer has the public URL of a funder's revised notice. Yesterday's saved copy had different submission instructions, and partner sites still show the old version. Before a call, the writer needs Claude to extract what that specific page says now. Which request is the most direct fit?",
+    "options": [
+      { "id": "research", "text": "Research the submission procedure across partner sites and report the instruction that appears most frequently." },
+      { "id": "memory", "text": "Search earlier grant-planning chats and identify the most recent instruction attributed to the funder." },
+      { "id": "copy", "text": "Search for the notice by title and extract the submission instruction from the search result preview for the funder's page." },
+      { "id": "fetch", "text": "Give Claude the URL and ask it to fetch the notice and extract the current submission instruction." }
+    ],
+    "correct": ["fetch"],
+    "explanation": "With web access, Claude can retrieve a specific public page from its URL. The authority and location are already known, so the writer needs direct retrieval rather than a wider investigation.",
+    "distractorNotes": {
+      "research": "Frequency among secondary sites is a poor proxy for the contents of a known revised primary source.",
+      "memory": "A past discussion establishes what the team saw then, not what the funder has published since.",
+      "copy": "The result points to the right publisher, but its preview need not contain the revised instruction. Fetching the page checks the notice itself."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/10684626-enable-and-use-web-search",
+    "sourceNote": "How web search works: Web fetch and direct links",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-009",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A dispatch desk needs to route incoming repair notes to one of six queues while callers are on the line. The team tested Haiku, Sonnet, and Opus on representative notes, including misspellings. Each met the routing target. The manager now wants the lowest response time and cost. Which recommendation follows from the test?",
+    "options": [
+      { "id": "sonnet", "text": "Use Sonnet: its balance of speed and intelligence leaves capacity for unusually worded notes." },
+      { "id": "opus", "text": "Use Opus: sending fewer complex notes back for clarification could shorten the overall calls." },
+      { "id": "haiku", "text": "Use Haiku for the live routing decision, including for the kinds of misspelled notes in the pilot." },
+      { "id": "pair", "text": "Have Haiku suggest the queue and Sonnet confirm it before dispatch, so borderline cases get a second reading." }
+    ],
+    "correct": ["haiku"],
+    "explanation": "Anthropic positions Haiku for low-latency, high-volume classification and routing at lower cost. The desk has already established that it meets the quality target on the notes it actually receives.",
+    "distractorNotes": {
+      "sonnet": "Sonnet's balance is useful when the faster tier falls short on important cases. Unusual wording was included in this test.",
+      "opus": "Fewer clarification calls would be a reason to revisit the decision if observed; there is no such finding in the pilot.",
+      "pair": "A confirmation pass adds processing to each call without addressing a measured gap in routing quality."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/models/overview",
+    "sourceNote": "Latest models: descriptions, comparative latency, and pricing across model tiers",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-010",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A transit planner is piloting Claude to compare depot relocation plans. A plan may look attractive until lease timing, driver handovers, and temporary capacity are considered together. Planners will review the analysis. The pilot's first milestone is to find out whether Claude can surface these interactions at all; reducing per-report cost comes later. How should the team start?",
+    "options": [
+      { "id": "capability", "text": "Start with a strong reasoning tier on difficult plans; use that quality baseline when testing cheaper settings later." },
+      { "id": "efficiency", "text": "Start on the lowest-cost tier and work through simpler plans first to establish the cost of a typical report." },
+      { "id": "length", "text": "Use a stronger tier for longer submissions and the fastest tier for short ones, then compare their average quality." },
+      { "id": "speed", "text": "Start with the fastest tier on each constraint separately and measure how quickly the planners can review its summaries." }
+    ],
+    "correct": ["capability"],
+    "explanation": "A capability-first trial fits complex reasoning where the initial question is whether the necessary quality is attainable. Testing the interacting constraints exercises that requirement. The team can then compare less expensive settings against the baseline.",
+    "distractorNotes": {
+      "efficiency": "An efficiency-first pilot would answer the later cost question before testing the hard cases that define feasibility.",
+      "length": "Submission length need not track the difficulty of the interactions, and giving different plans to each tier confounds the comparison.",
+      "speed": "Summaries of separate constraints can each be sound while missing the interaction the pilot is meant to detect."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
+    "sourceNote": "Choose the best model to start with: Start capability-first; Decide whether to upgrade or change models",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-011",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A training team is deciding whether to move its course-outline work to a cheaper Claude model. Both models produced attractive outlines in a demonstration. Reviewers worry about courses with unusual prerequisites, and the team has a firm turnaround requirement. Which steps belong in the comparison? Select THREE.",
+    "options": [
+      { "id": "ratings", "text": "Use a general writing leaderboard to estimate which model will respect the team's prerequisite rules." },
+      { "id": "cases", "text": "Run both models on the team's actual outline prompts, including briefs with unusual prerequisite chains." },
+      { "id": "quality", "text": "Score whether each outline preserves the prerequisites and other requirements in its course brief." },
+      { "id": "volume", "text": "Use the number of modules generated per minute as a proxy for how well each outline sequences the learning." },
+      { "id": "different", "text": "Give the cheaper model next month's new briefs and compare them with last month's published outlines." },
+      { "id": "cost-time", "text": "Measure the cost and time to return an outline on the test briefs, alongside the reviewers' quality results." }
+    ],
+    "correct": ["cases", "quality", "cost-time"],
+    "explanation": "A useful model comparison uses real prompts and representative data, including edge cases. Scoring the work against the same quality requirements shows whether a faster or cheaper result is actually acceptable.",
+    "distractorNotes": {
+      "ratings": "A general writing benchmark does not test how either model handles this team's prerequisites.",
+      "volume": "Generating modules quickly says nothing about whether they appear in a valid teaching sequence.",
+      "different": "Changing both the briefs and the model, and comparing against already published work, makes the source of a difference unclear."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
+    "sourceNote": "Establish key criteria; Decide whether to upgrade or change models: actual prompts, response quality, and edge cases",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-012",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A service desk receives routine equipment requests and a small number of exceptions involving conflicting allocation rules. The intake form already identifies exceptions reliably. In a pilot, a fast, inexpensive Claude model met the quality target for routine requests, while a stronger model was needed for exceptions. Which assignment keeps the pilot's quality at the lowest processing cost?",
+    "options": [
+      { "id": "draft", "text": "Have the fast model draft each response and the stronger model revise that draft before the desk uses it." },
+      { "id": "route", "text": "Send routine requests to the fast model and send the already identified exceptions directly to the stronger one." },
+      { "id": "sample", "text": "Send the queue to the fast model, with a stronger model checking a random sample before the desk responds." },
+      { "id": "classify", "text": "Have the stronger model inspect each request and pass the straightforward ones to the fast model for drafting." }
+    ],
+    "correct": ["route"],
+    "explanation": "The team knows in advance which work needs the stronger tier. Combining models by task lets routine requests use the lower-cost model and concentrates the stronger model's work on the cases where testing showed a benefit.",
+    "distractorNotes": {
+      "draft": "Reviewing each draft with the stronger model spends resources on routine requests that passed without that review.",
+      "sample": "Sampling helps measure quality, but can leave known exceptions with a model that failed on that class of work.",
+      "classify": "The intake form already supplies a reliable routing decision, so this adds a stronger-model call even to routine requests."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
+    "sourceNote": "Start efficiency-first; Combine models: pair a lower-cost model with a stronger model for hard decisions",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-013",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A stage manager used low effort to turn a rehearsal timetable into notices. In the same chat, the team has now supplied a late venue change, revised setup times, and cast availability. The manager wants Claude to spend more reasoning on the next scheduling decision while keeping those details in place. What should the manager do?",
+    "options": [
+      { "id": "new", "text": "Open a higher-effort chat and reconstruct the inputs there so the changed setting takes effect." },
+      { "id": "long", "text": "Keep low effort and ask for a longer account of the timetable before requesting the scheduling decision." },
+      { "id": "change", "text": "Raise effort in the current chat before asking Claude to reconcile the scheduling constraints." },
+      { "id": "later", "text": "Draft the schedule at low effort, then raise effort for a follow-up explaining the choices in the draft." }
+    ],
+    "correct": ["change"],
+    "explanation": "Effort can be changed during a conversation and applies starting with the next response. Raising it at the point where the task becomes complex preserves the working context without rebuilding the chat.",
+    "distractorNotes": {
+      "new": "A fresh conversation is unnecessary for the setting to take effect and creates another opportunity to omit a constraint.",
+      "long": "A longer response is an output requirement; it does not change the selected reasoning effort.",
+      "later": "The higher effort would apply to the explanation. The scheduling decision the manager cares about would already have been made at low effort."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/8664678-change-the-model-effort-and-thinking-settings",
+    "sourceNote": "Change the model: changes apply from the next response; Choose an effort level; Choose the right settings for your task",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-014",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A membership office needs renewal replies within ten seconds, including replies that apply a membership exception. In a pilot, Haiku at low effort took four seconds and omitted the exception. On the same brief, Haiku at higher effort took twelve seconds, Sonnet took nine, and Opus took seven; each of those three applied the exception. Haiku at low effort cost the least per reply, and Opus cost more than Sonnet. Which configuration should the office choose to minimize cost within its requirements?",
+    "options": [
+      { "id": "fast", "text": "Haiku at low effort, because its quicker replies give staff more time to process the queue." },
+      { "id": "deep", "text": "Haiku at higher effort, because resolving the exception preserves quality on the lower-priced tier." },
+      { "id": "strong", "text": "Opus at its tested effort, because additional reasoning capacity is useful when exceptions occur." },
+      { "id": "balanced", "text": "Sonnet at its tested effort, using its performance on the exception as the basis for deployment." }
+    ],
+    "correct": ["balanced"],
+    "explanation": "Quality and response time are requirements, so settings that miss either one do not qualify. The office's own tests leave Sonnet and Opus; Sonnet costs less for this workload. A tier's nominal price or reasoning strength alone does not settle the choice.",
+    "distractorNotes": {
+      "fast": "The speed advantage does not satisfy the requirement to handle the exception.",
+      "deep": "Increasing effort closed the quality gap but took the replies beyond the deadline.",
+      "strong": "Opus qualifies, but the pilot gives no requirement that justifies its additional cost here."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/about-claude/models/choosing-a-model",
+    "sourceNote": "Establish key criteria: capabilities, speed, cost, and effort; Decide whether to upgrade or change models",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-015",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A communications team has enough time and usage allowance for deeper analysis on two assignments this afternoon. All source material is available. Which assignments have reasoning demands that most clearly justify higher effort? Select TWO.",
+    "options": [
+      { "id": "headings", "text": "Apply the approved capitalization convention to the headings in a long, final exhibition catalogue." },
+      { "id": "invite", "text": "Insert the confirmed location into the approved invitation template for the board's annual meeting." },
+      { "id": "dependencies", "text": "Assess how delaying a venue announcement affects partner notices, translation, and a press embargo." },
+      { "id": "limits", "text": "Compare overlapping commitments in three release agreements to find where proposed wording conflicts." },
+      { "id": "variants", "text": "Suggest subject-line variations for a reminder whose audience, content, and tone are already settled." }
+    ],
+    "correct": ["dependencies", "limits"],
+    "explanation": "Tracing dependencies and reconciling constraints across documents require multi-step reasoning. Higher effort trades time and usage for more thorough analysis. The other assignments are routine transformations even when the audience or document is important.",
+    "distractorNotes": {
+      "headings": "Volume increases the amount to process, but the capitalization decision itself is already specified.",
+      "invite": "A board audience warrants care, but inserting a confirmed detail in a fixed template offers little reasoning work.",
+      "variants": "Generating alternatives within settled constraints is routine writing rather than a conflict-analysis task."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/8664678-change-the-model-effort-and-thinking-settings",
+    "sourceNote": "Choose an effort level; Choose the right settings for your task: general writing, comprehensive planning, and document analysis",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-016",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A festival planner is moving from site selection to writing the volunteer handbook. A long planning chat contains abandoned sites, the final site decision, an access restriction agreed early on, and an unresolved pickup location. Drafts keep borrowing directions from rejected sites. Which handoff gives a fresh chat the best starting context?",
+    "options": [
+      { "id": "recent", "text": "Bring over the most recent turns verbatim, using recency to decide which site details are current." },
+      { "id": "decisions", "text": "Bring a checked summary of the chosen site, its access restriction, and the still-open pickup question." },
+      { "id": "transcript", "text": "Bring a chronological transcript of the site debate so the new chat can reconstruct the selected site's constraints." },
+      { "id": "approved", "text": "Bring the confirmed site name and handbook headings, leaving unsettled logistics for Claude to fill in as it drafts." }
+    ],
+    "correct": ["decisions"],
+    "explanation": "A useful handoff preserves decisions, constraints, and unresolved work while discarding material that distracts from the next task. The pickup location belongs in the summary as an open question, not as a direction Claude is free to invent.",
+    "distractorNotes": {
+      "recent": "A recent slice can omit the early access restriction even if every turn it contains is accurate.",
+      "transcript": "Recreating the debate puts the same obsolete directions back into the new working context.",
+      "approved": "Keeping just the site name loses the restriction and hides a genuine gap that the handbook needs to flag."
+    },
+    "sourceUrl": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
+    "sourceNote": "Context engineering for long-horizon tasks: Compaction and structured note-taking",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-017",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A team translating a handbook agrees on a glossary with several deliberately unusual translations. Team members work in separate chats inside one shared Claude Project and need to consult the exact entries for the next chapter. Where should the editor put the approved glossary so colleagues can refer to the same wording?",
+    "options": [
+      { "id": "knowledge", "text": "Add the approved glossary file to the shared Project's knowledge for use in its chapter chats." },
+      { "id": "chat", "text": "Attach the approved file to the editor's chapter chat and give the other translators the title of that chat." },
+      { "id": "memory", "text": "Ask Claude to remember the glossary in the editor's account for future chapters worked on by the team." },
+      { "id": "examples", "text": "Add selected examples to the Project instructions and direct Claude to infer the remaining translations." }
+    ],
+    "correct": ["knowledge"],
+    "explanation": "Project knowledge provides documents as reference material for chats within the Project. Putting the approved glossary there makes its exact entries available to members working on separate chapters.",
+    "distractorNotes": {
+      "chat": "Attaching a file to one conversation is not the same as putting it in the Project's shared reference material.",
+      "memory": "The editor's personal memory is not a shared glossary that other members can consult.",
+      "examples": "Examples can convey a style, but the remaining unusual translations cannot reliably be inferred from them."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/9517075-what-are-projects",
+    "sourceNote": "Project knowledge; Collaboration and sharing: members can use shared project knowledge in their chats",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-018",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "While closing a pilot, an analyst needs the exchange in which they recorded why a trial site was excluded. It was in one of their chats in the pilot Project. A new standalone chat recalls the site name, but the analyst needs a link to the conversation to check the original reasoning. Chat search is enabled. What should the analyst do?",
+    "options": [
+      { "id": "recall", "text": "Ask the standalone chat to expand its remembered site details into a dated account of the decision." },
+      { "id": "standalone", "text": "Ask the standalone chat to search for the pilot Project and site by name and cite the original exchange." },
+      { "id": "files", "text": "Open the pilot Project and ask Claude to search its uploaded reference files for the earliest mention of the site." },
+      { "id": "search", "text": "Open a chat in the pilot Project, request a search of past chats there, and follow the citation to the exchange." }
+    ],
+    "correct": ["search"],
+    "explanation": "Chat search retrieves specific past conversations and can cite the original chat. A Project conversation is searched from within that Project; recalling a site name through memory is not the same as retrieving its source.",
+    "distractorNotes": {
+      "recall": "A more detailed account from memory still does not give the analyst the original exchange to inspect.",
+      "standalone": "Naming the Project does not move a standalone search into the Project's chat history.",
+      "files": "The analyst knows the reasoning was recorded in a conversation, not that it was added to the uploaded files."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context",
+    "sourceNote": "What Claude can search; User controls and visibility: Past chat citations",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-019",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An office manager reviews Claude's saved memory topics after a pilot ends. One topic gives the old name for a team that still exists; another lists a pilot-only meeting that has been discontinued. The rest of the saved context is useful. Which actions bring the saved topics into line with current work? Select TWO.",
+    "options": [
+      { "id": "edit", "text": "Edit the saved team topic to give the current name and retain the relevant team context." },
+      { "id": "prompt", "text": "Correct the team name in the report being drafted and leave the saved team topic as it is." },
+      { "id": "pause", "text": "Pause account memory during the transition and resume it when reporting under the new team name." },
+      { "id": "search", "text": "Find the original chat that generated the saved meeting topic and delete that conversation from history." },
+      { "id": "delete", "text": "Delete the saved meeting topic while keeping the memory entries that still describe ongoing work." }
+    ],
+    "correct": ["edit", "delete"],
+    "explanation": "Saved topics can be inspected, edited individually, or deleted. Editing preserves the useful team context under the right name. Deleting the discontinued meeting removes a topic that no longer has a current counterpart.",
+    "distractorNotes": {
+      "prompt": "Fixing the report makes that deliverable accurate, but this choice explicitly leaves the incorrect saved topic in place.",
+      "pause": "Pausing keeps existing memories. Resuming would make the stale topics available again.",
+      "search": "Deleting a conversation removes its transcript, but a topic already saved to memory from that chat remains."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context",
+    "sourceNote": "View and manage your memory: inspect, edit, and delete topics; Turn memory on or off for your account",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-020",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A producer often asks Claude for personal work notes in unrelated standalone chats. They prefer a short list of open decisions before the narrative. This is a working preference, not a required template; sometimes the producer asks for prose instead. With memory enabled, how can the producer carry the preference into new chats without retrieving earlier notes each time?",
+    "options": [
+      { "id": "project", "text": "Add the layout to one production Project's instructions and continue requesting notes in unrelated standalone chats." },
+      { "id": "search", "text": "Enable chat search and begin each new set of notes by locating a past response with a suitable layout." },
+      { "id": "remember", "text": "Ask Claude to remember the usual note layout as a working preference for future conversations." },
+      { "id": "example", "text": "Keep a model note in a shared artifact and attach it as a reference when beginning a new conversation." }
+    ],
+    "correct": ["remember"],
+    "explanation": "Communication preferences and working style are examples of context that memory can carry between conversations. The producer can explicitly ask Claude to remember a preference without turning a particular old note into a source for every new one.",
+    "distractorNotes": {
+      "project": "Project instructions would suit work inside that Project. The producer specifically works in standalone chats.",
+      "search": "Chat search helps find a specific prior response, but here the producer wants a habit carried forward without that retrieval step.",
+      "example": "An example can illustrate the layout, but reattaching it in each chat recreates the manual context step."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context",
+    "sourceNote": "How Claude stores memory; What Claude remembers: communication preferences and working style",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-021",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A facilities coordinator attaches a new survey to the chat used for earlier site reviews. Claude reports that the survey would take the conversation over its length limit. The account has plenty of usage remaining. The file is the same size as surveys the coordinator normally reviews, and this building can be assessed independently. How should the coordinator continue?",
+    "options": [
+      { "id": "carry-history", "text": "Start a fresh conversation, copy in the full exchange about earlier buildings, and then attach the survey." },
+      { "id": "new", "text": "Start a fresh conversation for this site and provide its survey without the earlier buildings' histories." },
+      { "id": "waiting", "text": "Wait for the next usage reset before adding the survey to the chat that already holds the building records." },
+      { "id": "memory", "text": "Pause account memory to free the space occupied by earlier turns in the existing facilities conversation." }
+    ],
+    "correct": ["new"],
+    "explanation": "A length limit concerns how much context one conversation can hold. A new conversation gives the independent survey its own working context. Account usage measures consumption over time, so more allowance is not the missing resource.",
+    "distractorNotes": {
+      "carry-history": "Copying the full exchange brings the earlier buildings back into the context that must also hold the survey. The site review does not need them.",
+      "waiting": "A usage reset replenishes an allowance rather than shrinking a conversation's accumulated context.",
+      "memory": "Earlier messages are part of the current conversation, not saved topics that account memory can pause."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work",
+    "sourceNote": "What are length limits?; Key differences: usage over time versus the context of a single conversation",
     "sourceCheckedAt": "2026-11-21"
   }
 ]
