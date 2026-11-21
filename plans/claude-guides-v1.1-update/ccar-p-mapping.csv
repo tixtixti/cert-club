@@ -1,0 +1,127 @@
+id,old_domain,new_domain,new_skill,disposition,reason
+ccar-p-claude-models-prompting-and-context-engineering-001,claude-models-prompting-and-context-engineering,claude-models-prompting-and-context-engineering,cache-breakpoints-and-reusable-packaging,keep,Stable-before-dynamic ordering with explicit breakpoint
+ccar-p-claude-models-prompting-and-context-engineering-002,claude-models-prompting-and-context-engineering,claude-models-prompting-and-context-engineering,prompting-technique-selection,keep,Native thinking on/off per workload class
+ccar-p-claude-models-prompting-and-context-engineering-003,claude-models-prompting-and-context-engineering,claude-models-prompting-and-context-engineering,model-tier-selection,keep,Tier per queue meeting binding gates
+ccar-p-claude-models-prompting-and-context-engineering-004,claude-models-prompting-and-context-engineering,claude-models-prompting-and-context-engineering,system-prompt-diagnosis-and-revision,keep,Unlabeled sections; XML delimiting
+ccar-p-claude-models-prompting-and-context-engineering-005,claude-models-prompting-and-context-engineering,claude-models-prompting-and-context-engineering,system-prompt-diagnosis-and-revision,keep,Over-constraining restriction revision
+ccar-p-claude-models-prompting-and-context-engineering-006,claude-models-prompting-and-context-engineering,claude-models-prompting-and-context-engineering,prompting-technique-selection,keep,Few-shot selection for observed failure
+ccar-p-claude-models-prompting-and-context-engineering-007,claude-models-prompting-and-context-engineering,claude-models-prompting-and-context-engineering,prompting-technique-selection,keep,Prefill to structured outputs
+ccar-p-claude-models-prompting-and-context-engineering-008,claude-models-prompting-and-context-engineering,claude-models-prompting-and-context-engineering,prompting-technique-selection,keep,Adaptive thinking plus structured output
+ccar-p-claude-models-prompting-and-context-engineering-009,claude-models-prompting-and-context-engineering,claude-models-prompting-and-context-engineering,prompting-technique-selection,keep,Long-context placement and quote-first
+ccar-p-claude-models-prompting-and-context-engineering-010,claude-models-prompting-and-context-engineering,claude-models-prompting-and-context-engineering,context-composition-and-token-economics,keep,Token counting for budget decisions
+ccar-p-claude-models-prompting-and-context-engineering-011,claude-models-prompting-and-context-engineering,claude-models-prompting-and-context-engineering,cache-breakpoints-and-reusable-packaging,keep,Cache TTL against call cadence
+ccar-p-claude-models-prompting-and-context-engineering-012,claude-models-prompting-and-context-engineering,claude-models-prompting-and-context-engineering,cache-breakpoints-and-reusable-packaging,keep,Shared-prefix plus incremental history reuse
+ccar-p-claude-models-prompting-and-context-engineering-013,claude-models-prompting-and-context-engineering,claude-models-prompting-and-context-engineering,prompting-technique-selection,keep,Structured outputs with app-owned writes
+ccar-p-claude-models-prompting-and-context-engineering-014,claude-models-prompting-and-context-engineering,claude-models-prompting-and-context-engineering,reasoning-effort-and-context-lifecycle,keep,Compaction plus durable memory for long agent
+ccar-p-claude-models-prompting-and-context-engineering-015,claude-models-prompting-and-context-engineering,claude-models-prompting-and-context-engineering,prompting-technique-selection,rewrite,Native citations not in objectives; reframe as grounding technique
+ccar-p-claude-models-prompting-and-context-engineering-016,claude-models-prompting-and-context-engineering,claude-models-prompting-and-context-engineering,cache-breakpoints-and-reusable-packaging,keep,Skill-based packaging vs CLAUDE.md baseline
+ccar-p-developer-productivity-and-operational-enablement-001,developer-productivity-and-operational-enablement,developer-productivity-and-operational-enablement,agent-sdk-and-claude-code-configuration,keep,PreToolUse hook enforcement
+ccar-p-developer-productivity-and-operational-enablement-002,developer-productivity-and-operational-enablement,developer-productivity-and-operational-enablement,agent-sdk-and-claude-code-configuration,keep,Headless CI launch with trusted config
+ccar-p-developer-productivity-and-operational-enablement-003,developer-productivity-and-operational-enablement,developer-productivity-and-operational-enablement,packaging-and-distributing-workflows,keep,Managed settings central enforcement
+ccar-p-developer-productivity-and-operational-enablement-004,developer-productivity-and-operational-enablement,developer-productivity-and-operational-enablement,agent-sdk-and-claude-code-configuration,keep,Subagent definition with scoped tools
+ccar-p-developer-productivity-and-operational-enablement-005,developer-productivity-and-operational-enablement,claude-models-prompting-and-context-engineering,reasoning-effort-and-context-lifecycle,rewrite,Troubleshooting dropped; compaction survives in D2
+ccar-p-developer-productivity-and-operational-enablement-006,developer-productivity-and-operational-enablement,developer-productivity-and-operational-enablement,agent-sdk-and-claude-code-configuration,keep,Worktree isolation for parallel sessions
+ccar-p-developer-productivity-and-operational-enablement-007,developer-productivity-and-operational-enablement,developer-productivity-and-operational-enablement,NONE,retire-candidate,Startup debugging; debugging objective dropped
+ccar-p-developer-productivity-and-operational-enablement-008,developer-productivity-and-operational-enablement,developer-productivity-and-operational-enablement,agent-sdk-and-claude-code-configuration,keep,Skill invocation configuration
+ccar-p-developer-productivity-and-operational-enablement-009,developer-productivity-and-operational-enablement,developer-productivity-and-operational-enablement,NONE,retire-candidate,MCP stdio debugging; debugging objective dropped
+ccar-p-evaluation-testing-and-optimization-001,evaluation-testing-and-optimization,evaluation-testing-and-optimization,deriving-evaluations-from-business-processes,keep,Release gate separates completion from quality
+ccar-p-evaluation-testing-and-optimization-002,evaluation-testing-and-optimization,evaluation-testing-and-optimization,deriving-evaluations-from-business-processes,keep,Code graders plus judge methodology mix
+ccar-p-evaluation-testing-and-optimization-003,evaluation-testing-and-optimization,evaluation-testing-and-optimization,deriving-evaluations-from-business-processes,keep,pass^k release gate; adjacent to trials-per-case
+ccar-p-evaluation-testing-and-optimization-004,evaluation-testing-and-optimization,evaluation-testing-and-optimization,evaluation-coverage-gaps,keep,Groundedness metric for invented exceptions
+ccar-p-evaluation-testing-and-optimization-005,evaluation-testing-and-optimization,evaluation-testing-and-optimization,llm-as-judge-design-and-bias,keep,Verbosity bias correction with calibration
+ccar-p-evaluation-testing-and-optimization-006,evaluation-testing-and-optimization,evaluation-testing-and-optimization,cost-and-latency-optimization,keep,Latency reduction within quality floor
+ccar-p-evaluation-testing-and-optimization-007,evaluation-testing-and-optimization,evaluation-testing-and-optimization,experimental-design-for-configuration-comparison,rewrite,Guidance-recall sequencing; objective wants trial/variance design
+ccar-p-evaluation-testing-and-optimization-008,evaluation-testing-and-optimization,evaluation-testing-and-optimization,cost-and-latency-optimization,keep,Routing for cost under quality floor
+ccar-p-evaluation-testing-and-optimization-009,evaluation-testing-and-optimization,integration,instrumentation-and-monitoring-gaps,retag,Tracing strategy that surfaces undetected waits
+ccar-p-evaluation-testing-and-optimization-010,evaluation-testing-and-optimization,evaluation-testing-and-optimization,deriving-evaluations-from-business-processes,keep,Regression vs capability suites as merge gate
+ccar-p-evaluation-testing-and-optimization-011,evaluation-testing-and-optimization,claude-models-prompting-and-context-engineering,context-composition-and-token-economics,retag,Token counting; near-duplicate of D2-010
+ccar-p-evaluation-testing-and-optimization-012,evaluation-testing-and-optimization,governance-safety-and-risk-management,prompt-injection-surface-and-controls,retag,Red-teaming injection controls
+ccar-p-evaluation-testing-and-optimization-013,evaluation-testing-and-optimization,evaluation-testing-and-optimization,root-cause-isolation,keep,Retrieval vs generation failure isolation
+ccar-p-evaluation-testing-and-optimization-014,evaluation-testing-and-optimization,evaluation-testing-and-optimization,evaluation-coverage-gaps,keep,Missing grading target: environment state
+ccar-p-evaluation-testing-and-optimization-015,evaluation-testing-and-optimization,evaluation-testing-and-optimization,llm-as-judge-design-and-bias,keep,Isolated per-dimension judges
+ccar-p-evaluation-testing-and-optimization-016,evaluation-testing-and-optimization,evaluation-testing-and-optimization,cost-and-latency-optimization,keep,Streaming for visible latency; overlaps D1-019
+ccar-p-evaluation-testing-and-optimization-017,evaluation-testing-and-optimization,evaluation-testing-and-optimization,deriving-evaluations-from-business-processes,keep,Held-out set and production-distribution coverage
+ccar-p-evaluation-testing-and-optimization-018,evaluation-testing-and-optimization,evaluation-testing-and-optimization,deriving-evaluations-from-business-processes,keep,Two-sided acceptance criteria from business limits
+ccar-p-evaluation-testing-and-optimization-019,evaluation-testing-and-optimization,evaluation-testing-and-optimization,cost-and-latency-optimization,keep,Cache TTL; near-duplicate of D2-011
+ccar-p-evaluation-testing-and-optimization-020,evaluation-testing-and-optimization,evaluation-testing-and-optimization,cost-and-latency-optimization,keep,Per-step model assignment under quality floor
+ccar-p-governance-safety-and-risk-management-001,governance-safety-and-risk-management,governance-safety-and-risk-management,architectural-controls-for-compliance,keep,ZDR control; HIPAA framing should be de-emphasized
+ccar-p-governance-safety-and-risk-management-002,governance-safety-and-risk-management,governance-safety-and-risk-management,prompt-injection-surface-and-controls,keep,Untrusted email content separation
+ccar-p-governance-safety-and-risk-management-003,governance-safety-and-risk-management,governance-safety-and-risk-management,guardrail-placement,keep,Fail-closed DLP inference hook placement
+ccar-p-governance-safety-and-risk-management-004,governance-safety-and-risk-management,claude-models-prompting-and-context-engineering,prompting-technique-selection,retag,Quote-first grounding; transparency objective dropped
+ccar-p-governance-safety-and-risk-management-005,governance-safety-and-risk-management,governance-safety-and-risk-management,human-in-the-loop-checkpoints,keep,Per-call approval gate surviving bypass mode
+ccar-p-governance-safety-and-risk-management-006,governance-safety-and-risk-management,governance-safety-and-risk-management,architectural-controls-for-compliance,keep,Data residency via workspace geography
+ccar-p-governance-safety-and-risk-management-007,governance-safety-and-risk-management,governance-safety-and-risk-management,architectural-controls-for-compliance,keep,CMEK custody control with honest limits
+ccar-p-governance-safety-and-risk-management-008,governance-safety-and-risk-management,governance-safety-and-risk-management,human-in-the-loop-checkpoints,keep,Blocker checkpoints plus iteration cap
+ccar-p-governance-safety-and-risk-management-009,governance-safety-and-risk-management,governance-safety-and-risk-management,guardrail-placement,keep,Pre-screen guardrail before primary model
+ccar-p-governance-safety-and-risk-management-010,governance-safety-and-risk-management,governance-safety-and-risk-management,architectural-controls-for-compliance,keep,Audit evidence via Compliance API read scope
+ccar-p-governance-safety-and-risk-management-011,governance-safety-and-risk-management,governance-safety-and-risk-management,architectural-controls-for-compliance,rewrite,Admin deletion procedure; reframe as retention control selection
+ccar-p-governance-safety-and-risk-management-012,governance-safety-and-risk-management,integration,authentication-and-authorization-posture,retag,Credential lifecycle and exposure on offboarding
+ccar-p-governance-safety-and-risk-management-013,governance-safety-and-risk-management,governance-safety-and-risk-management,NONE,retire-candidate,Billing override workflow; no v1.1 skill
+ccar-p-governance-safety-and-risk-management-014,governance-safety-and-risk-management,developer-productivity-and-operational-enablement,agent-sdk-and-claude-code-configuration,retag,Headless CI hook disabling and workspace trust
+ccar-p-governance-safety-and-risk-management-015,governance-safety-and-risk-management,integration,instrumentation-and-monitoring-gaps,retag,Dashboard misses refusals; monitoring gap
+ccar-p-governance-safety-and-risk-management-016,governance-safety-and-risk-management,governance-safety-and-risk-management,prompt-injection-surface-and-controls,keep,Tool-output screening before primary model
+ccar-p-governance-safety-and-risk-management-017,governance-safety-and-risk-management,governance-safety-and-risk-management,NONE,retire-candidate,SCIM admin procedure; no v1.1 skill
+ccar-p-governance-safety-and-risk-management-018,governance-safety-and-risk-management,integration,authentication-and-authorization-posture,retag,Credential scope prevents content access
+ccar-p-integration-001,integration,integration,connection-mechanism-selection,keep,"MCP primitive choice; within-MCP angle, borderline"
+ccar-p-integration-002,integration,integration,least-privilege-tool-configuration,keep,Remove unneeded tool from agent context
+ccar-p-integration-003,integration,integration,progressive-discovery-vs-monolithic,keep,Tool search vs loading all definitions
+ccar-p-integration-004,integration,integration,authentication-and-authorization-posture,keep,DNS rebinding Origin validation
+ccar-p-integration-005,integration,claude-models-prompting-and-context-engineering,prompting-technique-selection,retag,Forced tool choice plus strict schema = structured output
+ccar-p-integration-006,integration,integration,NONE,retire-candidate,Parallel-tool-use flag recall; no v1.1 skill
+ccar-p-integration-007,integration,integration,production-reliability-controls,keep,Error surfacing after retry exhaustion
+ccar-p-integration-008,integration,integration,retrieval-architecture-selection,keep,Contextual-retrieval configuration
+ccar-p-integration-009,integration,integration,retrieval-architecture-selection,keep,"Hybrid BM25, rank fusion, reranker"
+ccar-p-integration-010,integration,integration,connection-mechanism-selection,keep,Transport choice by lifecycle and connectivity
+ccar-p-integration-011,integration,integration,authentication-and-authorization-posture,keep,Advisory Roots vs enforced isolation; legacy revision
+ccar-p-integration-012,integration,integration,NONE,retire-candidate,Message-assembly mechanics; no v1.1 skill
+ccar-p-integration-013,integration,integration,progressive-discovery-vs-monolithic,keep,Deferred tools without breaking cached prefix
+ccar-p-integration-014,integration,claude-models-prompting-and-context-engineering,reasoning-effort-and-context-lifecycle,retag,Context editing is named D2 lifecycle strategy
+ccar-p-integration-015,integration,integration,least-privilege-tool-configuration,keep,Context-efficient access pattern via programmatic calls
+ccar-p-integration-016,integration,integration,NONE,retire-candidate,Eager streaming parameter recall; no v1.1 skill
+ccar-p-integration-017,integration,solution-design-and-architecture,deployment-surface-and-agent-runtime,retag,Messages loop vs Agent SDK vs Managed Agents
+ccar-p-integration-018,integration,integration,connection-mechanism-selection,keep,MCP interaction-model selection
+ccar-p-integration-019,integration,integration,connection-mechanism-selection,rewrite,Subscription mechanics; reframe around statefulness constraint
+ccar-p-integration-020,integration,integration,production-reliability-controls,rewrite,Error-boundary recall; reframe as trace-driven reliability control
+ccar-p-integration-021,integration,integration,relieving-binding-performance-constraint,keep,Caching is a named lever in D3 binding-constraint skill; stays in place
+ccar-p-integration-022,integration,integration,retrieval-architecture-selection,keep,Full-corpus context vs RAG
+ccar-p-integration-023,integration,integration,authentication-and-authorization-posture,keep,"Host-side Sampling controls; deprecated feature, drift risk"
+ccar-p-integration-024,integration,integration,relieving-binding-performance-constraint,keep,Caching is a named lever in D3 binding-constraint skill; stays in place
+ccar-p-solution-design-and-architecture-001,solution-design-and-architecture,solution-design-and-architecture,pattern-selection,keep,Workflow with programmatic gate vs agent
+ccar-p-solution-design-and-architecture-002,solution-design-and-architecture,solution-design-and-architecture,pattern-selection,keep,Routing workflow selection under cost constraint
+ccar-p-solution-design-and-architecture-003,solution-design-and-architecture,solution-design-and-architecture,pattern-selection,keep,Parallelization pattern under CI latency budget
+ccar-p-solution-design-and-architecture-004,solution-design-and-architecture,solution-design-and-architecture,orchestrator-subagent-decomposition,keep,Orchestrator-workers with explicit dependencies and reconciliation
+ccar-p-solution-design-and-architecture-005,solution-design-and-architecture,solution-design-and-architecture,pattern-selection,keep,Evaluator-optimizer loop with bounded attempts
+ccar-p-solution-design-and-architecture-006,solution-design-and-architecture,solution-design-and-architecture,end-to-end-architecture-evaluation,keep,Broken feedback loop in tool outcome reporting
+ccar-p-solution-design-and-architecture-007,solution-design-and-architecture,solution-design-and-architecture,orchestrator-subagent-decomposition,keep,Subagent context isolation for coordinator
+ccar-p-solution-design-and-architecture-008,solution-design-and-architecture,solution-design-and-architecture,value-based-architectural-decisions,keep,Deadline SLA vs batch discount trade-off
+ccar-p-solution-design-and-architecture-009,solution-design-and-architecture,solution-design-and-architecture,pattern-selection,keep,Augmented-LLM sufficient; defer orchestration
+ccar-p-solution-design-and-architecture-010,solution-design-and-architecture,evaluation-testing-and-optimization,root-cause-isolation,rewrite,Tool-definition fix; no v1.1 tool-design skill; reframe as trace diagnosis
+ccar-p-solution-design-and-architecture-011,solution-design-and-architecture,governance-safety-and-risk-management,human-in-the-loop-checkpoints,retag,Iteration cap plus approval gate before production changes
+ccar-p-solution-design-and-architecture-012,solution-design-and-architecture,solution-design-and-architecture,pattern-selection,keep,Routing plus parallel composition
+ccar-p-solution-design-and-architecture-013,solution-design-and-architecture,solution-design-and-architecture,pattern-selection,keep,Voting parallelization with corroboration threshold
+ccar-p-solution-design-and-architecture-014,solution-design-and-architecture,solution-design-and-architecture,orchestrator-subagent-decomposition,keep,Lead agent synthesis boundary
+ccar-p-solution-design-and-architecture-015,solution-design-and-architecture,solution-design-and-architecture,end-to-end-architecture-evaluation,keep,Environment feedback validation loop
+ccar-p-solution-design-and-architecture-016,solution-design-and-architecture,solution-design-and-architecture,orchestrator-subagent-decomposition,keep,Task boundaries fail without shared contract settlement
+ccar-p-solution-design-and-architecture-017,solution-design-and-architecture,solution-design-and-architecture,deployment-surface-and-agent-runtime,keep,Self-hosted Agent SDK session state on ephemeral hosts
+ccar-p-solution-design-and-architecture-018,solution-design-and-architecture,integration,relieving-binding-performance-constraint,retag,Call-pattern change cuts round trips
+ccar-p-solution-design-and-architecture-019,solution-design-and-architecture,evaluation-testing-and-optimization,cost-and-latency-optimization,retag,Latency telemetry; caching plus streaming
+ccar-p-solution-design-and-architecture-020,solution-design-and-architecture,solution-design-and-architecture,value-based-architectural-decisions,keep,Workload split under SLA and cost ceilings
+ccar-p-solution-design-and-architecture-021,solution-design-and-architecture,solution-design-and-architecture,orchestrator-subagent-decomposition,keep,Worker scoping and compact result synthesis
+ccar-p-stakeholder-communication-and-lifecycle-management-001,stakeholder-communication-and-lifecycle-management,solution-design-and-architecture,pattern-selection,retag,Routing pattern choice; discovery framing dropped
+ccar-p-stakeholder-communication-and-lifecycle-management-002,stakeholder-communication-and-lifecycle-management,evaluation-testing-and-optimization,deriving-evaluations-from-business-processes,retag,Success criteria derived from business outcomes
+ccar-p-stakeholder-communication-and-lifecycle-management-003,stakeholder-communication-and-lifecycle-management,solution-design-and-architecture,value-based-architectural-decisions,retag,Cost per completed outcome decision
+ccar-p-stakeholder-communication-and-lifecycle-management-004,stakeholder-communication-and-lifecycle-management,stakeholder-communication-and-lifecycle-management,unsupportable-commitments,keep,Completion SLA unmet; clarify requirement or re-architect
+ccar-p-stakeholder-communication-and-lifecycle-management-005,stakeholder-communication-and-lifecycle-management,solution-design-and-architecture,orchestrator-subagent-decomposition,retag,Orchestrator design; handoff framing nominal
+ccar-p-stakeholder-communication-and-lifecycle-management-006,stakeholder-communication-and-lifecycle-management,stakeholder-communication-and-lifecycle-management,unsupportable-commitments,rewrite,Feasibility experiment; reframe as identifying unmeetable target
+ccar-p-stakeholder-communication-and-lifecycle-management-007,stakeholder-communication-and-lifecycle-management,governance-safety-and-risk-management,architectural-controls-for-compliance,retag,ZDR eligibility architecture
+ccar-p-stakeholder-communication-and-lifecycle-management-008,stakeholder-communication-and-lifecycle-management,developer-productivity-and-operational-enablement,agent-sdk-and-claude-code-configuration,retag,CLAUDE.md team onboarding configuration
+ccar-p-stakeholder-communication-and-lifecycle-management-009,stakeholder-communication-and-lifecycle-management,integration,authentication-and-authorization-posture,retag,Workspace-scoped credentials and partitions
+ccar-p-stakeholder-communication-and-lifecycle-management-010,stakeholder-communication-and-lifecycle-management,stakeholder-communication-and-lifecycle-management,unsupportable-commitments,keep,Batch 24h promise unsupported
+ccar-p-stakeholder-communication-and-lifecycle-management-011,stakeholder-communication-and-lifecycle-management,claude-models-prompting-and-context-engineering,reasoning-effort-and-context-lifecycle,retag,Effort allocation under quality gates
+ccar-p-stakeholder-communication-and-lifecycle-management-012,stakeholder-communication-and-lifecycle-management,integration,production-reliability-controls,retag,429 spend cap vs transient throttling
+ccar-p-stakeholder-communication-and-lifecycle-management-013,stakeholder-communication-and-lifecycle-management,solution-design-and-architecture,pattern-selection,retag,Evaluator-optimizer; near-duplicate of D1-005
+ccar-p-stakeholder-communication-and-lifecycle-management-014,stakeholder-communication-and-lifecycle-management,evaluation-testing-and-optimization,deriving-evaluations-from-business-processes,retag,Regression suite update for prompt change
+ccar-p-stakeholder-communication-and-lifecycle-management-015,stakeholder-communication-and-lifecycle-management,solution-design-and-architecture,pattern-selection,retag,Code vs model boundary in workflow
+ccar-p-stakeholder-communication-and-lifecycle-management-016,stakeholder-communication-and-lifecycle-management,evaluation-testing-and-optimization,deriving-evaluations-from-business-processes,retag,pass^k acceptance on held-out claims
+ccar-p-stakeholder-communication-and-lifecycle-management-017,stakeholder-communication-and-lifecycle-management,integration,production-reliability-controls,retag,Workspace rate and spend limits
+ccar-p-stakeholder-communication-and-lifecycle-management-018,stakeholder-communication-and-lifecycle-management,evaluation-testing-and-optimization,deriving-evaluations-from-business-processes,retag,Feedback triage into eval cases
