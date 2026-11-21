@@ -151,3 +151,13 @@ Calibrated against official sample questions 1–8:
 - **2026-10-12**: 4× expansion passes across Domain 1 (+60 items), Domain 2 (+60 items), and Domain 3 (+30 items), bringing the bank to 300 items. Cold evaluation confirmed 100% correct keys (0 miskeys). Hardening passes completed across all three domains.
 - **2026-10-12**: Coverage audit confirmed exact blueprint fidelity (40% / 40% / 20%), 100% `reviewed` status, perfect position balance (75 each), and readiness for human testing.
 - **2026-10-13**: Option hints pass added 240 option hints across 60 questions with zero impact on bias guards. `npm run check` clean.
+- **2026-11-21**: Source drift audit pass (resolves GitHub Issue #2).
+  - Blueprint check: Upstream WAS Body of Knowledge (Version 2.3, October 2024) and Candidate Handbook verified; blueprint intact (no weight or syllabus changes).
+  - Scope: 85 unique source URLs audited repo-wide across `iaap-was`.
+  - Disposition breakdown (48 questions adjudicated):
+    - **bump (6 items)**: `https://www.freedomscientific.com/training/jaws/basics/` (`iaap-was-iai-066`..`071`) re-verified live in browser; HTTP 403 in CI confirmed as Cloudflare anti-bot mitigation false positive.
+    - **re-cite (1 item)**: `https://www.w3.org/WAI/ARIA/apg/practices/aria-live/` (`iaap-was-cws-037`) re-cited to official WAI APG Alert Pattern (`https://www.w3.org/WAI/ARIA/apg/patterns/alert/`).
+    - **re-cite (17 items)**: `https://www.w3.org/WAI/eval/selecting-tools/` re-cited to first-party authoritative AT sources (`nvaccess.org` for `iai-002`, `006`, `009`; `freedomscientific.com` for `iai-011`, `016`, `018`; `support.apple.com` for `iai-019`, `021`, `023`, `024`, `026`, `028`; `support.google.com` for `iai-029`, `030`) and canonical W3C evaluation tool selection path `https://www.w3.org/WAI/test-evaluate/tools/selecting/` for automated tool items (`iai-112`, `113`, `114`).
+    - **re-cite (19 items)**: `https://www.w3.org/WAI/planning/remediating/` re-cited to `https://www.w3.org/WAI/planning/interim-repairs/` (3 items: `raw-006`, `013`, `016`), `https://www.w3.org/WAI/planning-and-managing/implement/` (15 items: `raw-002`, `003`, `005`, `007`, `008`, `017`, `031`, `032`, `034`, `035`, `040`, `047`, `048`, `049`, `050`), and `https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR38` (1 item: `raw-021`).
+    - **re-cite (5 items)**: `https://www.w3.org/WAI/planning/procurement/` (`iaap-was-raw-025`, `028`, `054`, `055`, `060`) re-cited to `https://www.w3.org/WAI/planning-and-managing/plan/`.
+  - 14 live redirects noted as benign floats. All 48 questions re-verified cold against live documentation.

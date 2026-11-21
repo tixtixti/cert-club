@@ -79,9 +79,9 @@
       "c": "Control + Option + Spacebar is the VoiceOver activation command on macOS.",
       "d": "Caps Lock + Enter is not a standard mode toggle command in NVDA."
     },
-    "sourceUrl": "https://www.w3.org/WAI/eval/selecting-tools/",
-    "sourceNote": "W3C WAI guidance documents screen reader interaction modes and keyboard conventions for web accessibility testing.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceUrl": "https://www.nvaccess.org/files/nvda/documentation/userGuide.html#BrowseMode",
+    "sourceNote": "NVDA User Guide §5.5 explains manual toggling between Browse Mode and Focus Mode with NVDA+Spacebar.",
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-003",
@@ -255,9 +255,9 @@
       "c": "Microsoft Edge is paired primarily with JAWS or Windows Narrator in standard enterprise testing matrices.",
       "d": "Apple Safari is native to Apple platforms and pairs with VoiceOver rather than Windows screen readers."
     },
-    "sourceUrl": "https://www.w3.org/WAI/eval/selecting-tools/",
-    "sourceNote": "W3C WAI Selecting Tools guidance documents standard assistive technology and user agent combinations for web conformance testing.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceUrl": "https://www.nvaccess.org/files/nvda/documentation/userGuide.html#BrowseMode",
+    "sourceNote": "NVDA User Guide documents support and navigation conventions across Windows browsers.",
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-007",
@@ -387,9 +387,9 @@
       "c": "Control and Option are the VoiceOver modifier keys on Apple platforms.",
       "d": "Function and Escape cannot serve as the NVDA modifier key."
     },
-    "sourceUrl": "https://www.w3.org/WAI/eval/selecting-tools/",
-    "sourceNote": "W3C WAI guidance describes screen reader keyboard configurations for testing on desktop and laptop hardware.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceUrl": "https://www.nvaccess.org/files/nvda/documentation/userGuide.html#NVDAKey",
+    "sourceNote": "NVDA User Guide §5.1 defines default NVDA modifier keys (Insert and Caps Lock).",
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-010",
@@ -471,9 +471,9 @@
       "b": "Control + Option + F2 opens window diagnostics in VoiceOver on macOS.",
       "d": "Alt + Shift + V is not a standard JAWS operational mode command."
     },
-    "sourceUrl": "https://www.w3.org/WAI/eval/selecting-tools/",
-    "sourceNote": "W3C WAI evaluation tools resources describe virtual buffer operational modes in Freedom Scientific JAWS.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceUrl": "https://www.freedomscientific.com/training/jaws/basics/",
+    "sourceNote": "Freedom Scientific JAWS commands document Insert+Z for toggling Virtual PC Cursor in web apps.",
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-012",
@@ -691,9 +691,9 @@
       "b": "Control + Insert + R reloads JAWS script configurations.",
       "c": "Alt + Insert + L is not a standard JAWS command for retrieving spoken output history."
     },
-    "sourceUrl": "https://www.w3.org/WAI/eval/selecting-tools/",
-    "sourceNote": "W3C WAI evaluation guidance covers reviewing transient screen reader speech output buffers during accessibility testing.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceUrl": "https://www.freedomscientific.com/training/jaws/basics/",
+    "sourceNote": "Freedom Scientific JAWS commands cite Insert+Spacebar, H to display speech history.",
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-017",
@@ -779,9 +779,9 @@
       "c": "Control + R triggers a network page reload rather than a virtual buffer recalculation.",
       "d": "Insert + Backspace is not a buffer refresh command in JAWS."
     },
-    "sourceUrl": "https://www.w3.org/WAI/eval/selecting-tools/",
-    "sourceNote": "W3C WAI testing guidance documents assistive technology buffer management when evaluating dynamic Single Page Applications.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceUrl": "https://www.freedomscientific.com/training/jaws/basics/",
+    "sourceNote": "Freedom Scientific JAWS documentation cites Insert+Escape to refresh the screen and virtual buffer.",
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-019",
@@ -823,9 +823,9 @@
       "b": "Control + Shift is a text selection key combination in macOS.",
       "d": "Command + Control is used for macOS window management and character viewers."
     },
-    "sourceUrl": "https://www.w3.org/WAI/eval/selecting-tools/",
-    "sourceNote": "W3C WAI evaluation tools resources document standard macOS VoiceOver modifier commands for web accessibility testing.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceUrl": "https://support.apple.com/guide/voiceover/change-verbosity-settings-vo27956/mac",
+    "sourceNote": "Apple VoiceOver User Guide defines Control+Option (or Caps Lock) as the primary VoiceOver modifier.",
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-020",
@@ -911,9 +911,9 @@
       "c": "VO + Return is not the interaction entry shortcut in VoiceOver.",
       "d": "VO + Shift + Up Arrow exits or stops interacting with the current group, moving focus back to the parent container."
     },
-    "sourceUrl": "https://www.w3.org/WAI/eval/selecting-tools/",
-    "sourceNote": "W3C WAI testing guidance documents the hierarchical interaction model in Apple macOS VoiceOver.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceUrl": "https://support.apple.com/guide/voiceover/interact-with-items-mchlp2730/mac",
+    "sourceNote": "Apple VoiceOver User Guide describes using VO+Shift+Down Arrow to interact with items in an area or table.",
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-022",
@@ -995,9 +995,9 @@
       "b": "Pressing Tab advances focus to the next focusable interactive control.",
       "d": "Command + Return is an application-specific shortcut (such as submitting comments) rather than the VoiceOver activation command."
     },
-    "sourceUrl": "https://www.w3.org/WAI/eval/selecting-tools/",
-    "sourceNote": "W3C WAI guidance outlines keyboard activation standards when evaluating accessible web widgets.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceUrl": "https://support.apple.com/guide/voiceover/interact-with-items-mchlp2730/mac",
+    "sourceNote": "Apple VoiceOver User Guide documents VO+Spacebar to perform the default action on the focused item.",
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-024",
@@ -1039,9 +1039,9 @@
       "b": "Mozilla Firefox is primarily paired with NVDA on Windows.",
       "c": "Microsoft Edge is primarily paired with JAWS and Narrator on Windows."
     },
-    "sourceUrl": "https://www.w3.org/WAI/eval/selecting-tools/",
-    "sourceNote": "W3C WAI testing baseline recommendations describe platform-native screen reader and browser pairings.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceUrl": "https://support.apple.com/guide/voiceover/interact-with-items-mchlp2730/mac",
+    "sourceNote": "Apple VoiceOver User Guide documents integrated web navigation and Safari support on macOS.",
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-025",
@@ -1127,9 +1127,9 @@
       "c": "Tapping once with two fingers pauses or resumes VoiceOver speech output.",
       "d": "Double-tapping with one finger activates the currently selected element."
     },
-    "sourceUrl": "https://www.w3.org/WAI/eval/selecting-tools/",
-    "sourceNote": "W3C WAI testing guidance documents touch gestures used for mobile accessibility evaluations on iOS.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceUrl": "https://support.apple.com/guide/iphone/voiceover-gestures-iph3e2e2281/ios",
+    "sourceNote": "Apple iPhone User Guide defines VoiceOver gestures: flick right moves to the next element.",
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-027",
@@ -1211,9 +1211,9 @@
       "b": "Dismissing an alert or navigating back is performed by a two-finger scrub (a 'Z' gesture), not the Magic Tap.",
       "c": "Continuous reading from the top of the page is initiated by a two-finger swipe upward."
     },
-    "sourceUrl": "https://www.w3.org/WAI/eval/selecting-tools/",
-    "sourceNote": "W3C WAI evaluation resources explain standard multi-touch accessibility gestures in mobile screen readers.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceUrl": "https://support.apple.com/guide/iphone/voiceover-gestures-iph3e2e2281/ios",
+    "sourceNote": "Apple iPhone User Guide defines VoiceOver gestures: two-finger double-tap (Magic Tap) performs default action.",
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-029",
@@ -1255,9 +1255,9 @@
       "c": "Swiping up with one finger moves focus according to the selected reading control granularity.",
       "d": "Single tapping moves accessibility focus to the touched item and announces its label, but does not activate it."
     },
-    "sourceUrl": "https://www.w3.org/WAI/eval/selecting-tools/",
-    "sourceNote": "W3C WAI guidance defines basic touch navigation gestures for Android TalkBack accessibility audits.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceUrl": "https://support.google.com/accessibility/android/answer/6006598",
+    "sourceNote": "Google TalkBack Help defines basic touch gestures: double-tapping activates the focused item.",
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-030",
@@ -1299,9 +1299,9 @@
       "c": "Volume Up and Power triggers hardware screenshots or system power menus.",
       "d": "Double-tapping with two fingers pauses or resumes speech or handles phone calls."
     },
-    "sourceUrl": "https://www.w3.org/WAI/eval/selecting-tools/",
-    "sourceNote": "W3C WAI testing guidance documents Android TalkBack reading controls and navigation gestures.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceUrl": "https://support.google.com/accessibility/android/answer/6006598",
+    "sourceNote": "Google TalkBack Help outlines using a three-finger swipe or angle gestures to adjust reading granularity.",
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-031",
@@ -2765,7 +2765,7 @@
     },
     "sourceUrl": "https://www.freedomscientific.com/training/jaws/basics/",
     "sourceNote": "Freedom Scientific JAWS commands cite Insert+Spacebar, H to display speech history.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-067",
@@ -2805,7 +2805,7 @@
     },
     "sourceUrl": "https://www.freedomscientific.com/training/jaws/basics/",
     "sourceNote": "Freedom Scientific JAWS documentation explains Touch Cursor mode for navigating on-screen elements.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-068",
@@ -2845,7 +2845,7 @@
     },
     "sourceUrl": "https://www.freedomscientific.com/training/jaws/basics/",
     "sourceNote": "Freedom Scientific JAWS table commands cite Ctrl+Alt+Numpad 5 to read current cell and headers.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-069",
@@ -2885,7 +2885,7 @@
     },
     "sourceUrl": "https://www.freedomscientific.com/training/jaws/basics/",
     "sourceNote": "Freedom Scientific documentation explains Auto Forms Mode activating upon navigating into form controls.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-070",
@@ -2929,7 +2929,7 @@
     },
     "sourceUrl": "https://www.freedomscientific.com/training/jaws/basics/",
     "sourceNote": "Freedom Scientific JAWS commands document Insert+Z for toggling Virtual PC Cursor in web apps.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-071",
@@ -2969,7 +2969,7 @@
     },
     "sourceUrl": "https://www.freedomscientific.com/training/jaws/basics/",
     "sourceNote": "Freedom Scientific documentation notes Insert+Ctrl+R displays the JAWS Select a Region/Landmark dialog.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-072",
@@ -4627,9 +4627,9 @@
       "b": "Scanners can check if an alt attribute exists, but cannot judge whether the text accurately describes context.",
       "c": "Logical reading order requires cognitive and context evaluation that automated scanners cannot perform."
     },
-    "sourceUrl": "https://www.w3.org/WAI/eval/selecting-tools/",
+    "sourceUrl": "https://www.w3.org/WAI/test-evaluate/tools/selecting/",
     "sourceNote": "W3C Selecting Accessibility Evaluation Tools notes automated tools reliably check syntax like missing alt.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-113",
@@ -4667,9 +4667,9 @@
       "c": "Automated scanners evaluate both Level A and Level AA criteria where programmatic rules exist (e.g., contrast, labels, roles).",
       "d": "Automated tools have full access to the computed DOM and styles via browser APIs, but cannot replace human evaluation of meaning."
     },
-    "sourceUrl": "https://www.w3.org/WAI/eval/selecting-tools/",
+    "sourceUrl": "https://www.w3.org/WAI/test-evaluate/tools/selecting/",
     "sourceNote": "WAI guidance notes automated tools detect ~30-40% of issues because most criteria require human judgement.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-114",
@@ -4707,9 +4707,9 @@
       "b": "Gradients are fully permitted in WCAG; the criterion evaluates whether text has sufficient contrast against the gradient.",
       "c": "Automated scanners are routinely run on styled pages, but complex backgrounds require manual verification to confirm contrast."
     },
-    "sourceUrl": "https://www.w3.org/WAI/eval/selecting-tools/",
+    "sourceUrl": "https://www.w3.org/WAI/test-evaluate/tools/selecting/",
     "sourceNote": "W3C evaluation tool guidance explains false positives where tools flag compliant complex backgrounds as failures.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-iai-115",

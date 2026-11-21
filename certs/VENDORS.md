@@ -252,7 +252,7 @@ _Checked 2026-11-21 · banks: `aws-clf-c02`, `aws-dva-c02` (`aws-aif-c01` checke
 
 ## IAAP (International Association of Accessibility Professionals)
 
-_Checked 2026-10-12 · bank: `iaap-was`_
+_Checked 2026-11-21 · bank: `iaap-was`_
 
 - **Exam guides and Bodies of Knowledge** are public PDFs hosted on IAAP's Salesforce Community CDN:
   - WAS Body of Knowledge: `https://www.accessibilityassociation.org/sfsites/c/resource/WASBoK_PDF`
@@ -266,6 +266,15 @@ _Checked 2026-10-12 · bank: `iaap-was`_
   - `https://act-rules.github.io/rules/` — W3C Accessibility Conformance Testing Rules
   - `https://www.etsi.org/deliver/etsi_en/301500_301599/301549/*` — European Accessibility Standard EN 301 549
   - `https://www.accessibilityassociation.org/sfsites/c/resource/*` — Official IAAP BoK and Handbook PDFs
+  - `https://www.freedomscientific.com/training/jaws/*` and `https://support.freedomscientific.com/*` — Freedom Scientific JAWS keystroke references and training guides. Note: `freedomscientific.com` is protected by Cloudflare bot management (`cf-mitigated: challenge`), which returns HTTP 403 to automated checkers like `check-sources`; confirmed open and live in browser.
+  - `https://www.nvaccess.org/files/nvda/documentation/*` — NV Access NVDA User Guide.
+  - `https://support.apple.com/guide/voiceover/*` and `https://support.apple.com/guide/iphone/*` — Apple VoiceOver documentation.
+  - `https://support.google.com/accessibility/android/*` — Google TalkBack Android accessibility documentation.
+  - `https://www.section508.gov/sell/vpat/` and `https://www.itic.org/policy/accessibility/vpat` — ITIC VPAT repository and Section 508 procurement guidance.
+- **W3C WAI documentation moves (adjudicated 2026-11-21):**
+  - `https://www.w3.org/WAI/eval/selecting-tools/` moved to `https://www.w3.org/WAI/test-evaluate/tools/selecting/`.
+  - `https://www.w3.org/WAI/planning/remediating/` was integrated into `https://www.w3.org/WAI/planning-and-managing/implement/`, while tactical interim repair items cite the standalone `https://www.w3.org/WAI/planning/interim-repairs/` page.
+  - `https://www.w3.org/WAI/planning/procurement/` was integrated into `https://www.w3.org/WAI/planning-and-managing/plan/`.
 - **Do not cite:**
   - `https://dequeuniversity.com/*` — course curriculum gated behind paid subscription / user login.
   - `https://stiftelsenfunka.org/*` and `https://www.funka.com/*` — certification training courses are gated paid content.
