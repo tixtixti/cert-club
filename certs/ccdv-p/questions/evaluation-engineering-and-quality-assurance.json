@@ -1,0 +1,697 @@
+[
+  {
+    "id": "ccdv-p-evaluation-engineering-and-quality-assurance-001",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "evaluation-engineering-and-quality-assurance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A release gate for an invoice-extraction prompt sends every eval case to an LLM grader, which compares the extracted JSON with a golden record and returns pass or fail. The suite has grown to thousands of cases. Gate runs are slow and costly, and repeated runs on an unchanged prompt occasionally flip verdicts on cases where an amount or date is plainly right or wrong. Which redesign best fits Anthropic's grading guidance?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Replace the LLM grader with human review of a sample each release, since human grading is the highest-quality method for release decisions."
+      },
+      {
+        "id": "b",
+        "text": "Grade fields that have exact golden values with code-based comparison, and keep the LLM grader only for fields that need judgment."
+      },
+      {
+        "id": "c",
+        "text": "Shrink the suite to a few hundred hand-picked high-signal cases, so that each LLM-graded verdict can be checked before the gate decides."
+      },
+      {
+        "id": "d",
+        "text": "Have the grader return a 1-5 score for each record and gate on the mean, since a numeric scale is less noisy than a pass or fail verdict."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "The guidance is to choose the fastest, most reliable, most scalable grading method that fits the judgment. Code-based exact or string matching is fastest and most reliable for fields with a golden value, while LLM-based grading suits complex judgments and should be shown reliable before it is scaled. Moving deterministic fields to code removes both the cost and the flipping verdicts where no judgment is needed.",
+    "distractorNotes": {
+      "a": "Human grading is flexible but slow and expensive, and the guidance says to avoid it where possible; it also shrinks gate coverage to a sample.",
+      "c": "The guidance favors volume of automatically graded cases over fewer high-signal ones; cutting the suite trades coverage for a problem code grading solves.",
+      "d": "A specific scale is a valid rubric form, but it leaves deterministic fields in a nondeterministic grader and averaging can hide a wrong amount."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "sourceNote": "Grade your evaluations: code-based vs human vs LLM-based grading; eval design principles",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-evaluation-engineering-and-quality-assurance-002",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "evaluation-engineering-and-quality-assurance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An engineering team is bootstrapping an evaluation suite for an automated customer support agent. Because production data with verified human labels is scarce, they prompt Claude to generate 1,000 synthetic customer conversations and expected resolution actions. After optimizing prompts against this synthetic suite, the agent achieves a 98% pass rate, yet production deployments immediately suffer an influx of customer escalations. What is the primary methodological flaw in this evaluation design?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The evaluation suite was generated using few-shot prompt templates rather than chain-of-thought demonstrations."
+      },
+      {
+        "id": "b",
+        "text": "Synthetic evaluations must be run with greedy decoding at temperature zero rather than default stochastic sampling."
+      },
+      {
+        "id": "c",
+        "text": "Model-generated test cases share the generator's inductive biases and fail to capture real-world edge distributions."
+      },
+      {
+        "id": "d",
+        "text": "The test suite used full conversation histories instead of isolated single-turn intent classification prompts."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "While model-generated test cases provide a rapid way to bootstrap initial evaluations, synthetic data often mirrors the generator model's internal assumptions, blind spots, and clean phrasing. It typically fails to capture the messy, ambiguous, and adversarial edge cases found in actual production traffic. Robust evaluation requires validating and supplementing synthetic datasets against real user interactions and observed failure modes.",
+    "distractorNotes": {
+      "a": "Prompting technique variations during dataset generation do not resolve the core issue of synthetic distribution bias.",
+      "b": "Greedy decoding makes evaluations deterministic but does not eliminate distribution mismatch with production user traffic.",
+      "d": "Customer support agents operate over conversational context, so testing multi-turn histories is standard practice rather than a flaw."
+    },
+    "sourceUrl": "https://www.anthropic.com/research/evaluating-ai-systems",
+    "sourceNote": "Model-generated evaluations risk shared blind spots without human-labeled production failure distributions.",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-evaluation-engineering-and-quality-assurance-003",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "evaluation-engineering-and-quality-assurance",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An autonomous coding agent runs a benchmark of 50 multi-step software maintenance tasks. During prompt regression testing, the team runs each task once (k=1) and records whether the final repository tests pass. They observe that small prompt modifications produce pass rate swings of up to 15% between identical test runs, making it difficult to determine whether a change represents a genuine capability improvement. Which evaluation redesign best isolates true prompt performance from stochastic variance?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Execute multiple trials per benchmark task to calculate pass@k metrics and establish confidence intervals across runs."
+      },
+      {
+        "id": "b",
+        "text": "Clamp the sampling temperature to zero and disable extended thinking to reduce nondeterministic tool invocations."
+      },
+      {
+        "id": "c",
+        "text": "Evaluate the agent's initial planning turn while mocking subsequent file modifications and terminal commands."
+      },
+      {
+        "id": "d",
+        "text": "Replace the multi-step repository benchmark with single-file code completion tasks that execute within a single turn."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Multi-step agentic workflows exhibit compounded stochastic variance because small branching divergences in early tool calls significantly alter downstream trajectories. Running multiple trials per task (pass@k) and calculating pass rates across repeated iterations establishes statistical confidence intervals, separating true capability shifts from run-to-run sampling noise.",
+    "distractorNotes": {
+      "b": "Setting temperature to zero reduces sampling variance but does not fully eliminate nondeterminism in complex multi-step environments.",
+      "c": "Mocking downstream execution prevents evaluating whether the agent can successfully diagnose and complete end-to-end tasks.",
+      "d": "Switching to single-turn tasks alters the evaluation target completely, abandoning the measurement of autonomous multi-step capabilities."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "sourceNote": "Define measurable success criteria: evaluating consistency and variance across stochastic generative test runs.",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-evaluation-engineering-and-quality-assurance-004",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "evaluation-engineering-and-quality-assurance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A team develops an evaluation suite of 150 complex medical research abstracts to test structured diagnostic extraction. To fix recurring formatting failures on rare pathology cases, an engineer extracts the 15 failing abstracts, creates detailed few-shot demonstrations showing their expected JSON representations, and places them into the production system prompt. A subsequent evaluation run on the suite shows extraction accuracy increasing from 74% to 92%. How should an evaluation engineer classify and remediate this result?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The result reflects valid prompt engineering; the team should expand the system prompt with remaining evaluation cases."
+      },
+      {
+        "id": "b",
+        "text": "The benchmark has experienced semantic drift; the team should re-score the existing test set with an LLM-based grader."
+      },
+      {
+        "id": "c",
+        "text": "The test suite suffered from label leakage; the team should alter the JSON schema to use non-standard field identifiers."
+      },
+      {
+        "id": "d",
+        "text": "The evaluation set was contaminated; the team should isolate test cases into a strictly held-out split not used in prompts."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Placing failing evaluation cases directly into system prompt few-shot examples contaminates the test suite, violating the principle of held-out evaluation. The observed accuracy gain reflects memorized demonstrations rather than generalized extraction capability. Evaluation hygiene requires maintaining a strictly held-out test split that is never used for prompt drafting, tuning, or demonstration selection.",
+    "distractorNotes": {
+      "a": "Adding more test cases to the prompt deepens evaluation contamination and bloats prompt token context unnecessarily.",
+      "b": "The failure is dataset contamination rather than semantic drift, and changing graders does not fix contaminated data.",
+      "c": "Renaming schema fields does not resolve the data leakage caused by training or prompting directly on evaluation test examples."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "sourceNote": "Eval design principles: held-out test sets ensure measurable evaluation on unseen data rather than memorized prompt examples.",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-evaluation-engineering-and-quality-assurance-005",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "evaluation-engineering-and-quality-assurance",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A data analysis agent executes a multi-step pipeline: user query decomposition, SQL query construction, database query execution, statistical aggregation, and executive summary writing. The team evaluates the agent solely by grading the final executive summary against reference reports using an LLM judge. When overall evaluation scores drop following a minor prompt revision, engineers spend days manually inspecting execution logs to identify what broke. How should the evaluation architecture be restructured to accelerate root-cause attribution?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Replace the final LLM judge with a human grading panel to obtain detailed subjective qualitative feedback."
+      },
+      {
+        "id": "b",
+        "text": "Introduce deterministic code assertions on intermediate states alongside end-to-end task evaluations."
+      },
+      {
+        "id": "c",
+        "text": "Increase the temperature of the LLM judge and prompt it to output a ranked list of likely sub-agent errors."
+      },
+      {
+        "id": "d",
+        "text": "Consolidate the multi-step agent pipeline into a single zero-shot prompt that generates SQL and analysis at once."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Evaluating only the final output of a multi-step agent provides an opaque pass/fail signal without visibility into where failures originate. A robust evaluation system combines end-to-end outcome evals with automated, deterministic unit assertions on intermediate state transitions (such as validating SQL syntax and schema conformity). This isolates faults directly to the specific failing step.",
+    "distractorNotes": {
+      "a": "Human panels are slow and expensive, and they do not automate or accelerate systematic localization of intermediate tool faults.",
+      "c": "Increasing judge temperature increases evaluation variance and does not provide verifiable execution state telemetry.",
+      "d": "Collapsing a modular agent into a single prompt reduces visibility and capability on complex multi-step analysis tasks."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "sourceNote": "Grade your evaluations: code-based vs LLM grading; multi-dimensional evals testing intermediate execution stages.",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-evaluation-engineering-and-quality-assurance-006",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "evaluation-engineering-and-quality-assurance",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An engineering team is developing an autonomous banking agent that interacts with an external ledger API. Before deploying the agent to production, the team wants to verify that its decision-making is resilient against upstream API anomalies and does not result in hallucinated recovery data or infinite retry loops. Which TWO mutation testing approaches best assess the agent's fault tolerance during tool interactions? (Select TWO.)",
+    "options": [
+      {
+        "id": "a",
+        "text": "Cache historical ledger API payloads locally and disable live network requests during evaluation runs."
+      },
+      {
+        "id": "b",
+        "text": "Inject simulated network timeouts and HTTP error codes into tool responses to evaluate recovery reasoning."
+      },
+      {
+        "id": "c",
+        "text": "Decrease the agent's maximum token output limit so that failing tool calls terminate execution immediately."
+      },
+      {
+        "id": "d",
+        "text": "Replace the ledger tool schema with an unstructured plain-text prompt that accepts arbitrary command strings."
+      },
+      {
+        "id": "e",
+        "text": "Return schema-valid tool payloads containing malformed and out-of-bounds field values to test error handling."
+      }
+    ],
+    "correct": [
+      "b",
+      "e"
+    ],
+    "explanation": "Mutation testing for agentic tool use involves deliberately perturbing the tool interface to evaluate resilience. Injecting simulated network/HTTP failures verifies that the agent can reason through transient faults without looping infinitely or crashing. Returning malformed or out-of-bounds payloads within valid schemas verifies that the agent detects data anomalies, asks for clarification, or executes safe fallback procedures rather than hallucinating plausible figures.",
+    "distractorNotes": {
+      "a": "Payload caching creates a static replay environment that tests the happy path but does not introduce active interface mutations.",
+      "c": "Truncating token limits causes hard execution cutoffs rather than testing how the agent intelligently handles errors.",
+      "d": "Weakening the tool schema reduces type safety and prevents realistic evaluation of structured tool error handling."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "sourceNote": "Eval design principles: edge case handling, invalid inputs, and testing failure scenarios in automated suites.",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-evaluation-engineering-and-quality-assurance-007",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "evaluation-engineering-and-quality-assurance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An evaluation pipeline uses an LLM-as-a-judge to compare two prompt variants by presenting candidate responses side-by-side as the first and second candidates. In the initial benchmark run, the judge declares the first candidate the winner in 68% of test cases. When the team reruns the identical evaluation with the presentation order inverted so the first candidate is displayed second, its win rate drops to 42%. Which bias does this discrepancy reveal, and what is the standard engineering mitigation?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Position bias; evaluate each pair twice with swapped candidate order and record a win when consistent across runs."
+      },
+      {
+        "id": "b",
+        "text": "Self-enhancement bias; replace the judge model with a smaller distilled model from a different vendor family."
+      },
+      {
+        "id": "c",
+        "text": "Scale compression; replace pairwise comparison with a five-point absolute Likert rating rubric."
+      },
+      {
+        "id": "d",
+        "text": "Length bias; truncate both candidate outputs to a fixed token length before submitting them to the judge."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Position bias occurs when an LLM judge systematically favors candidate responses placed in a specific presentation position (such as preferring whichever candidate appears first in the prompt). The standard engineering mitigation is bidirectional pairwise evaluation: every pair is evaluated twice with inverted presentation order (first candidate followed by second candidate, and then second candidate followed by first candidate). A candidate is awarded a win when it wins both evaluations (or scores are averaged across positions), with inconsistent verdicts scored as ties.",
+    "distractorNotes": {
+      "b": "Self-enhancement bias refers to models preferring their own generations, not candidate presentation order sensitivity.",
+      "c": "Absolute Likert scales introduce calibration drift and scale compression, rather than fixing pairwise order bias.",
+      "d": "Truncating outputs corrupts semantic completeness and does not address order sensitivity in pairwise prompts."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "sourceNote": "Tips for LLM-based grading: maintaining consistency and addressing evaluation bias in automated judges.",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-evaluation-engineering-and-quality-assurance-008",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "evaluation-engineering-and-quality-assurance",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An engineering team employs an LLM judge to evaluate technical answers generated by an internal developer assistant. The judge uses a holistic 1-to-5 scoring rubric assessing accuracy, helpfulness, and tone. An audit reveals that the judge consistently awards top scores to long, verbose responses containing conversational filler and redundant background, even when they fail to provide the exact command requested. Which rubric redesign best counteracts this verbosity bias?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Instruct the judge to apply an automated character penalty that subtracts one point for every 50 tokens."
+      },
+      {
+        "id": "b",
+        "text": "Switch the grading model to a faster lightweight model that has a naturally shorter generation context window."
+      },
+      {
+        "id": "c",
+        "text": "Decompose the rubric into explicit binary criteria that grade factual precision independently of length."
+      },
+      {
+        "id": "d",
+        "text": "Prompt the judge to summarize both answers into single sentences before rendering an overall quality grade."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Verbosity bias causes LLM judges to equate length and elaborateness with quality, overlooking omissions or subtle inaccuracies. To mitigate verbosity bias, rubrics should be decomposed into discrete, objective binary checks (such as checking whether the response directly supplies the requested command and whether it avoids unrequested conversational filler). Decomposed criteria force the judge to evaluate factual accuracy and constraint satisfaction independently of response volume.",
+    "distractorNotes": {
+      "a": "Arbitrary token penalties penalize genuinely thorough explanations and do not evaluate factual correctness.",
+      "b": "Smaller models generally exhibit weaker instruction-following and worse calibration when acting as evaluators.",
+      "d": "Pre-summarizing answers strips away specific technical details, introducing summary hallucinations and grading errors."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "sourceNote": "Tips for LLM-based grading: detailed clear rubrics, empirical criteria, and targeted scoring rules.",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-evaluation-engineering-and-quality-assurance-009",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "evaluation-engineering-and-quality-assurance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A team evaluates three code generation models (Model X, Model Y, and Model Z) across 200 software engineering tasks. The evaluation harness uses Model X as the automated judge to score all outputs on code quality and correctness. Model X awards itself a 91% pass rate while scoring Model Y at 73% and Model Z at 68%. However, blind evaluations by human software engineers rank Model Y as superior in both code efficiency and readability. What explains the discrepancy in the automated evaluation?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Model X suffered from position bias due to alphabetical ordering of model identifiers in the grading prompt."
+      },
+      {
+        "id": "b",
+        "text": "The human review panel evaluated too few cases to reach statistical significance across the benchmark suite."
+      },
+      {
+        "id": "c",
+        "text": "The automated judge was constrained by a low token budget that caused early termination of longer code files."
+      },
+      {
+        "id": "d",
+        "text": "Model X exhibited self-enhancement bias by favoring outputs matching its own stylistic and structural traits."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Self-enhancement bias (or model family bias) occurs when an LLM judge evaluates outputs generated by itself or models of the same family more favorably. The judge recognizes and prefers its own stylistic patterns, variable naming conventions, syntactic choices, and architectural structure over competing models. Reliable benchmarking requires using an independent judge model or calibrating model judgments against blind human expert evaluations.",
+    "distractorNotes": {
+      "a": "Alphabetical sorting in prompt text does not explain systematic quality divergence when model identities are masked.",
+      "b": "The prompt describes blind human evaluation confirming Model Y's superiority, indicating genuine judge bias rather than sample size error.",
+      "c": "Token truncation would result in malformed syntax errors, which is not the primary cause of stylistic self-preference."
+    },
+    "sourceUrl": "https://www.anthropic.com/research/evaluating-ai-systems",
+    "sourceNote": "Challenges in evaluating AI systems: model-generated evaluations and self-referential biases across model families.",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-evaluation-engineering-and-quality-assurance-010",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "evaluation-engineering-and-quality-assurance",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A compliance team implements an LLM judge to classify marketing copy as compliant or non-compliant. To validate the judge before production deployment, they test it against 1,000 historically vetted records where human legal experts achieved full consensus. The test dataset consists of 950 compliant records (95%) and 50 non-compliant records (5%). The LLM judge achieves an overall raw accuracy of 95.2%, but its Cohen's kappa coefficient is 0.12. What does this evaluation outcome demonstrate?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The judge is well calibrated because raw accuracy above 95% indicates robust operational performance."
+      },
+      {
+        "id": "b",
+        "text": "The judge achieves high accuracy by defaulting to the majority class and fails to detect non-compliant copy."
+      },
+      {
+        "id": "c",
+        "text": "Cohen's kappa is an inappropriate metric for binary classification and should be replaced with BLEU score."
+      },
+      {
+        "id": "d",
+        "text": "The evaluation suite is invalid because human legal consensus introduces uncalibrated subjective bias."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "In heavily imbalanced datasets, raw accuracy is deceptive: a classifier that predicts the majority class on almost every record achieves high raw accuracy while providing virtually no discriminative power. Cohen's kappa corrects for agreement expected purely by chance. A kappa of 0.12 indicates slight to negligible true agreement, revealing that the judge is failing to reliably catch the critical minority class (non-compliant marketing violations).",
+    "distractorNotes": {
+      "a": "High raw accuracy in an imbalanced dataset masks severe classification failure on the critical minority class.",
+      "c": "BLEU score evaluates n-gram overlap in generative text, not classification agreement between categorical raters.",
+      "d": "Human expert consensus is the gold standard for compliance validation, not an invalidating source of bias."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "sourceNote": "Define measurable success criteria: balancing raw accuracy against class imbalance and edge cases.",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-evaluation-engineering-and-quality-assurance-011",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "evaluation-engineering-and-quality-assurance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A team needs to evaluate subtle quality differences between 12 candidate prompt revisions for a summarization assistant across 400 reference documents. Initially, they use an LLM judge that assigns an absolute score from 1 to 5 to each summary. Across all 12 variants, the mean scores fall between 4.15 and 4.30, with high run-to-run score variance obscuring which prompt revision actually performs best. Which architectural change to the evaluation system provides the highest discriminative resolution?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Transition to pairwise comparative evaluations and compute relative Elo ratings across candidate prompt outputs."
+      },
+      {
+        "id": "b",
+        "text": "Expand the single-point rating scale from 1-to-5 to 1-to-100 to increase the dynamic range of assigned scores."
+      },
+      {
+        "id": "c",
+        "text": "Instruct the judge to penalize summaries that omit adjectives present in the original reference documents."
+      },
+      {
+        "id": "d",
+        "text": "Average the absolute scores from three separate runs of the same judge model using identical prompt inputs."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Absolute numeric scoring on Likert scales frequently suffers from severe score compression (raters bunching scores in a narrow high range) and inter-run calibration drift. Pairwise comparison, where an LLM judge evaluates two candidate summaries side-by-side to select a relative winner, offers significantly higher discriminative power. Aggregating pairwise outcomes into Elo or Bradley-Terry ratings produces a robust, fine-grained ranking of competitive prompt revisions.",
+    "distractorNotes": {
+      "b": "Expanding scale granularity exacerbates judge calibration noise and does not resolve underlying scale compression.",
+      "c": "Adjective matching enforces arbitrary stylistic constraints that do not measure factual summary quality.",
+      "d": "Averaging repeated runs of an uncalibrated scale tightens confidence intervals around compressed, uninformative scores."
+    },
+    "sourceUrl": "https://www.anthropic.com/research/evaluating-ai-systems",
+    "sourceNote": "Pairwise A/B testing and model ranking over absolute scoring for fine-grained capability comparisons.",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-evaluation-engineering-and-quality-assurance-012",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "evaluation-engineering-and-quality-assurance",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An enterprise AI team is designing an automated LLM grader to verify that customer support summaries accurately reflect resolved issues and contain zero unsupported promises. Early prototypes prompted the grader to immediately output `<result>pass</result>` or `<result>fail</result>`, but this setup produces inconsistent verdicts and frequently overlooks subtle factual inaccuracies. Which TWO prompt engineering practices align with Anthropic's recommendations for improving LLM grader reliability? (Select TWO.)",
+    "options": [
+      {
+        "id": "a",
+        "text": "Configure the grader to generate explicit reasoning steps before outputting the final evaluation score."
+      },
+      {
+        "id": "b",
+        "text": "Set the grader's maximum output token limit to ten tokens to enforce concise binary classification decisions."
+      },
+      {
+        "id": "c",
+        "text": "Provide the grader with broad qualitative guidelines so it can adaptively interpret subjective edge cases."
+      },
+      {
+        "id": "d",
+        "text": "Establish granular, unambiguous rubric criteria that explicitly define what constitutes an automatic failure."
+      },
+      {
+        "id": "e",
+        "text": "Prompt the grader to assume factual statements are correct unless contradictory external links are cited."
+      }
+    ],
+    "correct": [
+      "a",
+      "d"
+    ],
+    "explanation": "Anthropic's guidance for LLM-based grading emphasizes two key practices: encouraging reasoning before scoring (for example, by having the model generate step-by-step thinking or scratchpad analysis before rendering a decision) significantly improves evaluation accuracy on complex judgments; and defining detailed, clear, and empirical rubrics with specific failure triggers (such as explicit conditions that mandate an incorrect verdict) eliminates ambiguity and standardizes grading.",
+    "distractorNotes": {
+      "b": "Restricting tokens prevents the grader from reasoning, which degrades accuracy on complex evaluative judgments.",
+      "c": "Broad qualitative guidelines increase grading variance and make automated evaluations difficult to scale reliably.",
+      "e": "Assuming claims are true reverses the burden of proof and prevents the grader from catching subtle hallucinations."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "sourceNote": "Tips for LLM-based grading: detailed clear rubrics and requiring model reasoning before scoring.",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-evaluation-engineering-and-quality-assurance-013",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "evaluation-engineering-and-quality-assurance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An online travel platform plans to replace its production booking assistant prompt with a newly optimized candidate prompt. While offline evaluations show a 6% gain in itinerary accuracy, engineering leaders want to validate the candidate prompt against real user traffic distributions, measure live latency impact, and check for unexpected edge-case failures without exposing travelers to potential regressions. Which deployment and evaluation strategy satisfies these requirements?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Deploy an A/B test routing 50% of live booking transactions to the candidate prompt for immediate user feedback."
+      },
+      {
+        "id": "b",
+        "text": "Run synthetic stress tests against the staging environment using historical user queries recorded six months ago."
+      },
+      {
+        "id": "c",
+        "text": "Implement shadow evaluation by duplicating live production requests to the candidate prompt asynchronously."
+      },
+      {
+        "id": "d",
+        "text": "Roll out the candidate prompt to internal employees during their personal travel bookings."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Shadow evaluation (or dark traffic mirroring) asynchronously duplicates incoming live production requests and routes them to the candidate model or prompt in parallel with the production system. The candidate system processes live queries (with write/mutation tool calls mocked or isolated), allowing teams to evaluate real-world performance, edge-case handling, and latency characteristics without impacting end users or risking production transactions.",
+    "distractorNotes": {
+      "a": "An A/B test exposes live travelers to potential candidate errors and booking failures before safety is verified.",
+      "b": "Replaying six-month-old queries fails to capture current seasonal booking trends and live operational latency.",
+      "d": "Employee travel testing produces a small, unrepresentative sample that does not match real customer query distributions."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "sourceNote": "Operational success criteria and evaluating candidate versions against baselines on live distributions.",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-evaluation-engineering-and-quality-assurance-014",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "evaluation-engineering-and-quality-assurance",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A wealth management assistant handles 100,000 user interactions daily across general account FAQs, portfolio reviews, and complex tax planning. Due to strict financial compliance standards, certified specialists must audit a sample of production conversations daily. The audit team can manually review a maximum of 400 conversations per day. An engineer proposes selecting these 400 conversations via uniform random sampling across all daily sessions. Why is this sampling strategy flawed, and what is the recommended alternative?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Uniform sampling over-represents high-latency requests; the team should sample from fast queries."
+      },
+      {
+        "id": "b",
+        "text": "Uniform sampling is dominated by low-risk FAQs; the team should use stratified, risk-weighted sampling."
+      },
+      {
+        "id": "c",
+        "text": "Uniform sampling violates privacy regulations; the team should audit conversations from test accounts."
+      },
+      {
+        "id": "d",
+        "text": "Uniform sampling introduces sample size bias; the team should replace human auditing with automated string checks."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "In high-volume production applications, the vast majority of interactions are mundane, low-risk queries (such as routine balance checks and common FAQs). Uniform random sampling selects mostly these benign cases, leaving critical, high-risk interactions (such as regulatory edge cases, safety refusals, negative user sentiment, and tool execution failures) unexamined. A stratified, risk-weighted sampling strategy filters and prioritizes sessions exhibiting risk indicators, maximizing the audit value of limited human review capacity.",
+    "distractorNotes": {
+      "a": "High-latency requests often correlate with complex failures, so deliberately excluding them weakens audit coverage.",
+      "c": "Production auditing of anonymized user sessions is standard compliance practice; auditing test accounts misses real issues.",
+      "d": "Automated string checks cannot evaluate complex regulatory nuances in financial advice that require expert judgment."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "sourceNote": "Eval design principles: edge case handling, risk stratification, and auditing high-impact failure modes.",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-evaluation-engineering-and-quality-assurance-015",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "evaluation-engineering-and-quality-assurance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A legal research assistant operates in production with high satisfaction ratings for four months. Over a three-week period, user negative feedback increases by 22%, and task abandonment rates rise sharply. An engineering review confirms that the model version, system prompts, retrieval indices, and infrastructure configurations have remained completely unchanged. Which evaluation and monitoring practice directly diagnoses the underlying cause of this performance drop?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Conduct daily code-based exact match regression tests against the original four-month-old golden test suite."
+      },
+      {
+        "id": "b",
+        "text": "Increase the model's max_tokens parameter to ensure legal citations are not truncated during peak traffic hours."
+      },
+      {
+        "id": "c",
+        "text": "Replace the vector embedding model used for retrieval with a lexical keyword search index to reduce latency."
+      },
+      {
+        "id": "d",
+        "text": "Analyze production query embeddings and topic distributions to detect input data and concept drift over time."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "When system components remain constant but production quality drops, the cause is typically data drift or concept drift: shifts in the real-world distribution of user queries, emerging legal topics, or changing user expectations that diverge from the original training or evaluation baseline. Monitoring production query embedding clusters, vocabulary distributions, and topic frequencies identifies when and how incoming traffic has drifted away from the assumptions of the initial prompt and eval suite.",
+    "distractorNotes": {
+      "a": "Re-running static historical test suites only verifies past behavior and cannot detect shifts in live user query distributions.",
+      "b": "Increasing token limits does not diagnose whether user queries have shifted toward novel or unsupported legal topics.",
+      "c": "Switching to keyword search alters the retrieval architecture without diagnosing why user satisfaction recently declined."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "sourceNote": "Eval design principles: evals must continuously mirror changing real-world task distributions and edge cases.",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-evaluation-engineering-and-quality-assurance-016",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "evaluation-engineering-and-quality-assurance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An enterprise software team deploys an internal coding assistant across 1,200 developers. Management wants continuous visibility into assistant quality and code generation utility. Telemetry shows that developers provide explicit thumbs-up or thumbs-down feedback on less than 2% of completions, and those ratings heavily skew toward extreme frustration. Which telemetry approach provides the most representative continuous quality metric without disrupting developer workflow?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Track implicit signals such as code insertion rates, edit distance after acceptance, and immediate undo actions."
+      },
+      {
+        "id": "b",
+        "text": "Enforce a mandatory feedback modal that requires developers to rate each suggestion before continuing typing."
+      },
+      {
+        "id": "c",
+        "text": "Sample 10% of completions and route them to an external third-party human labeling vendor for weekly grading."
+      },
+      {
+        "id": "d",
+        "text": "Rely on daily developer active user counts and total token consumption as primary proxies for quality."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Explicit user feedback (like thumbs-up/down) suffers from extreme self-selection bias and very low response volume. Implicit telemetry signals—such as whether a completion was accepted, the Levenshtein edit distance between accepted code and retained code, copy/paste frequency, and immediate undo or deletion actions—provide high-volume, unbiased, and continuous quality measurement directly derived from real developer utility without interrupting workflows.",
+    "distractorNotes": {
+      "b": "Mandatory feedback modals severely disrupt developer flow and lead to random, resentful clicking that degrades data quality.",
+      "c": "External vendor labeling is slow, expensive, and risks exposing proprietary enterprise source code to third parties.",
+      "d": "Token consumption and active user counts measure adoption and volume, but fail to measure whether generated code was correct."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "sourceNote": "Quantitative methods: user feedback telemetry and implicit completion measures for ongoing evaluation.",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-evaluation-engineering-and-quality-assurance-017",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "evaluation-engineering-and-quality-assurance",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A financial services organization implements an input screening guardrail using a lightweight classifier model to intercept prompt injection attempts and malicious inputs before they reach a customer service agent. Following an update to the screening prompt, red-team penetration testing confirms that the jailbreak leak rate dropped to 0%. However, customer support immediately reports a surge in complaints from legitimate users whose ordinary account inquiries are being rejected. Which TWO evaluation practices should the engineering team adopt to properly measure and balance guardrail performance? (Select TWO.)",
+    "options": [
+      {
+        "id": "a",
+        "text": "Deactivate the input screening model and rely on end-of-turn output filtering after responses generate."
+      },
+      {
+        "id": "b",
+        "text": "Evaluate the screening guardrail against a balanced benchmark containing benign edge cases and adversarial attacks."
+      },
+      {
+        "id": "c",
+        "text": "Lower the temperature of the primary customer service agent model to zero to prevent downstream over-refusals."
+      },
+      {
+        "id": "d",
+        "text": "Instruct the customer support team to manually approve flagged inputs before forwarding them to the agent."
+      },
+      {
+        "id": "e",
+        "text": "Measure the false positive over-refusal rate on legitimate queries alongside the adversarial recall rate."
+      }
+    ],
+    "correct": [
+      "b",
+      "e"
+    ],
+    "explanation": "Comprehensive guardrail evaluation requires measuring both safety effectiveness (recall on adversarial jailbreaks) and utility preservation (false positive over-refusal rate on benign inputs). Testing solely against adversarial sets creates an incentive to over-refuse, blocking legitimate customer interactions that happen to mention sensitive terms. A sound evaluation suite includes both adversarial attacks and benign queries with overlapping vocabulary to ensure security controls do not impair application utility.",
+    "distractorNotes": {
+      "a": "Relying solely on output filtering fails to protect against indirect prompt injection that manipulates agent tool execution.",
+      "c": "Modifying the downstream agent's temperature does not address over-refusals occurring in the upstream screening model.",
+      "d": "Manual human review of every flagged input creates severe latency bottlenecks and does not scale to production volumes."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks",
+    "sourceNote": "Evaluating guardrails: balancing adversarial screening against benign query refusals.",
+    "sourceCheckedAt": "2026-11-18"
+  }
+]

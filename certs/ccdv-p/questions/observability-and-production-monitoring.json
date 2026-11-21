@@ -1,0 +1,697 @@
+[
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-001",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A platform team's service runs Claude Code non-interactively with claude -p for each incoming job. Claude Code tracing is enabled and exports to the same OpenTelemetry backend as the service. In the backend, every Claude Code interaction appears as its own root trace, so engineers cannot follow a slow job from the service's request span into the model calls and tool executions it caused. Which change links them?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Pass the service's active W3C trace context into the subprocess environment as TRACEPARENT, which non-interactive sessions read as their parent."
+      },
+      {
+        "id": "b",
+        "text": "Set CLAUDE_CODE_PROPAGATE_TRACEPARENT so Claude Code forwards trace context on its outbound model requests through the service's proxy."
+      },
+      {
+        "id": "c",
+        "text": "Enable OTEL_LOG_TOOL_DETAILS so spans carry tool inputs and commands, letting engineers correlate each job's spans by matching their content."
+      },
+      {
+        "id": "d",
+        "text": "Lower the span export interval so Claude Code flushes its spans before the service closes its request span and the backend finalizes it."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "In Agent SDK and non-interactive -p sessions, Claude Code reads TRACEPARENT and TRACESTATE from its own environment when starting each interaction span, so an embedding process can pass its active W3C trace context and Claude Code's spans appear as children of the caller's trace. Interactive sessions deliberately ignore inbound TRACEPARENT.",
+    "distractorNotes": {
+      "b": "That switch governs the traceparent header Claude Code sends outbound through a custom base URL; it links Claude Code to downstream services, not to its caller.",
+      "c": "Tool detail logging changes what content spans carry, not how traces are parented, and matching on content is not trace propagation.",
+      "d": "Export timing affects when spans arrive, not their parent; spans without inbound context stay root spans however quickly they are flushed."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/monitoring-usage",
+    "sourceNote": "Traces (beta): -p and Agent SDK sessions read TRACEPARENT/TRACESTATE from the environment to join the caller's trace",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-002",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A platform team deploys Claude Code across an enterprise engineering organization using a managed settings file that sets OTEL_EXPORTER_OTLP_ENDPOINT to route telemetry to a central collector. An engineer attempts to redirect event streams by configuring OTEL_EXPORTER_OTLP_LOGS_ENDPOINT in their personal ~/.claude/settings.json file to point to a local logging proxy. What happens when the engineer starts Claude Code?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Claude Code prioritizes the user-level settings file for log signals and routes log events to the local proxy while sending metrics to the managed endpoint."
+      },
+      {
+        "id": "b",
+        "text": "Claude Code removes the user-configured per-signal endpoint variable at startup and exports both metrics and logs exclusively to the collector defined in managed settings."
+      },
+      {
+        "id": "c",
+        "text": "Claude Code detects the conflicting collector endpoint definitions during initialization and terminates with a configuration validation error until the local settings file is amended."
+      },
+      {
+        "id": "d",
+        "text": "Claude Code merges the endpoints by sending a duplicate stream of all event log records to the local proxy while maintaining the primary managed export."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "When an administrator configures OTEL_EXPORTER_OTLP_ENDPOINT in managed settings, Claude Code automatically removes developer-set per-signal endpoint variables (such as OTEL_EXPORTER_OTLP_LOGS_ENDPOINT or OTEL_EXPORTER_OTLP_METRICS_ENDPOINT) at startup and logs a warning in the debug log. This mechanism prevents individual developers from redirecting specific telemetry signals away from the organization's designated OpenTelemetry collector.",
+    "distractorNotes": {
+      "a": "Settings precedence does not allow user settings to override collector endpoints when managed settings lock the generic OTLP destination; Claude Code explicitly strips conflicting signal endpoints.",
+      "c": "Conflicting developer endpoints do not prevent process startup or cause fatal validation errors; Claude Code strips the developer's setting and continues running with the managed endpoint.",
+      "d": "Claude Code exports each signal to a single configured destination rather than splitting or duplicating streams across conflicting endpoints."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/monitoring-usage",
+    "sourceNote": "Managed settings OTLP endpoint locking: removes developer-set per-signal endpoints at startup",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-003",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A developer building a customer support agent with the Claude Agent SDK in TypeScript wants to inspect telemetry events in real time. In the agent configuration, they set CLAUDE_CODE_ENABLE_TELEMETRY to 1 and set OTEL_LOGS_EXPORTER to console. When executing queries against the agent, the application fails to receive assistant message chunks and throws JSON stream parsing exceptions. Why does this exporter selection break the SDK?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The console exporter requires dedicated synchronous file descriptors that block the Node.js asynchronous event loop during active streaming model generation."
+      },
+      {
+        "id": "b",
+        "text": "The Agent SDK requires OTLP protobuf formatting and rejects text-based telemetry formatting across all exporter channels."
+      },
+      {
+        "id": "c",
+        "text": "The console exporter writes telemetry output directly to standard output, which the Agent SDK uses as its inter-process communication channel."
+      },
+      {
+        "id": "d",
+        "text": "The underlying Claude Code CLI process disables the console exporter whenever child process mode is invoked by an external wrapper."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "The Claude Agent SDK runs the Claude Code CLI as a child process and communicates with it over standard input and standard output. The console exporter writes telemetry data directly to standard output, which injects unstructured telemetry logs into the SDK's structured message protocol stream, corrupting the message channel and causing parse failures.",
+    "distractorNotes": {
+      "a": "The failure is not related to event loop blocking or synchronous file descriptors; rather, telemetry logs sent to standard output corrupt the IPC protocol stream.",
+      "b": "The SDK does not mandate OTLP protobuf over other formats for internal parsing; the issue is that standard output is reserved for IPC messages rather than console logs.",
+      "d": "The CLI does not automatically disable the console exporter when run as a child process; it executes the configured exporter, which pollutes the communication stream."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/agent-sdk/observability",
+    "sourceNote": "Agent SDK telemetry: do not use console exporter because stdout is used as the SDK message channel",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-004",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An enterprise healthcare organization configures OpenTelemetry export in the Claude Console to send API traces to their central observability vendor. The organization has an active HIPAA data-handling agreement with Anthropic. Administrators configure an OpenTelemetry destination with the content mode explicitly set to Full content. Which TWO statements accurately describe how trace payloads and content limits are handled for this organization?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The API destination exports metadata only, overriding the Full content setting due to the active HIPAA data-handling agreement."
+      },
+      {
+        "id": "b",
+        "text": "Spans that exceed payload limits prioritize retaining system instructions and earliest conversation turns while truncating recent tool outputs."
+      },
+      {
+        "id": "c",
+        "text": "SDK client spans sent from customer infrastructure are automatically blocked from exporting prompt content by the central API destination policy."
+      },
+      {
+        "id": "d",
+        "text": "Under standard Full content mode without data restrictions, request spans that exceed the default 0.75 MB limit drop system prompts and earliest messages first."
+      },
+      {
+        "id": "e",
+        "text": "The API destination buffers uncompressed conversation payloads up to 4 MB per trace before applying lossy compaction to tool result blocks."
+      }
+    ],
+    "correct": [
+      "a",
+      "d"
+    ],
+    "explanation": "For organizations with HIPAA, FERPA, or K-12 data-handling restrictions with Anthropic, API trace destinations export only metadata regardless of the configured content mode (though client-side SDK spans emitted from customer infrastructure remain unaffected). In standard environments where Full content is active, each span holds up to 0.75 MB by default; when content exceeds this threshold, request spans drop the system prompt and earliest messages first, tool spans drop blocks from the end of results, and anthropic.content.truncated is set to true.",
+    "distractorNotes": {
+      "b": "When request content exceeds payload limits, the SDK and API drop the system prompt and earliest messages first, rather than preserving them at the expense of recent outputs.",
+      "c": "Regulatory restrictions on API destinations do not affect SDK client spans emitted from self-hosted customer code; those are governed by the local SDK client configuration.",
+      "e": "The default per-span payload limit is 0.75 MB rather than 4 MB; 4 MB is the approximate size needed for an entire 1M-token context window if limits are manually expanded."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/manage-claude/opentelemetry",
+    "sourceNote": "OTel content modes: HIPAA restriction forces metadata only; Full content truncates request spans earliest messages first at 0.75 MB",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-005",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A team instruments an internal deployment CLI with OpenTelemetry using standard environment variables (OTEL_EXPORTER_OTLP_ENDPOINT and OTEL_EXPORTER_OTLP_HEADERS). A developer runs Claude Code with full telemetry enabled and asks it to execute the deployment CLI via the Bash tool. The developer expects the CLI's internal spans to stream to the same OpenTelemetry collector. Why do no spans from the deployment CLI arrive at the collector?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The Bash tool executes commands within an isolated network sandbox that blocks outbound traffic on standard OpenTelemetry gRPC and HTTP ports."
+      },
+      {
+        "id": "b",
+        "text": "Subprocesses launched by Claude Code automatically redirect OpenTelemetry exporter output to local debug files rather than network sockets."
+      },
+      {
+        "id": "c",
+        "text": "Claude Code requires the command to be invoked with an explicit tracing flag before child process network interfaces are initialized."
+      },
+      {
+        "id": "d",
+        "text": "Claude Code does not pass OTEL_* environment variables to spawned subprocesses, requiring the command to set its own exporter configuration."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Claude Code explicitly avoids passing OTEL_* environment variables to the subprocesses it spawns, including commands executed through the Bash tool, hooks, MCP servers, and language servers. Consequently, an instrumented CLI run via Bash does not inherit Claude Code's collector endpoint or authentication headers; those variables must be provided directly within the command invocation or environment.",
+    "distractorNotes": {
+      "a": "The Bash tool does not impose network port filters that specifically block OpenTelemetry ports; the CLI simply lacks the environment variables needed to locate the collector.",
+      "b": "Subprocesses do not redirect telemetry to debug files; they fail to export because they do not inherit the collector endpoint configuration from Claude Code.",
+      "c": "No special CLI invocation flag is required to initialize child process networking; exporter environment variables must be supplied to the subprocess."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/monitoring-usage",
+    "sourceNote": "Subprocess isolation: Claude Code does not pass OTEL_* environment variables to spawned subprocesses",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-006",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An analytics engineering team ingests Claude Code metrics and spans into a central observability lakehouse formatted around OpenTelemetry GenAI semantic conventions. When comparing token metrics, engineers observe that input token counts exported by Claude Code are substantially lower than billing records for identical sessions. How must the team calculate gen_ai.usage.input_tokens from Claude Code telemetry to align with the semantic conventions?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Multiply input_tokens by the active model compression factor derived from the prompt caching header ratio."
+      },
+      {
+        "id": "b",
+        "text": "Sum input_tokens, cache_read_tokens, and cache_creation_tokens from the span or event attributes."
+      },
+      {
+        "id": "c",
+        "text": "Extract input_tokens directly because Claude Code pre-aggregates cache hits into the primary usage counter."
+      },
+      {
+        "id": "d",
+        "text": "Subtract cache_read_tokens from input_tokens to isolate uncached contextual prompt overhead."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Claude Code exports input token counts directly as returned in the API usage block, where input_tokens excludes tokens read from or written to the prompt cache. The OpenTelemetry GenAI semantic conventions specify that gen_ai.usage.input_tokens must include all input tokens (uncached, cache reads, and cache writes). To match the convention, backends must sum input_tokens, cache_read_tokens, and cache_creation_tokens.",
+    "distractorNotes": {
+      "a": "There is no model compression multiplier in OpenTelemetry GenAI conventions; token counts are exact sums of uncached and cached token attributes.",
+      "c": "Claude Code does not pre-aggregate cached tokens into input_tokens; its input_tokens attribute explicitly excludes cache read and creation tokens.",
+      "d": "Subtracting cache reads further reduces the count rather than reconstructing the total prompt token volume required by the GenAI semantic conventions."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/monitoring-usage",
+    "sourceNote": "GenAI semantic conventions mapping: sum input_tokens, cache_read_tokens, and cache_creation_tokens",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-007",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A site reliability engineering team monitors an automated triage service powered by Claude Code. The team configures alerts on HTTP error codes and claude_code.api_error log events. During a security audit, several sensitive prompts are declined by the model, but no alerts trigger and the HTTP status remains 200. How should the team configure alerting to capture model refusals?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Configure monitoring for HTTP 403 Forbidden status codes on the inbound API gateway reverse proxy."
+      },
+      {
+        "id": "b",
+        "text": "Set an alert on claude_code.api_retries_exhausted with the error classification category filtered specifically to safety policy violations."
+      },
+      {
+        "id": "c",
+        "text": "Monitor for claude_code.api_refusal events emitted when the response stream terminates with a refusal stop reason."
+      },
+      {
+        "id": "d",
+        "text": "Inspect claude_code.tool.execution spans for error status codes generated during safety classifier evaluation."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Model refusals arrive on a successful HTTP 200 response stream with stop_reason set to 'refusal' rather than as an HTTP error status code. Consequently, api_error events do not fire. Claude Code emits a dedicated claude_code.api_refusal event for these occurrences, allowing observability systems to track refusal rates and categories independently of operational API failures.",
+    "distractorNotes": {
+      "a": "Model refusals return successful HTTP 200 responses with a refusal stop reason; they do not generate HTTP 403 Forbidden status codes at the gateway.",
+      "b": "The api_retries_exhausted event fires only when an API call fails repeatedly on operational errors; it is not emitted for model refusals.",
+      "d": "Refusals are generated during model inference rather than tool execution, so tool execution spans do not capture refusal stop reasons."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/monitoring-usage",
+    "sourceNote": "API refusal events: refusals return HTTP 200, emitting claude_code.api_refusal rather than api_error",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-008",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A platform team enables both Anthropic SDK tracing and Claude API tracing to achieve full client and server visibility into their Messages API calls. An automated pipeline aggregates token usage from all emitted OpenTelemetry spans. The resulting dashboard shows daily token consumption at approximately double the volume reported on the official Claude Console invoice. What is the root cause of this discrepancy?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The pipeline sums token attributes across both CLIENT and SERVER spans named anthropic.messages.create, double-counting every request."
+      },
+      {
+        "id": "b",
+        "text": "The API server span reports uncompressed prompt tokens while the SDK client span reports compressed tokens after semantic deduplication."
+      },
+      {
+        "id": "c",
+        "text": "Prompt caching attributes are calculated using different multipliers on client spans compared to server spans in the OpenTelemetry exporter."
+      },
+      {
+        "id": "d",
+        "text": "The Anthropic SDK automatically duplicates token counters on client spans whenever request retry attempts exceed zero."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "When both SDK tracing and API tracing are active, each request produces an anthropic.messages.create CLIENT span from the SDK and an anthropic.messages.create SERVER span from the API, both carrying token usage attributes. To prevent double-counting, token aggregation pipelines must sum spans from only one source per request (typically preferring the SERVER spans when both are available).",
+    "distractorNotes": {
+      "b": "Neither span performs semantic deduplication or compression; both report actual token counts from the request execution.",
+      "c": "Prompt caching tokens are not multiplied differently between client and server spans; the divergence is caused by summing both client and server spans.",
+      "d": "The SDK does not duplicate token counters on client spans across retries; final spans report total usage for the request."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/manage-claude/opentelemetry",
+    "sourceNote": "Counting tokens: both SDK and API emit anthropic.messages.create; sum only one source to avoid double-counting",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-009",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A security and finance team must establish an automated accounting system to attribute monthly Claude API costs across workspaces, track usage by individual API key, and detect anomalous spending from potential key compromise. Some internal services disable OpenTelemetry trace sampling to reduce tracing vendor costs. Which mechanism provides complete, authoritative usage data for this requirement?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Stream OTLP metrics to an internal collector with trace sampling rates forced to 100 percent via collector proxy rules."
+      },
+      {
+        "id": "b",
+        "text": "Parse client-side Anthropic SDK debug log files harvested across all production application container instances."
+      },
+      {
+        "id": "c",
+        "text": "Query the Messages API endpoint headers for cumulative monthly token balances on each active workspace."
+      },
+      {
+        "id": "d",
+        "text": "Query the Usage and Cost Analytics API endpoints grouped by workspace and api_key_id to capture all billed requests."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "The Usage and Cost Analytics API (GET /v1/organizations/analytics/usage and /cost) provides historical, authoritative usage and cost data broken down by workspace, api_key_id, model, and actor. Unlike OpenTelemetry spans, which are delivered on a best-effort basis and subject to client-side sampling or dropping, the Analytics API captures all organizational requests (including those from clients without telemetry) with data typically fresh within 4 hours.",
+    "distractorNotes": {
+      "a": "A collector proxy cannot recover spans that clients dropped or failed to sample locally, and OpenTelemetry delivery is best-effort.",
+      "b": "Scraping client debug logs is brittle, incomplete for unmanaged scripts, and does not capture authoritative server-side billing data.",
+      "c": "Messages API response headers provide rate limit quotas and remaining limits, not cumulative monthly financial analytics."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/manage-claude/usage-cost-analytics-api",
+    "sourceNote": "Usage and Cost Analytics API: queries historical usage and cost by workspace and api_key_id, independent of OTel sampling",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-010",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A platform team deploys Claude Code across 500 developer machines exporting OpenTelemetry metrics to a central Prometheus time-series database. Within days, Prometheus experiences severe memory pressure and query degradation caused by high-cardinality label churn on session and user identifiers. Which TWO environment variables should the platform team configure in managed settings to control this cardinality explosion?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Set OTEL_METRICS_INCLUDE_VERSION to false to remove version tracking across developer CLI binaries."
+      },
+      {
+        "id": "b",
+        "text": "Set OTEL_METRICS_INCLUDE_SESSION_ID to false to strip session identifiers from exported metrics and events."
+      },
+      {
+        "id": "c",
+        "text": "Set OTEL_METRICS_INCLUDE_ENTRYPOINT to false to eliminate entrypoint dimensions on metric datapoints."
+      },
+      {
+        "id": "d",
+        "text": "Set OTEL_METRICS_INCLUDE_ACCOUNT_UUID to false to remove user account identifiers from metric time series."
+      },
+      {
+        "id": "e",
+        "text": "Set OTEL_METRIC_EXPORT_INTERVAL to 0 to instruct Claude Code to aggregate metrics locally before export."
+      }
+    ],
+    "correct": [
+      "b",
+      "d"
+    ],
+    "explanation": "In Claude Code, OTEL_METRICS_INCLUDE_SESSION_ID and OTEL_METRICS_INCLUDE_ACCOUNT_UUID both default to true, adding session.id and user.account_uuid to metrics and events. In large deployments, these attributes generate massive label cardinality in time-series databases like Prometheus. Setting them to false suppresses these high-cardinality attributes. In contrast, OTEL_METRICS_INCLUDE_VERSION and OTEL_METRICS_INCLUDE_ENTRYPOINT already default to false.",
+    "distractorNotes": {
+      "a": "OTEL_METRICS_INCLUDE_VERSION defaults to false already; setting it to false does not reduce cardinality because it was not adding labels by default.",
+      "c": "OTEL_METRICS_INCLUDE_ENTRYPOINT defaults to false already; it does not contribute to cardinality unless explicitly enabled.",
+      "e": "Setting OTEL_METRIC_EXPORT_INTERVAL to 0 does not enable local pre-aggregation; export intervals dictate flush timing in milliseconds."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/monitoring-usage",
+    "sourceNote": "Metrics cardinality control: OTEL_METRICS_INCLUDE_SESSION_ID and OTEL_METRICS_INCLUDE_ACCOUNT_UUID default to true",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-011",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An operations dashboard monitors Claude Code log events to detect client failures. SREs notice that alert rules trigger whenever a claude_code.api_error event is emitted. However, review reveals that some sessions continue making successful requests and complete their tasks, while other sessions stall completely. How should the team refine their event analysis to distinguish recovered sessions from stalled sessions?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Filter for api_error events where the attempt attribute is strictly greater than 15."
+      },
+      {
+        "id": "b",
+        "text": "Check if the api_error event status_code attribute contains an HTTP 429 rate limit value."
+      },
+      {
+        "id": "c",
+        "text": "Group events by session.id and verify whether a subsequent api_request event occurs after the api_error."
+      },
+      {
+        "id": "d",
+        "text": "Inspect the api_retries_exhausted event to verify that the total_retry_duration_ms attribute exceeds sixty thousand milliseconds."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Claude Code retries transient API errors internally and emits an api_error event only when a particular request attempt fails terminally. However, a session may subsequently recover—for instance, if the agent or user initiates a follow-up interaction or a subsequent turn succeeds. To distinguish a session that recovered from one that halted completely, observability queries must group events by session.id and check whether any later api_request event exists after the error.",
+    "distractorNotes": {
+      "a": "The attempt attribute is capped at one above the effective retry limit (typically 11 by default, and maximum 16 without watchdog), so checking for values strictly above 15 is not a reliable indicator of recovery.",
+      "b": "The HTTP status code indicates the nature of the error (such as a rate limit), but does not reveal whether the broader session recovered or stalled on subsequent turns.",
+      "d": "Total retry duration reflects how long retries took on that single failed request, not whether the session resumed work afterward."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/monitoring-usage",
+    "sourceNote": "Detect retry exhaustion: group events by session.id and check whether a later api_request event exists after the error",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-012",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A platform engineer investigating latency degradation in Claude Code sessions examines OpenTelemetry distributed traces. Several traces exhibit claude_code.tool spans taking upwards of 45 seconds to complete. The engineer must determine whether the latency stems from a slow MCP database tool execution or from a developer taking time to approve a tool permission prompt. Which child spans should the engineer inspect to isolate these delays?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Compare the duration of claude_code.tool.blocked_on_user against claude_code.tool.execution under the parent tool span."
+      },
+      {
+        "id": "b",
+        "text": "Measure the time delta between claude_code.hook execution spans and the subsequent claude_code.llm_request span."
+      },
+      {
+        "id": "c",
+        "text": "Calculate the mathematical difference between interaction.duration_ms and total tool result_tokens on the enclosing parent interaction span."
+      },
+      {
+        "id": "d",
+        "text": "Inspect the ttft_ms and first_content_ms latency attributes on the enclosing claude_code.interaction root span."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "In Claude Code's trace hierarchy, every claude_code.tool span creates two distinct child spans: claude_code.tool.blocked_on_user (recording the time spent waiting for the user to make a permission decision) and claude_code.tool.execution (recording the active execution time of the tool itself). Comparing their durations immediately distinguishes human approval latency from tool execution bottlenecks.",
+    "distractorNotes": {
+      "b": "Hook spans measure pre- or post-tool execution scripts, not the interactive permission prompt delay or MCP execution runtime.",
+      "c": "Subtracting token counts from millisecond durations is dimensionally invalid and does not separate permission waiting from execution runtime.",
+      "d": "Time to first token (ttft_ms) and first_content_ms measure model response generation latency on llm_request spans, not tool execution or user permission delays."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/monitoring-usage",
+    "sourceNote": "Span hierarchy: claude_code.tool has child spans blocked_on_user and execution",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-013",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An enterprise routes all outbound LLM traffic through an internal AI security gateway by setting ANTHROPIC_BASE_URL to https://ai-gateway.internal.corp/v1. The gateway is instrumented with OpenTelemetry and expects W3C trace context on inbound requests. However, spans emitted by Claude Code and spans emitted by the gateway appear as disconnected root traces in Jaeger. Which configuration enables end-to-end trace correlation?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Configure OTEL_EXPORTER_OTLP_PROTOCOL to http/json so headers serialize in standard W3C text representation format."
+      },
+      {
+        "id": "b",
+        "text": "Set CLAUDE_CODE_PROPAGATE_TRACEPARENT to 1 to force Claude Code to attach outbound traceparent headers through the custom base URL."
+      },
+      {
+        "id": "c",
+        "text": "Add the gateway server hostname to OTEL_RESOURCE_ATTRIBUTES under the peer.service semantic convention attribute."
+      },
+      {
+        "id": "d",
+        "text": "Enable OTEL_LOG_TOOL_DETAILS so model invocation parameters include the active span identifier and trace context inside JSON payload bodies."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "By default, Claude Code sends the W3C traceparent header on outbound model requests and HTTP MCP requests only when ANTHROPIC_BASE_URL is unset or points directly to the Anthropic API, because some custom proxies reject unrecognized headers. When routing through a custom ANTHROPIC_BASE_URL proxy, setting CLAUDE_CODE_PROPAGATE_TRACEPARENT=1 instructs Claude Code to propagate the traceparent header, connecting client spans to downstream proxy traces.",
+    "distractorNotes": {
+      "a": "OTEL_EXPORTER_OTLP_PROTOCOL governs the wire protocol used to export spans to the collector, not whether outbound HTTP model calls include W3C traceparent headers.",
+      "c": "Setting peer.service in resource attributes labels exported spans with metadata, but does not inject W3C traceparent headers into outbound HTTP requests.",
+      "d": "OTEL_LOG_TOOL_DETAILS controls logging of tool input parameters in events; it does not inject W3C HTTP headers on outbound requests."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/monitoring-usage",
+    "sourceNote": "Trace propagation: CLAUDE_CODE_PROPAGATE_TRACEPARENT=1 propagates traceparent across custom ANTHROPIC_BASE_URL proxies",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-014",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A company operates complex, asynchronous multi-agent workflows using Claude Managed Agents. The application spawns multiple concurrent execution threads, and webhook callbacks from external systems trigger subsequent agent turns from distinct HTTP root requests. In an OpenTelemetry backend, an engineer must query all spans associated with a single thread, as well as all spans across the entire multi-threaded session. Which attribute pair should be used?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Use trace_id for individual conversation threads and service.name combined with deployment.environment for correlating the entire multi-threaded agent session."
+      },
+      {
+        "id": "b",
+        "text": "Use anthropic.turn.id for individual threads and gen_ai.request.id for grouping spans across distinct HTTP root traces."
+      },
+      {
+        "id": "c",
+        "text": "Use gen_ai.thread.id for single threads and anthropic.workspace.id for identifying all related multi-threaded operations."
+      },
+      {
+        "id": "d",
+        "text": "Use gen_ai.conversation.id for individual threads and anthropic.session.id for correlating all threads across the entire session."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "In Claude Managed Agents OpenTelemetry tracing, spans belonging to a single thread share the gen_ai.conversation.id attribute (which holds the session thread ID), allowing them to be sorted by start time as a chronological transcript. To query the entire session across all threads and across separate root traces, spans are grouped by anthropic.session.id.",
+    "distractorNotes": {
+      "a": "Separate turns initiated from webhook callbacks create distinct trace_id roots, so trace_id does not group a multi-turn thread, and service.name is deployment-wide rather than session-scoped.",
+      "b": "Neither anthropic.turn.id nor gen_ai.request.id spans multiple requests or threads; requests are grouped by conversation and session identifiers.",
+      "c": "The OpenTelemetry conventions and Anthropic specification use gen_ai.conversation.id (not gen_ai.thread.id) for thread correlation, and anthropic.session.id for session correlation."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/manage-claude/opentelemetry",
+    "sourceNote": "Managed Agents spans: gen_ai.conversation.id groups one thread; anthropic.session.id groups the whole session across traces",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-015",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A corporate security team requires full audit logging of all Model Context Protocol (MCP) server interactions initiated by Claude Code across engineering workstations. Specifically, the SIEM must capture unredacted MCP server names, tool names, and exact parameter arguments for every allowed or denied tool call. Which TWO configurations must administrators enforce to ensure these audit details are exported in OpenTelemetry events?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Set OTEL_LOGS_EXPORTER to otlp to export structured log events to the SIEM or OpenTelemetry collector."
+      },
+      {
+        "id": "b",
+        "text": "Set OTEL_TRACES_EXPORTER to otlp with CLAUDE_CODE_ENHANCED_TELEMETRY_BETA enabled to record tool argument payloads."
+      },
+      {
+        "id": "c",
+        "text": "Set OTEL_LOG_TOOL_DETAILS to 1 so tool_result and tool_decision events retain server names, tool names, and call arguments."
+      },
+      {
+        "id": "d",
+        "text": "Set CLAUDE_CODE_OTEL_CONTENT_MAX_LENGTH to 0 to prevent JSON payload truncation on outbound SIEM events."
+      },
+      {
+        "id": "e",
+        "text": "Configure OTEL_LOG_USER_PROMPTS to 1 to allow tool parameter blocks to be reflected in user interaction spans."
+      }
+    ],
+    "correct": [
+      "a",
+      "c"
+    ],
+    "explanation": "To capture MCP activity in a SIEM, the logs exporter must be enabled (OTEL_LOGS_EXPORTER=otlp) because security audit events (mcp_server_connection, tool_result, and tool_decision) are delivered as OpenTelemetry log records. Furthermore, OTEL_LOG_TOOL_DETAILS=1 is required because without it, Claude Code redacts tool names to the literal 'mcp_tool', omits call arguments, and drops server names on connection events.",
+    "distractorNotes": {
+      "b": "Trace spans record span hierarchy and timing, but audit events and call detail payloads are exported via the logs/events exporter.",
+      "d": "Setting content max length to 0 would truncate payloads entirely rather than disabling truncation; default truncation is 60 KB.",
+      "e": "OTEL_LOG_USER_PROMPTS logs user prompt text, not MCP tool parameters or tool decision audit events."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/monitoring-usage",
+    "sourceNote": "Audit MCP activity: requires OTEL_LOGS_EXPORTER and OTEL_LOG_TOOL_DETAILS=1 for unredacted server names, tool names, and inputs",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-016",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A data pipeline executes automated code verification tasks using the Claude Agent SDK inside short-lived, ephemeral Kubernetes pods that terminate within 15 to 20 seconds. Engineers observe that while tasks finish successfully, session counters and token usage metrics for these jobs are missing from the metrics backend in over 80 percent of executions. What is causing this loss of metric telemetry?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Ephemeral container network namespaces tear down DNS resolution before the Agent SDK can complete its initial TLS handshake."
+      },
+      {
+        "id": "b",
+        "text": "The default metric export interval of 60 seconds leaves pending metric batches in memory when the ephemeral process terminates."
+      },
+      {
+        "id": "c",
+        "text": "Kubernetes pod termination signals automatically trigger an asynchronous SIGKILL that invalidates the local SQLite session cache."
+      },
+      {
+        "id": "d",
+        "text": "Claude Code requires an interactive terminal TTY session to flush metric counters to the configured OTLP endpoint."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Claude Code batches metrics in memory and exports them on an interval that defaults to 60,000 ms (60 seconds), whereas traces and logs default to 5,000 ms (5 seconds). In short-lived processes (such as 15-second ephemeral batch jobs), the process frequently exits before the first 60-second metric interval elapses. Lowering OTEL_METRIC_EXPORT_INTERVAL (e.g., to 1,000 ms) ensures metric batches are flushed while the short-lived task is still active.",
+    "distractorNotes": {
+      "a": "Container DNS and networking remain operational until pod termination; the issue is that the 60-second batch timer has not elapsed before exit.",
+      "c": "Metric batching occurs in memory rather than in an SQLite session cache, and process termination without a timer flush drops the in-memory buffer.",
+      "d": "Claude Code does not require an interactive TTY to flush metrics; non-interactive and Agent SDK sessions export telemetry normally over OTLP."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/agent-sdk/observability",
+    "sourceNote": "Short-lived calls: metrics default export interval is 60s; lower OTEL_METRIC_EXPORT_INTERVAL to flush before process exit",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-017",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An engineering team deploys long-running coding agents that use automatic context compaction to manage conversation context windows. SREs tracking token consumption via OpenTelemetry spans notice that their token aggregation queries undercount total token consumption during compaction turns when compared directly with billing invoices. Why do standard OpenTelemetry GenAI usage attributes omit these compaction tokens?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Context compaction occurs on local client proxies and does not consume server-side model input or output tokens."
+      },
+      {
+        "id": "b",
+        "text": "Compaction tokens are categorized as internal system infrastructure overhead and are permanently excluded from all exported OpenTelemetry spans."
+      },
+      {
+        "id": "c",
+        "text": "The standard gen_ai.usage.* attributes exclude compaction tokens, which are reported under separate anthropic.usage.compaction.* attributes."
+      },
+      {
+        "id": "d",
+        "text": "Compaction operations are recorded exclusively as Prometheus gauges rather than OpenTelemetry span usage attributes."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Under the Anthropic OpenTelemetry specification, standard gen_ai.usage.input_tokens and gen_ai.usage.output_tokens attributes on anthropic.messages.create spans do not include tokens consumed during context compaction. Compaction token usage is reported separately under anthropic.usage.compaction.input_tokens and anthropic.usage.compaction.output_tokens (or via dedicated anthropic.compaction spans). Aggregation pipelines must sum these compaction attributes to reflect complete token consumption.",
+    "distractorNotes": {
+      "a": "Context compaction is performed by the model and API, consuming actual input and output tokens that are billed to the account.",
+      "b": "Compaction tokens are not purged; they are explicitly exported under dedicated anthropic.usage.compaction.* attributes and compaction spans.",
+      "d": "Compaction token metrics are exported as standard OpenTelemetry span attributes and spans, not solely as Prometheus gauges."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/manage-claude/opentelemetry",
+    "sourceNote": "Compaction tokens: gen_ai.usage.* attributes exclude compaction tokens; add anthropic.usage.compaction.* attributes",
+    "sourceCheckedAt": "2026-11-18"
+  }
+]

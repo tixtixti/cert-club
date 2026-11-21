@@ -1,0 +1,452 @@
+[
+  {
+    "id": "ccdv-p-cost-and-latency-optimization-at-scale-001",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "cost-and-latency-optimization-at-scale",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A document-review service fans out 40 parallel Messages API requests per document. Each request shares an identical 30,000-token prefix of instructions plus the document, marked with cache_control. Usage data shows nearly every request in a fan-out reporting a large cache_creation_input_tokens value and zero cache_read_input_tokens, so the shared prefix is written over and over. Which change most reduces cost?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Switch the shared prefix to the 1-hour cache duration, since the 5-minute entry is expiring before the parallel requests can read it."
+      },
+      {
+        "id": "b",
+        "text": "Pad the shared prefix past the model's minimum cacheable length, since a prefix below that minimum is processed without any caching."
+      },
+      {
+        "id": "c",
+        "text": "Send one request first and dispatch the other 39 only after its response starts, since a cache entry is not readable before then."
+      },
+      {
+        "id": "d",
+        "text": "Move the cache breakpoint to the last user message of each request, so that each request caches its full input rather than the prefix."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "For concurrent requests, a cache entry only becomes available after the first response starts, so requests sent simultaneously each miss and each write the prefix. Sending one request, waiting for its response to begin, and then fanning out lets the remaining requests read the cached prefix at the cache-read rate.",
+    "distractorNotes": {
+      "a": "The requests start within moments of each other, well inside any lifetime; the entry is not expiring, it does not exist yet when they arrive.",
+      "b": "A prefix below the minimum reports zero for both cache creation and cache read; nonzero cache creation shows the prefix is long enough to cache.",
+      "d": "A later breakpoint caches more per request but still writes it per request; it does nothing about the parallel requests missing the entry."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "sourceNote": "Cache limitations: a cache entry only becomes available after the first response starts; Tracking cache performance",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-cost-and-latency-optimization-at-scale-002",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "cost-and-latency-optimization-at-scale",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An enterprise customer-service assistant attaches a dynamic 15-token user session header containing timestamps and authentication tokens at the beginning of its system prompt, followed by 8,000 tokens of static product policies and tool definitions. A developer marks the end of the tool definitions with a cache breakpoint. Operational dashboards report 0% cache hits and high invocation costs across turns. How should the request structure be reorganized to achieve prompt cache hits?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Move the dynamic session header into the user message turn or after the static content, keeping tool definitions and policies as an unchanging prefix."
+      },
+      {
+        "id": "b",
+        "text": "Increase the cache TTL to one hour so that cache entries survive the interval between consecutive user session messages without timing out."
+      },
+      {
+        "id": "c",
+        "text": "Split the static policies across three explicit cache breakpoints placed every two thousand tokens to trigger automatic intermediate prefix lookback writes."
+      },
+      {
+        "id": "d",
+        "text": "Configure automatic caching at the request root so that the system strips dynamic header values before computing prefix cryptographic hashes."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Cache prefixes are evaluated hierarchically across tools, system, and messages, with hashes computed cumulatively from the start of the prompt up to each breakpoint. Because the hash incorporates everything prior to the breakpoint, prepending dynamic content such as timestamps or session tokens alters the prefix hash on every call, causing complete cache misses. Moving dynamic parameters to a user message or after the static block leaves an invariant prefix that consistently matches cached entries.",
+    "distractorNotes": {
+      "b": "Extending cache lifetime does not address prefix divergence, because each request generates an entirely novel prefix hash that fails to match prior entries regardless of TTL.",
+      "c": "Cache writes occur solely at explicit breakpoints rather than intermediate blocks, and multiple breakpoints cannot recover cache hits if the initial prefix has already diverged.",
+      "d": "Automatic caching marks the final cacheable content block rather than filtering or sanitizing dynamic header fields out of the computed cryptographic hash."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "sourceNote": "Cache prefixes are created in order: tools, system, then messages; changing content at or before breakpoint causes cache misses",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-cost-and-latency-optimization-at-scale-003",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "cost-and-latency-optimization-at-scale",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A financial analytics platform processes 60,000 regulatory filing documents every night. Each document requires multi-page entity extraction that must finish before market opening eight hours later. Real-time Messages API calls frequently encounter rate limits and incur substantial token expenses. The team needs an architectural change that cuts standard token costs in half without provisioning custom throughput. Which solution meets these requirements?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Enable prompt caching across all real-time requests and set an aggressive exponential backoff retry loop with jitter across API worker processes."
+      },
+      {
+        "id": "b",
+        "text": "Submit the extraction requests asynchronously using the Message Batches API, retrieving the aggregated JSON results when processing completes."
+      },
+      {
+        "id": "c",
+        "text": "Deploy client-side token compaction to truncate document inputs down to fifty percent of their original length before dispatching real-time calls."
+      },
+      {
+        "id": "d",
+        "text": "Stream the document requests concurrently over Server-Sent Events connections while adjusting the client worker pool concurrency limits downward."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "The Message Batches API is designed for asynchronous bulk processing where results are needed within a 24-hour window rather than immediately. All usage submitted through the Batches API is discounted by 50 percent relative to standard API token prices. In addition, batch processing operates under separate rate limits from synchronous requests, avoiding contention with real-time operational limits while easily completing within the team's eight-hour turnaround requirement.",
+    "distractorNotes": {
+      "a": "Prompt caching reduces costs on repetitive prefixes but offers no discount on unique document text, and exponential retries do not provide a guaranteed 50 percent cost reduction.",
+      "c": "Compacting inputs discards document information that may be essential for regulatory entity extraction and does not provide an architectural API pricing discount.",
+      "d": "Streaming Server-Sent Events improves time to first token for interactive clients but charges standard token rates and does not relieve account-level request throughput limits."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "sourceNote": "Message Batches API charges all usage at 50% of standard API prices, processing requests asynchronously within 24 hours",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-cost-and-latency-optimization-at-scale-004",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "cost-and-latency-optimization-at-scale",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A quality engineering team executes a nightly evaluation suite containing 80,000 test cases using the Message Batches API. Every item in the batch shares an identical 18,000-token prompt prefix containing testing rubrics, schema definitions, and few-shot examples, followed by a unique test input. Which two configuration choices should the team implement to maximize cost efficiency and cache hit rates for this batch? (Select TWO.)",
+    "options": [
+      {
+        "id": "a",
+        "text": "Pre-warm the prompt cache across worker regions by issuing a standalone batch item with max_tokens set to zero ten minutes prior to submitting the batch."
+      },
+      {
+        "id": "b",
+        "text": "Specify an explicit cache_control block with a one-hour cache duration on the shared prefix across all request objects inside the batch."
+      },
+      {
+        "id": "c",
+        "text": "Enable Server-Sent Events streaming on each batched request parameter to allow intermediate tokens to enter the cache before completion."
+      },
+      {
+        "id": "d",
+        "text": "Ensure the cache_control definition on the shared prefix is byte-identical across all requests in the batch so batch and cache discounts stack."
+      },
+      {
+        "id": "e",
+        "text": "Divide the evaluation suite into 80,000 separate single-item batches submitted consecutively to guarantee serial cache creation ordering."
+      }
+    ],
+    "correct": [
+      "b",
+      "d"
+    ],
+    "explanation": "The Message Batches API fully supports prompt caching, and the 50 percent batch discount stacks with prompt caching read discounts. To maximize cache hits across asynchronous batch requests, every request must include an identical cache_control block on the shared prefix. Furthermore, because batch processing is asynchronous and batches commonly take longer than five minutes to complete, configuring the extended 1-hour cache duration prevents cache entries from expiring between concurrent worker evaluations, yielding substantially higher hit rates.",
+    "distractorNotes": {
+      "a": "Cache pre-warming using max_tokens set to zero is explicitly unsupported inside the Message Batches API, as batch items require max_tokens of at least one and ephemeral entries would likely expire.",
+      "c": "Streaming via Server-Sent Events is an unsupported parameter in the Message Batches API, as batch results are returned as aggregated downloadable files rather than live streams.",
+      "e": "Splitting work into single-item batches defeats batch throughput advantages and increases management overhead without improving cache hit rates."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "sourceNote": "Batches API discounts stack with prompt caching; 1-hour cache duration is recommended because batches can take longer than 5 minutes",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-cost-and-latency-optimization-at-scale-005",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "cost-and-latency-optimization-at-scale",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An operations team adds an explicit cache_control breakpoint on a 1,200-token system prompt for an internal agent running on Claude Opus 4.6. When reviewing usage metrics on response objects across thousands of sequential requests, the team observes that both cache_creation_input_tokens and cache_read_input_tokens consistently return zero, yet requests succeed without errors. What explains this metric behavior, and what action resolves it?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The breakpoint was declared on a system block rather than a user turn, which requires specifying an explicit lookback window parameter in the request header."
+      },
+      {
+        "id": "b",
+        "text": "Prompt caching failed due to a missing organizational beta header, which silently bypasses caching and processes requests at baseline token prices."
+      },
+      {
+        "id": "c",
+        "text": "The system prompt expired between sequential requests, causing the cache manager to omit cache usage attributes from the standard response metadata."
+      },
+      {
+        "id": "d",
+        "text": "The prompt falls below the model's minimum cacheable token threshold of 4,096 tokens, so expanding the static context past that minimum enables caching."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Prompts must meet a minimum token threshold to qualify for prompt caching (for example, 4,096 tokens on Claude Opus 4.6 and Opus 4.5, 1,024 or 2,048 on several other models, and 512 on recent models). When a prompt falls short of the threshold for that model and platform, the request is processed normally without caching, no error is returned, and both cache_creation_input_tokens and cache_read_input_tokens report 0. Expanding the reusable prefix past the model's minimum threshold enables cache creation and subsequent cache reads.",
+    "distractorNotes": {
+      "a": "System blocks are completely valid positions for cache breakpoints; cache prefixes are evaluated in order of tools, system, and messages without requiring a lookback parameter.",
+      "b": "Prompt caching is a generally available feature that does not require an opt-in beta header on active Claude models.",
+      "c": "When a cache entry expires, the subsequent request writes a new cache entry and reports a positive value for cache_creation_input_tokens rather than returning zero."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "sourceNote": "Prompts below the minimum cacheable length are processed without caching; cache_creation and cache_read tokens both report 0",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-cost-and-latency-optimization-at-scale-006",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "cost-and-latency-optimization-at-scale",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An enterprise customer-support platform handles 300,000 incoming support tickets daily. Analysis shows that 80% of tickets are straightforward status or policy inquiries, 15% require multi-step tool execution with account verification, and 5% involve nuanced dispute resolution and legal policy interpretation. The team currently routes all tickets to Claude Opus 4.6, creating unsustainable monthly API spend. Which architectural routing strategy optimizes cost while preserving resolution quality?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Route all initial requests to Claude Haiku for intent classification and simple queries, delegate verified tool tasks to Sonnet, and escalate complex disputes to Opus."
+      },
+      {
+        "id": "b",
+        "text": "Maintain Opus for all incoming tickets while capping max_tokens at sixty-four tokens for status inquiries and enabling prompt caching across all user conversation endpoints."
+      },
+      {
+        "id": "c",
+        "text": "Run Claude Haiku and Claude Opus in parallel for every ticket, comparing outputs via an external embedding model and discarding the higher-cost response."
+      },
+      {
+        "id": "d",
+        "text": "Downscale all tickets permanently to Claude Haiku while setting thinking effort to high, relying on extended thinking to resolve complex legal disputes."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Model selection is one of the primary levers on the cost-to-intelligence frontier. High-volume, straightforward workloads should be routed to Claude Haiku, which provides rapid responses at a fraction of the cost. Multi-step agentic workflows and tool use perform efficiently on Claude Sonnet, while Claude Opus is reserved for the small fraction of requests requiring deep reasoning, nuanced policy judgment, or complex dispute analysis. Tiered routing matches task complexity to model capability, dramatically cutting overall spend without degrading resolution accuracy.",
+    "distractorNotes": {
+      "b": "Truncating output tokens on Opus does not eliminate the substantial input token processing costs of large system prompts and conversation histories across 300,000 tickets.",
+      "c": "Executing multiple models concurrently on every single ticket multiplies baseline inference costs and adds latency overhead rather than optimizing operational spend.",
+      "d": "Claude Haiku is optimized for lightweight tasks and rapid routing; relying on it for nuanced legal dispute interpretation introduces unacceptable risk of quality degradation."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/about-claude/models/optimizing-for-cost-and-intelligence",
+    "sourceNote": "Match task complexity to model tier on the cost-to-intelligence frontier, delegating bulk work to lower-cost models",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-cost-and-latency-optimization-at-scale-007",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "cost-and-latency-optimization-at-scale",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "Users of an interactive coding copilot report frustrating UI freezing while waiting for Claude to generate complete code explanations. Network profiling shows that the server backend waits for the Messages API call to complete entirely before returning the full JSON response payload to the web client, resulting in a Time to First Token (TTFT) exceeding four seconds. Which architectural adjustment most effectively reduces perceived latency for end users?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Switch the client connection from HTTP to WebSocket transport while retaining synchronous non-streaming Messages API calls on the backend worker."
+      },
+      {
+        "id": "b",
+        "text": "Pre-warm prompt cache entries on the backend ten seconds prior to each user keystroke to eliminate initial input processing delays."
+      },
+      {
+        "id": "c",
+        "text": "Enable Server-Sent Events streaming in the API request and forward content_block_delta events to the client as they arrive."
+      },
+      {
+        "id": "d",
+        "text": "Lower the max_tokens parameter to sixty-four tokens so that generation terminates earlier and returns the full JSON response faster."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Streaming with stream: true delivers model responses incrementally over Server-Sent Events (SSE) as tokens are generated. Forwarding content_block_delta text events directly to the client interface allows users to view partial responses immediately, reducing perceived latency and Time to First Token (TTFT) to hundreds of milliseconds even though total completion time remains unchanged.",
+    "distractorNotes": {
+      "a": "Changing network transport between the client and backend does not reduce backend processing delays if the server still waits for the entire API response before emitting data.",
+      "b": "Pre-warming the cache reduces input processing time for repeated static prefixes but does not stream output tokens incrementally as they are generated.",
+      "d": "Artificially truncating max_tokens cuts off code explanations prematurely without addressing the fundamental delay in delivering the first generated token."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/streaming",
+    "sourceNote": "Streaming with SSE delivers content_block_delta events incrementally, reducing perceived latency and TTFT",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-cost-and-latency-optimization-at-scale-008",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "cost-and-latency-optimization-at-scale",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An engineering team operates an in-line code completion assistant with a strict p95 latency budget of 600 milliseconds. Observability traces reveal that latency is dominated by autoregressive output token generation rather than input prompt evaluation, with Claude occasionally generating expansive explanatory paragraphs instead of single-line code completions. Which two measures should the team combine to reliably constrain response latency? (Select TWO.)",
+    "options": [
+      {
+        "id": "a",
+        "text": "Explicitly instruct the model in the prompt to return only the completion code without conversational commentary or markdown wrappers."
+      },
+      {
+        "id": "b",
+        "text": "Place an explicit cache_control breakpoint on the incoming user code snippet to accelerate output token generation speed during completion."
+      },
+      {
+        "id": "c",
+        "text": "Set a conservative max_tokens parameter value configured to allow only the maximum expected snippet length for valid code completions."
+      },
+      {
+        "id": "d",
+        "text": "Route all completion requests through the Message Batches API to benefit from optimized batch generation pipeline acceleration."
+      },
+      {
+        "id": "e",
+        "text": "Increase the temperature parameter to 1.0 to encourage the model to select higher-probability termination tokens more rapidly."
+      }
+    ],
+    "correct": [
+      "a",
+      "c"
+    ],
+    "explanation": "Model latency is directly proportional to the number of generated output tokens because each token requires an autoregressive forward pass. To control output length and latency, developers should combine prompt engineering that explicitly instructs the model to return concise output without conversational commentary with an appropriate max_tokens parameter setting that acts as a hard limit against runaway token generation.",
+    "distractorNotes": {
+      "b": "Prompt caching reduces input processing time and cost for reusable prefixes; it does not accelerate the generation rate of output tokens.",
+      "d": "The Message Batches API processes requests asynchronously for bulk offline throughput with turnaround times up to 24 hours, making it unsuitable for interactive sub-second completions.",
+      "e": "Temperature affects output diversity and randomness; increasing temperature does not expedite token generation speed or reliably constrain response length."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency",
+    "sourceNote": "Reduce latency by prompting for concise responses and setting appropriate max_tokens output limits",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-cost-and-latency-optimization-at-scale-009",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "cost-and-latency-optimization-at-scale",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A client application streams Messages API responses to execute local tools as soon as Claude decides to invoke them. When Claude generates a tool call, the client must reconstruct the function name and argument payload from the Server-Sent Events stream. Which sequence of event types and content block payloads must the client process to accurately assemble the complete tool call?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A message_start event specifying the tool name, followed by message_delta events carrying partial JSON argument string chunks, ending with message_stop."
+      },
+      {
+        "id": "b",
+        "text": "A content_block_start event with type tool_use, followed by content_block_delta events containing input_json_delta string chunks, ending with content_block_stop."
+      },
+      {
+        "id": "c",
+        "text": "A content_block_start event specifying the tool name, followed by a single content_block_delta event carrying the complete parsed argument dictionary."
+      },
+      {
+        "id": "d",
+        "text": "A content_block_start event with type tool_use, followed by content_block_delta events containing text_delta string chunks, ending with content_block_stop."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "When streaming tool calls, the API emits a content_block_start event where the block type is tool_use, providing the tool's id and name. Subsequent content_block_delta events for that block index carry deltas of type input_json_delta containing partial JSON string fragments. The client buffers and concatenates these fragments until receiving content_block_stop for that block index, at which point the assembled JSON string can be parsed into the complete tool arguments.",
+    "distractorNotes": {
+      "a": "The message_start event initializes top-level message metadata with empty content, and tool call payloads arrive incrementally inside content block events rather than in message_delta events.",
+      "c": "Streaming tool calls emit argument data incrementally as partial JSON string fragments across multiple delta events rather than delivering a pre-parsed argument dictionary in a single delta event.",
+      "d": "Tool call argument fragments are emitted in content_block_delta events with a delta type of input_json_delta carrying partial_json, whereas text_delta is used exclusively for text blocks."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/streaming",
+    "sourceNote": "Tool streaming emits content_block_start with tool_use, content_block_delta with input_json_delta, and content_block_stop",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-cost-and-latency-optimization-at-scale-010",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "cost-and-latency-optimization-at-scale",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A conversational customer-service bot appends a new user message and assistant reply on every turn. To establish a cache breakpoint, the developer places cache_control on the most recent user message. However, an observability audit reveals that every turn generates a new cache write and zero cache reads, despite identical system instructions and tool definitions. Further inspection shows that the system prompt injects the current server timestamp at the very beginning of the prompt. Why does prompt caching fail on every turn?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The automatic lookback mechanism halts because cache breakpoints on user messages are restricted to a maximum lookback distance of five content blocks."
+      },
+      {
+        "id": "b",
+        "text": "Writing a cache breakpoint on a user message invalidates all prior system prompt cache entries and forces the API to discard previously cached tool schemas."
+      },
+      {
+        "id": "c",
+        "text": "Modifying content at the start of the prompt changes the cumulative prefix hash, preventing the twenty-block lookback from matching any prior cache writes."
+      },
+      {
+        "id": "d",
+        "text": "The system requires manual cache eviction via an API header before a subsequent request can match previously written conversational message turn prefixes."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Cache entries are indexed by a cumulative cryptographic hash of all tokens from the start of the request up to the cache breakpoint. While the system walks backward up to twenty blocks from a breakpoint looking for matching entries written by earlier requests, it is looking for exact prefix matches. Because the opening timestamp changes on every request, the prefix hash diverges at the very first block, meaning no earlier write will ever match regardless of lookback depth.",
+    "distractorNotes": {
+      "a": "The lookback window for prompt caching is twenty content blocks across all supported message types, not five blocks.",
+      "b": "Setting a breakpoint on a user turn does not invalidate system entries; downstream breakpoints build upon valid upstream prefix entries if the prefix remains unchanged.",
+      "d": "There is no manual cache eviction API; cached entries expire automatically after inactivity according to their configured time-to-live."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "sourceNote": "Cache hashes are cumulative from prompt start; changing opening content causes all subsequent lookback checks to miss",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-cost-and-latency-optimization-at-scale-011",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "cost-and-latency-optimization-at-scale",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An API gateway microservice performs real-time semantic query classification and sentiment categorization on incoming chat messages before routing them to domain-specific agent workers. The microservice operates under a strict p95 latency budget of 250 milliseconds. Which model and parameter configuration provides the lowest latency and cost while reliably classifying incoming queries?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Claude Opus using default thinking effort, with streaming enabled over Server-Sent Events to capture intermediate classification tokens."
+      },
+      {
+        "id": "b",
+        "text": "Claude Sonnet with high thinking effort, paired with prompt caching on the classification taxonomy to bypass input token evaluation."
+      },
+      {
+        "id": "c",
+        "text": "Claude Haiku with high thinking effort and a sixty-four-token max_tokens ceiling, allowing deep chain-of-thought analysis prior to routing."
+      },
+      {
+        "id": "d",
+        "text": "Claude Haiku configured with low thinking effort via output_config and a small max_tokens limit, paired with concise prompt instructions."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "For time-sensitive applications requiring the fastest response times, Claude Haiku offers the lowest baseline latency and token costs. Configuring low thinking effort via output_config minimizes internal reasoning tokens, while concise prompting and an appropriate max_tokens limit keep output generation minimal. This combination reliably meets tight sub-second latency budgets for straightforward classification tasks.",
+    "distractorNotes": {
+      "a": "Claude Opus is designed for complex reasoning and carries higher baseline latency and token cost, making it incapable of meeting a 250-millisecond p95 latency budget.",
+      "b": "High thinking effort causes Claude Sonnet to generate substantial internal reasoning tokens before emitting output, resulting in latency that exceeds the 250-millisecond budget.",
+      "c": "Enabling high thinking effort forces extended reasoning token generation, which dramatically inflates latency and exhausts small max_tokens limits before output is emitted."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency",
+    "sourceNote": "For time-sensitive applications, use Claude Haiku at low effort with constrained max_tokens to minimize response latency",
+    "sourceCheckedAt": "2026-11-18"
+  }
+]

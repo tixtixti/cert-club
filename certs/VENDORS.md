@@ -25,11 +25,12 @@ fabrication problem in a new place.
 
 ## Anthropic
 
-_Checked 2026-10-05 · banks: `ccdv-f`, `ccar-f`, `ccar-p`_
+_Checked 2026-11-19 · banks: `ccdv-f`, `ccar-f`, `ccar-p`, `ccdv-p`_
 
-- **Exam guides** are PDFs on Anthropic's Everpath CDN, all under one
-  instructor path, with adjacent numeric IDs per guide:
-  `https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F<id>%2F<Guide+Name>.pdf`
+- **Exam guides** are PDFs on Anthropic's Skilljar and Everpath training CDNs
+  (`cc.sj-cdn.net` and `everpath-course-content.s3-accelerate.amazonaws.com`),
+  both sharing the same instructor path:
+  `https://<cdn-host>/instructor/6nizmqk8tpzpfjvt6qmmav7rh/...`
   The Partner Academy certification page for a cert links its guide directly.
 - **Current guides carry a version block** on page 1:
   `Version 1.0 · Effective July 2026 · Exam code: CCAR-F`. Read it.
@@ -270,3 +271,20 @@ _Checked 2026-10-12 · bank: `iaap-was`_
 ## Google
 
 No bank yet, so no profile. Write one from the first Google cert's recon.
+
+## OWASP (Open Worldwide Application Security Project)
+
+_Checked 2026-11-19 · bank: `ccdv-p`_
+
+- **Citable documentation:** `https://genai.owasp.org/*` — OWASP Top 10 for LLM Applications and GenAI security project resources. Citable for framework claims only.
+- **Do not cite:** Superseded 2023 / v1.1 OWASP LLM Top 10 documents or community fork mirrors. Always cite the current 2025 Top 10 on `genai.owasp.org`.
+
+## NIST (National Institute of Standards and Technology)
+
+_Checked 2026-11-19 · bank: `ccdv-p`_
+
+- **Citable documentation:**
+  - `https://www.nist.gov/*` — NIST AI Risk Management Framework (AI RMF 1.0)
+  - `https://nvlpubs.nist.gov/*` — NIST Special Publications and AI 600-1 Generative AI Profile PDFs
+- **Do not cite:** General cybersecurity SPs (e.g. SP 800-53) for GenAI claims unless explicitly cross-referenced by AI RMF.
+

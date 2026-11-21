@@ -1,0 +1,577 @@
+[
+  {
+    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-001",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "agent-fleet-operations-for-software-delivery",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An engineer fans a large refactor out to eight subagents, each defined with worktree isolation so that their edits cannot collide. Fleet logs show every subagent's test run failing at startup with missing database credentials and API keys. The same test command passes in the main checkout, where those values come from a gitignored .env file. What is the most likely cause and fix?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Each worktree is a fresh checkout without untracked files, so list the env files in a .worktreeinclude file to copy them into new worktrees."
+      },
+      {
+        "id": "b",
+        "text": "Worktree isolation blocks any read from the main checkout, so add a permission rule letting the subagents read the main checkout's .env file."
+      },
+      {
+        "id": "c",
+        "text": "Subagent worktrees branch from the default branch rather than HEAD, so set the base ref to head so that the worktrees include the env files."
+      },
+      {
+        "id": "d",
+        "text": "Isolation refuses test commands whose working directory resolves to the main checkout, so run the tests from a PostToolUse hook instead."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "A worktree is a fresh checkout, so untracked files such as .env from the main repository are not present. A .worktreeinclude file at the project root, written in .gitignore syntax, copies matching gitignored files into each new worktree, including the temporary worktrees isolated subagents get.",
+    "distractorNotes": {
+      "b": "The isolation checks target edits, command working directories, and git redirects into the main checkout; the failure here is that the file never exists in the worktree.",
+      "c": "The base branch changes which commit the worktree starts from, but a gitignored .env is untracked on every branch and is never checked out.",
+      "d": "Refused commands surface as tool errors naming the worktree, not as missing credentials, and the tests already run inside each worktree."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/worktrees",
+    "sourceNote": "Copy gitignored files into worktrees: a fresh checkout lacks .env; .worktreeinclude copies them",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-002",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "agent-fleet-operations-for-software-delivery",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A software delivery team orchestrates multiple subagents running in parallel git worktrees to implement complementary microservices refactoring tasks. Each subagent is configured with worktree isolation, but when the subagents inspect the repository tree, they do not find the commits and branch state created by an earlier preparation script on the current local feature branch. Why does this occur, and how should the team configure Claude Code to branch worktrees from their local work?",
+    "options": [
+      {
+        "id": "a",
+        "text": "By default worktrees branch from the default branch, so execute git checkout on the feature branch inside an env block before launching the subagents."
+      },
+      {
+        "id": "b",
+        "text": "Worktrees branch by default from the remote default branch, so set worktree.baseRef to head in settings to branch from local HEAD."
+      },
+      {
+        "id": "c",
+        "text": "Subagent worktrees inherit the remote tracking branch, so pass the current branch name as the value for the worktree.baseRef configuration key."
+      },
+      {
+        "id": "d",
+        "text": "Isolated worktrees require manual branch rebasing, so configure a PreToolUse hook to run git rebase origin/main on each newly created worktree."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "By default, Claude Code creates new worktrees using fresh mode, which branches from the repository's default branch on the remote (such as origin/main) rather than local uncommitted or unpushed work. Setting worktree.baseRef to 'head' in Claude Code settings instructs it to create new worktrees from the current local HEAD, preserving in-progress commits and feature-branch state. The setting only accepts 'fresh' or 'head', not arbitrary branch names.",
+    "distractorNotes": {
+      "a": "Running git checkout inside an env block does not alter how Claude Code creates the initial worktree branch or base ref.",
+      "c": "The worktree.baseRef setting strictly accepts 'fresh' or 'head'; passing a specific branch name is invalid and not supported.",
+      "d": "Rebasing against origin/main in a PreToolUse hook would overwrite local feature branch commits rather than basing the worktree on local HEAD."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/worktrees",
+    "sourceNote": "worktree.baseRef accepts fresh or head to determine whether worktrees branch from origin default branch or local HEAD",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-003",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "agent-fleet-operations-for-software-delivery",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A platform team designs a custom subagent named database-migrator stored in .claude/agents/database-migrator.md to execute unattended schema transformations across multiple repositories in parallel. The team requires that this subagent runs in an isolated git worktree, cannot execute arbitrary shell commands through the Bash tool, and halts if it exceeds 20 agentic turns. Which TWO frontmatter configurations must be included in the subagent definition file to enforce these requirements?",
+    "options": [
+      {
+        "id": "a",
+        "text": "sandbox: true"
+      },
+      {
+        "id": "b",
+        "text": "isolation: worktree"
+      },
+      {
+        "id": "c",
+        "text": "turnLimit: 20"
+      },
+      {
+        "id": "d",
+        "text": "disallowedTools: Bash"
+      },
+      {
+        "id": "e",
+        "text": "permissions: { bash: deny }"
+      }
+    ],
+    "correct": [
+      "b",
+      "d"
+    ],
+    "explanation": "Custom subagents defined in .claude/agents/*.md use YAML frontmatter fields to control behavior and environment. Setting 'isolation: worktree' runs the subagent in its own temporary git worktree to avoid colliding with other parallel sessions. The 'disallowedTools' field removes specific tools (such as 'Bash') from the available tool set. Execution depth is capped using 'maxTurns: 20' rather than turnLimit, and tool denials are declared via disallowedTools rather than nested permission objects.",
+    "distractorNotes": {
+      "a": "The subagent frontmatter schema does not provide a top-level boolean sandbox field; worktree isolation is specified with isolation: worktree.",
+      "c": "The frontmatter field for restricting turn count is maxTurns, whereas turnLimit is unrecognized and ignored.",
+      "e": "Subagents restrict tool availability via tools or disallowedTools lists in frontmatter rather than nested permission mapping objects."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/sub-agents",
+    "sourceNote": "Custom subagents configure isolation: worktree, disallowedTools, and maxTurns in YAML frontmatter",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-004",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "agent-fleet-operations-for-software-delivery",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "To reduce review noise, a platform team commits a REVIEW.md file at the repository root that sets a cap of five Nit comments and explicitly instructs Claude to ignore all files under src/generated/. When developers run the local /code-review slash command in their terminal sessions prior to pushing pull requests, they discover that generated files are still being evaluated and dozens of styling nits are reported. What explains this discrepancy?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The local /code-review command runs in plan mode, which ignores path exclusion patterns unless defined in a local settings file."
+      },
+      {
+        "id": "b",
+        "text": "Subdirectory path exclusions in REVIEW.md require glob syntax with leading asterisks, so plain path prefixes are bypassed by local reviews."
+      },
+      {
+        "id": "c",
+        "text": "The local /code-review command reads CLAUDE.md files and ignores REVIEW.md, whereas the pull request Code Review service reads both files."
+      },
+      {
+        "id": "d",
+        "text": "REVIEW.md is loaded when developers pass the --service-rules flag to Claude Code, defaulting to standard lint guidelines otherwise."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "The GitHub Code Review service and the local /code-review slash command are separate tools with different configuration boundaries. The pull request Code Review service reads both CLAUDE.md (for general project context) and REVIEW.md (for review-specific instructions like severity adjustments and nit caps). In contrast, the local /code-review command in Claude Code terminal sessions reads only CLAUDE.md files and ignores REVIEW.md entirely. Guidance that must apply in both environments should be placed in CLAUDE.md.",
+    "distractorNotes": {
+      "a": "The /code-review command does not run in plan mode, and plan mode does not control whether review files are parsed.",
+      "b": "Path exclusions in review instructions are interpreted as freeform Markdown instructions, not strictly bypassed due to glob syntax.",
+      "d": "There is no --service-rules flag in Claude Code; /code-review simply does not consult REVIEW.md."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/code-review-customize",
+    "sourceNote": "Local /code-review command reads CLAUDE.md and ignores REVIEW.md; Code Review service reads both",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-005",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "agent-fleet-operations-for-software-delivery",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An organization configures Code Review for GitHub pull requests and commits a root REVIEW.md that redefines finding severity, excludes vendored directories, and caps Nit feedback. On open pull requests, developers notice that Code Review continues to post uncapped styling nits and reports issues in vendored files. The pull requests target the default branch, which currently has no GitHub branch protection rules or rulesets enabled. What is the root cause of this behavior?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Code Review suspends automated check runs on unprotected branches to prevent unverified pull requests from triggering billable agentic analysis."
+      },
+      {
+        "id": "b",
+        "text": "Unprotected branches prevent the GitHub App from acquiring repository read tokens, which forces the review step into degraded simulation."
+      },
+      {
+        "id": "c",
+        "text": "Review customizations require an enterprise ruleset that enforces signed commits before any inline PR comments can be generated."
+      },
+      {
+        "id": "d",
+        "text": "Code Review honors severity reductions, path exclusions, and nit caps only when reading REVIEW.md from a protected default or base branch."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "To prevent unverified or malicious pull requests from tampering with review standards, Code Review strictly enforces branch protection preconditions. Code Review only honors instructions that lower finding severity, exclude paths or files, or cap Nit comments when REVIEW.md is read from a protected default branch (via classic protection rules or rulesets) or a protected base branch. If the default branch is unprotected and the base branch has no ruleset, Code Review reads the root file but refuses to honor exclusions, severity lowering, or nit caps.",
+    "distractorNotes": {
+      "a": "Code Review does not suspend automated runs on unprotected branches; it continues executing its review pipeline but refuses to honor exclusions, severity lowering, or nit caps.",
+      "b": "The GitHub App retains valid repository read tokens regardless of branch protection; the restriction is an intentional safety policy.",
+      "c": "Signed commit enforcement is not a prerequisite for Code Review; branch protection or rulesets requiring reviews or restricted updates suffice."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/code-review-customize",
+    "sourceNote": "Code Review honors severity lowering, exclusions, and nit caps only on protected default or base branches",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-006",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "agent-fleet-operations-for-software-delivery",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A repository maintainer attempts to tune Code Review by adding localized review instructions across multiple directories. They place a root REVIEW.md at the repository root, as well as subdirectory files at tests/unit/REVIEW.md and vendor/deps/REVIEW.md to adjust rules for test fixtures and external dependencies. When pull requests modify files in these directories, the check run reveals that neither subdirectory file was applied. Why does Code Review skip these subdirectory instruction files?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Code Review ignores subdirectory REVIEW.md files located in or below directories matching test, example, generated, or third-party names."
+      },
+      {
+        "id": "b",
+        "text": "Subdirectory instruction files are restricted to a single nesting level, so nested paths like tests/unit/ are ignored during review discovery."
+      },
+      {
+        "id": "c",
+        "text": "Code Review requires subdirectory review rules to be linked via Markdown hyperlinks inside the repository root REVIEW.md file."
+      },
+      {
+        "id": "d",
+        "text": "Subdirectory review instructions apply solely when committed under .claude/rules/ rather than within project source trees."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Code Review explicitly disallows subdirectory REVIEW.md files inside or below directories with reserved names, regardless of depth or casing. These include test directories (such as test, tests, __tests__, fixtures), example directories (example, samples, demo), generated code (generated), and third-party code (vendor, third_party, node_modules, deps). Rules governing these directories must be declared in the root REVIEW.md or in an unreserved parent directory's REVIEW.md.",
+    "distractorNotes": {
+      "b": "Code Review permits subdirectory REVIEW.md files at deeper nesting levels, provided none of the parent folders carry reserved directory names.",
+      "c": "Markdown links inside REVIEW.md are not parsed as file includes; file includes use the @ symbol for root files and are limited to eight files.",
+      "d": "Subdirectory review instructions belong in REVIEW.md files in unreserved directories, whereas .claude/rules/ is for Claude Code session rules."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/code-review-customize",
+    "sourceNote": "Code Review ignores subdirectory REVIEW.md in test, example, generated, and third-party directories",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-007",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "agent-fleet-operations-for-software-delivery",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An engineering director evaluates GitHub Code Review for inclusion in their team's pull request gating strategy. The director wants to ensure that automated reviews minimize false-positive comments and do not inadvertently block emergency hotfix merges when unexpected warnings are generated. Which TWO operational characteristics accurately describe how the Code Review pipeline operates?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Code Review automatically posts a blocking Changes Requested review whenever a finding is classified as Important."
+      },
+      {
+        "id": "b",
+        "text": "Code Review executes a verification stage that cross-checks candidate findings against source code to discard false positives."
+      },
+      {
+        "id": "c",
+        "text": "Code Review executes unit tests and type checks within an ephemeral container before submitting inline pull request comments."
+      },
+      {
+        "id": "d",
+        "text": "Code Review never approves or blocks a pull request, submitting only comments and check runs so human teams decide merges."
+      },
+      {
+        "id": "e",
+        "text": "Code Review blocks pull request merges unless an author replies to every inline Nit comment with an explicit confirmation."
+      }
+    ],
+    "correct": [
+      "b",
+      "d"
+    ],
+    "explanation": "The GitHub Code Review pipeline is designed with high-precision verification and human-in-the-loop governance. Multiple agents search for bugs and vulnerabilities in parallel on Anthropic infrastructure, after which a dedicated verification step tests findings against the actual codebase to eliminate false positives and hallucinations. Furthermore, Code Review intentionally never approves or blocks a pull request; it submits inline comments, a summary, and a check run, leaving merge authority entirely with human engineers.",
+    "distractorNotes": {
+      "a": "Code Review never posts an approving or blocking review status on GitHub pull requests, regardless of finding severity.",
+      "c": "Code Review inspects code using AI models and static analysis patterns; it does not compile code or execute test suites in containers.",
+      "e": "Code Review does not require comment resolutions or confirmations to unblock merges; merge gating remains under human team control."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/code-review",
+    "sourceNote": "Code Review runs parallel search agents with code verification to drop false positives and never approves or blocks PRs",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-008",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "agent-fleet-operations-for-software-delivery",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A DevOps team configures a GitHub Actions workflow to run Claude Code non-interactively on scheduled nightly runs to identify dependency vulnerabilities and apply minor patch updates. During execution, some runs hang indefinitely until the CI runner times out, while other runs fail when attempting to prompt for tool confirmations. Which command configuration properly enables non-interactive execution, pre-approves necessary tools, and prevents the session from blocking on interactive prompts?",
+    "options": [
+      {
+        "id": "a",
+        "text": "claude -p 'Fix dependencies' --auto-mode --dangerously-skip-permissions --force"
+      },
+      {
+        "id": "b",
+        "text": "claude --headless 'Fix dependencies' --tools 'Read,Edit,Bash' --non-interactive"
+      },
+      {
+        "id": "c",
+        "text": "claude -p 'Fix dependencies' --allowedTools 'Read,Edit,Bash' --permission-prompts none"
+      },
+      {
+        "id": "d",
+        "text": "claude -p 'Fix dependencies' --permission-mode plan --permission-host localhost"
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "In headless CI/CD environments, Claude Code is invoked using the print/non-interactive flag (-p or --print). To allow essential tools without interactive prompts, pass --allowedTools with the needed tool names (such as 'Read,Edit,Bash'). To prevent the process from hanging when an unapproved action or tool attempts to solicit human confirmation, pass --permission-prompts none. This flag informs Claude Code that no human host is available, removes interactive tools like AskUserQuestion, denies unapproved requests immediately, and instructs Claude not to retry them.",
+    "distractorNotes": {
+      "a": "The --auto-mode and --force flags are not valid Claude Code CLI options, and --dangerously-skip-permissions bypasses safety checks rather than handling permissions cleanly.",
+      "b": "Claude Code uses -p or --print for non-interactive execution, not --headless or --non-interactive, and --tools restricts tool availability rather than approving permissions.",
+      "d": "Plan mode prevents Claude Code from making file edits or executing modifications, and --permission-host is not a valid flag."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/headless",
+    "sourceNote": "In claude -p, combine --allowedTools with --permission-prompts none to prevent hangs on interactive prompts",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-009",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "agent-fleet-operations-for-software-delivery",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An engineering organization deploys an event-driven agent fleet that automatically inspects customer bug reports and attempts to reproduce them across code checkouts. To protect against runaway costs caused by recursive subagent delegations or complex debugging loops during unattended overnight runs, the team needs to enforce a strict per-session monetary ceiling. Which Claude Code CLI option establishes this financial guardrail, and what occurs when the threshold is reached?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Pass --cost-ceiling; upon reaching the limit, Claude Code pauses tool execution and switches to a local open-weight model."
+      },
+      {
+        "id": "b",
+        "text": "Pass --max-tokens; upon reaching the limit, Claude Code discards conversation context and generates an ungrounded summary."
+      },
+      {
+        "id": "c",
+        "text": "Pass --budget-limit; upon reaching the limit, Claude Code alerts an administrator via webhook while allowing active subagents to finish."
+      },
+      {
+        "id": "d",
+        "text": "Pass --max-budget-usd; upon reaching the limit, spawning new subagents fails and active background subagents are halted."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "In non-interactive print mode (-p), Claude Code provides the --max-budget-usd <amount> flag to cap estimated API spend. All API calls in the session, including those made by foreground and background subagents, count toward this financial threshold. Once estimated spend reaches the specified ceiling, Claude Code terminates active background subagents, rejects any further subagent spawn requests with a 'Budget limit reached' error, and concludes the run.",
+    "distractorNotes": {
+      "a": "There is no --cost-ceiling flag, and Claude Code does not switch to local open-weight models when budget thresholds are reached.",
+      "b": "The --max-tokens flag controls output token limits on individual model responses, not session-wide financial budget enforcement.",
+      "c": "Claude Code does not use a --budget-limit flag and does not send webhook notifications or allow background subagents to continue running."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/cli-reference",
+    "sourceNote": "--max-budget-usd stops the run on cost cap, counts subagent spend, and halts running background subagents",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-010",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "agent-fleet-operations-for-software-delivery",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An infrastructure team wants to build an automated incident triage bridge that ingests alerting webhooks from their monitoring system and posts them directly into an existing Claude Code session. The team wants Claude to analyze the alert context, query diagnostic logs, and report findings without having to spawn a fresh, cold cloud instance for every notification. What architectural capability of Claude Code supports this pattern?",
+    "options": [
+      {
+        "id": "a",
+        "text": "A PostToolUse hook script configured to poll an external webhook URL on an interval between tool invocations."
+      },
+      {
+        "id": "b",
+        "text": "Channels installed as MCP server plugins that push external events and webhooks into an active running session."
+      },
+      {
+        "id": "c",
+        "text": "A custom subagent configured with background: true and persistent polling loops inside its system prompt."
+      },
+      {
+        "id": "d",
+        "text": "An Agent SDK script executing with --dangerously-load-development-channels to bypass terminal event queues."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Claude Code channels are specialized MCP servers packaged as plugins that push external events, messages, and webhooks directly into an already-open, running Claude Code session. Unlike integrations that poll for work or launch cold cloud sessions for each trigger, channels deliver events into the active context so Claude can react immediately and send replies back through the channel. Channels deliver events only while the target session is actively running.",
+    "distractorNotes": {
+      "a": "PostToolUse hooks run only after Claude Code executes a tool call; they cannot listen for external webhooks when the session is idle.",
+      "c": "Subagents cannot listen on external network ports or receive asynchronous push webhooks without channel infrastructure.",
+      "d": "The --dangerously-load-development-channels flag is for testing unapproved development channels in interactive mode, not an architecture for ingesting webhooks."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/channels",
+    "sourceNote": "Channels are MCP server plugins that push alerts into an active running session rather than spawning cold sessions",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-011",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "agent-fleet-operations-for-software-delivery",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A release engineering team integrates Claude Code into an automated release pipeline. The script invokes Claude Code non-interactively using -p to parse merged pull requests, generate a categorized changelog, and emit machine-readable output that downstream deployment tools can validate and ingest without scraping raw CLI text. Which TWO CLI flags should the team specify to produce validated, structured JSON output?",
+    "options": [
+      {
+        "id": "a",
+        "text": "--output-format json"
+      },
+      {
+        "id": "b",
+        "text": "--format structured"
+      },
+      {
+        "id": "c",
+        "text": "--json-schema '<schema>'"
+      },
+      {
+        "id": "d",
+        "text": "--validate-output"
+      },
+      {
+        "id": "e",
+        "text": "--structured-response true"
+      }
+    ],
+    "correct": [
+      "a",
+      "c"
+    ],
+    "explanation": "In non-interactive print mode (-p), Claude Code provides dedicated flags for structured programmatic outputs. Setting '--output-format json' (or stream-json) instructs Claude Code to output JSON objects rather than formatted terminal prose. Supplying '--json-schema '<schema>'' guarantees that the final agent result matches and is validated against the provided JSON Schema definition before being returned to stdout.",
+    "distractorNotes": {
+      "b": "The output format flag is named --output-format and accepts text, json, or stream-json, not --format structured.",
+      "d": "Output validation against a schema is driven by passing --json-schema; there is no separate --validate-output flag.",
+      "e": "Claude Code does not recognize a --structured-response flag; structured outputs are enabled via --json-schema and --output-format."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/cli-reference",
+    "sourceNote": "Headless mode supports --output-format json and --json-schema to produce validated structured JSON output",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-012",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "agent-fleet-operations-for-software-delivery",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A developer is troubleshooting why their Claude Code session starts with an unexpected model. Their user settings file (~/.claude/settings.json) sets model to haiku, while the repository's shared project settings (.claude/settings.json) specifies sonnet. In their project local file (.claude/settings.local.json), they set model to opus. The developer launches the session using claude --settings '{\"model\": \"haiku\"}'. Assuming no managed settings lock the model and no environment variables are set, which value is selected, and why?",
+    "options": [
+      {
+        "id": "a",
+        "text": "haiku, because command-line settings passed via --settings override project local, shared project, and user settings."
+      },
+      {
+        "id": "b",
+        "text": "opus, because project local settings (.claude/settings.local.json) take precedence over temporary command-line parameters."
+      },
+      {
+        "id": "c",
+        "text": "sonnet, because checked-in repository settings (.claude/settings.json) override local developer customizations by default."
+      },
+      {
+        "id": "d",
+        "text": "haiku, because user settings (~/.claude/settings.json) act as the final fallback and supersede uncommitted local configuration."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Claude Code evaluates configuration keys through a defined precedence hierarchy: Managed settings > Command line (--settings) > Project local settings (.claude/settings.local.json) > Shared project settings (.claude/settings.json) > User settings (~/.claude/settings.json). Because --settings sits directly below managed settings, the 'haiku' value specified on the command line overrides the 'opus' in project local settings, the 'sonnet' in shared project settings, and the default in user settings.",
+    "distractorNotes": {
+      "b": "Project local settings sit below command-line --settings in the precedence stack, so --settings overrides .claude/settings.local.json.",
+      "c": "Shared project settings sit below both command-line arguments and project local settings, so they are overridden.",
+      "d": "User settings have the lowest precedence among all settings files and never supersede command-line flags or local project settings."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/settings",
+    "sourceNote": "Settings precedence in order is managed settings, command line (--settings), project local, shared project, user",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-013",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "agent-fleet-operations-for-software-delivery",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An enterprise security team discovers that some developers are adding permissive Bash and filesystem allow rules to their personal settings files and running Claude Code with bypassPermissions mode enabled. The administrators need to enforce a fleet-wide policy that completely disables bypassPermissions mode and forces Claude Code to ignore any permission allow rules defined in user, project, or local settings files. Which managed settings configuration accomplishes this requirement?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Set permissions.defaultMode to 'strict' and add developer home directories to permissions.restrictedPaths in user settings."
+      },
+      {
+        "id": "b",
+        "text": "Configure permissions.mode to 'locked' and enable permissions.enforceManagedRulesOnly in .claude/settings.json at the repo root."
+      },
+      {
+        "id": "c",
+        "text": "Deploy a managed-settings.json file with permissions.disableBypassPermissionsMode set to 'disable' and allowManagedPermissionRulesOnly set to true."
+      },
+      {
+        "id": "d",
+        "text": "Set security.enforcePolicy to 'strict' in ~/.claude.json and deploy an MDM script that removes .claude/settings.local.json files."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Enterprise administrators enforce organization-wide policies using managed settings (such as a managed-settings.json file placed in OS-level system directories). Setting 'permissions.disableBypassPermissionsMode': 'disable' prevents Claude Code from starting or switching into bypassPermissions mode (or using --dangerously-skip-permissions). Setting 'allowManagedPermissionRulesOnly': true forces Claude Code to ignore all permission allow rules originating from user, project, local settings, or --allowedTools flags, honoring only centrally managed rules.",
+    "distractorNotes": {
+      "a": "User settings cannot enforce enterprise policy since developers can edit them, and 'strict' is not a valid permission mode.",
+      "b": "Repository-level settings in .claude/settings.json cannot override user flags or prevent bypass permissions across the fleet.",
+      "d": "Arbitrary MDM file deletion scripts do not alter Claude Code's internal precedence or rule-merging logic, and ~/.claude.json is a user-writable file."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/managed-settings",
+    "sourceNote": "managed-settings.json locks down bypass permissions and enforces allowManagedPermissionRulesOnly",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-014",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "agent-fleet-operations-for-software-delivery",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A platform engineer packages Claude Code into a standard Docker base image to run automated unattended refactoring tasks across code repositories. When the container executes claude -p --dangerously-skip-permissions, Claude Code immediately aborts execution with an error stating that the flag cannot be used with root/sudo privileges for security reasons. What is the vendor-documented resolution for running unattended sessions with skipped permissions in a container?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Set the environment variable CLAUDE_ALLOW_ROOT_BYPASS=true in the Dockerfile to suppress the privilege check."
+      },
+      {
+        "id": "b",
+        "text": "Configure the container to run Claude Code as a non-root user, such as using a standard dev container configuration."
+      },
+      {
+        "id": "c",
+        "text": "Pass the --privileged flag to the docker run invocation so the container runtime grants nested namespace isolation."
+      },
+      {
+        "id": "d",
+        "text": "Add root to the allowedUsers list in the project's .claude/settings.json file to authorize administrative execution."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "On Linux and macOS, Claude Code explicitly refuses to start in bypassPermissions mode (or with --dangerously-skip-permissions) when running as root or under sudo privileges, preventing accidental host destruction or container escape. To execute unattended sessions in containerized environments, the vendor documentation specifies configuring the container to run Claude Code as a non-root user, such as by following the dev container standard.",
+    "distractorNotes": {
+      "a": "Claude Code does not provide a CLAUDE_ALLOW_ROOT_BYPASS environment variable to bypass the root privilege check.",
+      "c": "Passing --privileged to docker run grants additional kernel capabilities to the container but does not change the fact that Claude Code is running as root.",
+      "d": "Project settings files cannot override the process-level root execution check enforced by Claude Code."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/permission-modes",
+    "sourceNote": "bypassPermissions refuses root or sudo privileges on Linux and macOS; run as a non-root user",
+    "sourceCheckedAt": "2026-11-18"
+  }
+]

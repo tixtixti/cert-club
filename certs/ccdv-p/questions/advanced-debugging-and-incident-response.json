@@ -1,0 +1,572 @@
+[
+  {
+    "id": "ccdv-p-advanced-debugging-and-incident-response-001",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-debugging-and-incident-response",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "After a model version migration, users of a support assistant report a rise in answers that contain no help at all. The on-call engineer finds HTTP 4xx and 5xx rates, latency, and retry counts at baseline, and the alert on API error rate never fired. Which next step most directly isolates the failure?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Roll back the prompt change that shipped alongside the migration, since an unchanged error rate rules out the model and points to the prompt."
+      },
+      {
+        "id": "b",
+        "text": "Inspect SDK retry logs for suppressed 529 overloaded errors, since the SDK retries transient failures before the dashboard ever counts them."
+      },
+      {
+        "id": "c",
+        "text": "Raise max_tokens on the affected route, since answers with no content and no error usually mean the responses hit the output token limit."
+      },
+      {
+        "id": "d",
+        "text": "Group recent responses by stop_reason and look for refusals, which arrive as normal HTTP 200 responses that error-rate monitoring does not count."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Safety classifiers return the refusal stop reason as a normal HTTP 200 response, not an error. Stop reasons are part of a successful response body, while errors are 4xx or 5xx statuses, so an error-rate alert cannot see a refusal surge. Segmenting responses by stop_reason, and reading stop_details for the policy category, isolates whether the model is declining requests after the migration.",
+    "distractorNotes": {
+      "a": "A flat error rate says nothing about model behavior, because refusals are successful responses; rolling back the prompt guesses before isolating the origin.",
+      "b": "Retried failures still show up in retry counts, which are at baseline, and overload would raise latency rather than produce unhelpful answers.",
+      "c": "Hitting max_tokens truncates a response mid-content; it does not produce answers with no help in them, and it is visible as its own stop reason."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
+    "sourceNote": "refusal: returned as a normal HTTP 200 response; Stop reasons versus errors",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-debugging-and-incident-response-002",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-debugging-and-incident-response",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An autonomous data-extraction agent intermittently fails in production with JSON decoding exceptions while attempting to parse tool call arguments from the Messages API. The HTTP status code of the response is 200, but inspection of the response object reveals that the input JSON string in the final content block terminates abruptly mid-sentence. How should the agent orchestrator handle this response to restore successful tool execution?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Check if the response stop_reason is max_tokens, verify the final content block is an incomplete tool_use block, and resend the request with an increased max_tokens value."
+      },
+      {
+        "id": "b",
+        "text": "Check if the response stop_reason is stop_sequence, identify the custom delimiter that triggered early termination, and strip conflicting formatting tokens from the system prompt."
+      },
+      {
+        "id": "c",
+        "text": "Treat the response as an invalid_request_error, discard the conversation history from the active session, and initiate a fresh conversation turn with simplified tool parameter schemas."
+      },
+      {
+        "id": "d",
+        "text": "Append a tool_result block containing a syntax error notification to the conversation history, and call the Messages API again to prompt the model to correct its malformed tool call."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "When Claude reaches the configured max_tokens ceiling while generating a tool call, the API returns a successful HTTP 200 response with stop_reason set to max_tokens. In this scenario, the last content block is an incomplete tool_use block with truncated argument JSON. The application must not attempt to execute partial JSON or send an error back into the conversation; instead, it should detect stop_reason == \"max_tokens\" and re-execute the request with a higher max_tokens limit.",
+    "distractorNotes": {
+      "b": "The stop_sequence reason occurs when generation matches a configured custom stop sequence, not when output generation exhausts the token limit mid-block.",
+      "c": "An invalid_request_error is an HTTP 400 client error returned before model generation begins; it does not produce an HTTP 200 response with partial tool blocks.",
+      "d": "Returning a tool_result for an unparseable, incomplete tool_use block corrupts the message turn structure; Claude cannot repair a truncated block without sufficient token budget."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
+    "sourceNote": "Incomplete tool use blocks with stop_reason max_tokens require resending with higher max_tokens",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-debugging-and-incident-response-003",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-debugging-and-incident-response",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An engineer building an agentic research loop notices that immediately following certain tool executions, the next call to the Messages API returns a response containing zero content blocks, consuming 2–3 output tokens, with stop_reason set to end_turn. Telemetry confirms the tool returned valid data and no API errors occurred. What message formatting mistake in the conversation history causes this behavior?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Passing the tool execution output inside a system message block instead of enclosing it within a user message turn structured with a tool_result content block."
+      },
+      {
+        "id": "b",
+        "text": "Placing an extra text content block immediately after the tool_result content block inside the same user message turn, establishing a pattern that prompts turn closure."
+      },
+      {
+        "id": "c",
+        "text": "Setting the is_error flag to false on successful tool executions, which causes the API pipeline to treat the subsequent assistant turn as already satisfied."
+      },
+      {
+        "id": "d",
+        "text": "Omitting the tool_use_id attribute from the tool_result block, leading the server to silently complete the conversation turn rather than rejecting the payload."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Claude can return an empty response with stop_reason set to end_turn when user text blocks are placed immediately after tool_result blocks in the user message turn. This message structure sets an unintended conversational pattern of user input following tool execution, causing Claude to conclude its assistant turn immediately. The correct pattern is to provide only the tool_result block in the user message without trailing text blocks.",
+    "distractorNotes": {
+      "a": "Placing tool output in a system block causes schema validation failure (HTTP 400), not an empty HTTP 200 response with stop_reason end_turn.",
+      "c": "The is_error field defaults to false or is omitted on success; setting it explicitly does not trigger empty end_turn responses.",
+      "d": "Omitting tool_use_id from a tool_result block triggers an HTTP 400 invalid_request_error validation error, not a successful empty turn."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
+    "sourceNote": "Empty responses with end_turn occur when adding text blocks immediately after tool_result blocks",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-debugging-and-incident-response-004",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-debugging-and-incident-response",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "In an order management agent, Claude generates a valid tool call to query an internal inventory microservice. When the runtime executes the request, the inventory microservice returns an HTTP 503 Service Unavailable error. How should the agent orchestrator propagate this failure back to the Messages API so the agent can respond gracefully?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Abort the active agent loop immediately and raise an application exception, because client tool execution failures invalidate the conversational state."
+      },
+      {
+        "id": "b",
+        "text": "Retry the previous Messages API call with identical messages and tools, expecting the model to select an alternative tool without injecting error context."
+      },
+      {
+        "id": "c",
+        "text": "Construct a user message containing a tool_result block that pairs with the tool_use_id, sets is_error to true, and provides an informative error description."
+      },
+      {
+        "id": "d",
+        "text": "Send an assistant message containing a simulated error message, then prompt the user directly to supply replacement parameters for the failing tool."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Tool execution failures (such as downstream network errors, HTTP 5xx responses, or database query exceptions) are runtime execution outcomes rather than Claude API errors. The orchestrator must handle them within the agent loop by returning a tool_result content block referencing the tool_use_id with is_error set to true and an informative error message in the content field. This gives Claude the context needed to explain the outage to the user or attempt an alternate fallback tool.",
+    "distractorNotes": {
+      "a": "Aborting the loop treats a transient tool error as a fatal model crash, terminating user sessions instead of allowing the model to adapt or explain.",
+      "b": "Retrying the exact model call without returning a tool_result violates the API turn contract and causes the model to reproduce the same tool call.",
+      "d": "Client applications cannot inject an assistant message to simulate an error in place of the required user tool_result block expected after tool_use."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls",
+    "sourceNote": "Tool execution errors return tool_result with is_error: true and informative error content",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-debugging-and-incident-response-005",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-debugging-and-incident-response",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An interactive customer service application consumes Claude responses via the streaming Messages API over Server-Sent Events (SSE). During sudden traffic surges, client sessions occasionally freeze mid-generation after receiving partial text tokens, while the client HTTP layer reports an initial HTTP 200 OK status. How should the client-side streaming parser detect and handle these runtime failures?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Register a listener for SSE events of type error, extract the nested error type and message payload from the event data, and trigger recovery logic."
+      },
+      {
+        "id": "b",
+        "text": "Rely on standard HTTP response status code interceptors, because backend streaming infrastructure resets the connection status to HTTP 529 on failure."
+      },
+      {
+        "id": "c",
+        "text": "Monitor the content_block_delta index counter and assume an infrastructure crash whenever the delta sequence increments by more than one integer."
+      },
+      {
+        "id": "d",
+        "text": "Buffer the entire SSE stream in memory and verify the presence of a message_stop event before rendering any text chunks in the client interface."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "In streaming Messages API connections over Server-Sent Events, the initial HTTP handshake returns status 200 before token generation begins. If an error occurs midway through generation (such as backend server overload or connection drops), the API delivers an event with event: error containing an error JSON object (e.g., overloaded_error). Streaming clients cannot rely on HTTP status codes for mid-stream failures and must handle error SSE event types directly.",
+    "distractorNotes": {
+      "b": "HTTP response status codes cannot be modified once the HTTP 200 response header has been sent and the streaming connection is established.",
+      "c": "Content block delta indices identify which content block is being updated; gaps in indices do not represent server errors or protocol crashes.",
+      "d": "Buffering the entire stream eliminates the latency benefits of streaming and prevents users from seeing progressive generation during normal operation."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/streaming",
+    "sourceNote": "Streaming mid-stream failures arrive as error SSE events rather than HTTP error status codes",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-debugging-and-incident-response-006",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "advanced-debugging-and-incident-response",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An automated research service executes multi-turn queries against the Messages API using server tools such as web search. During an extensive multi-step query, the API returns an HTTP 200 OK response with partial assistant text, but the turn abruptly halts before producing a final answer, returning stop_reason set to pause_turn. Which TWO statements accurately describe the operational cause of this condition and the protocol required to resume generation? (Select TWO.)",
+    "options": [
+      {
+        "id": "a",
+        "text": "The pause_turn condition occurs when a client-side custom tool execution exceeds the configured local socket timeout threshold."
+      },
+      {
+        "id": "b",
+        "text": "The stop reason indicates that the server-side sampling loop reached its iteration limit while executing server tools."
+      },
+      {
+        "id": "c",
+        "text": "To resume, the client must append the response content unchanged as an assistant message and re-send the request with no trailing user message."
+      },
+      {
+        "id": "d",
+        "text": "The client application must inject a synthetic user message containing a simulated tool_result block before resubmitting the request."
+      },
+      {
+        "id": "e",
+        "text": "The condition signifies that the organization workspace has reached its concurrent active session ceiling and requires token backoff."
+      }
+    ],
+    "correct": [
+      "b",
+      "c"
+    ],
+    "explanation": "In the Messages API, stop_reason: pause_turn is returned when the server-side sampling loop reaches its iteration limit (by default, 10 iterations per request) while executing server tools like web search. When Claude calls client-side tools that the developer runs, the stop reason is tool_use, never pause_turn. To let Claude complete a paused turn, the client must build a new request that retains earlier messages, appends the response's content unchanged as an assistant message (including any server_tool_use block without a result block), and re-sends the request with the same tools and no user message after the assistant message.",
+    "distractorNotes": {
+      "a": "Client-managed tool calls stop with tool_use and require client execution; pause_turn is exclusive to server-side tool execution loops.",
+      "d": "Server tools manage their own execution and result pairing internally on the server; clients must not inject artificial tool_result blocks.",
+      "e": "Workspace token and concurrency limits return HTTP 429 rate limit or invalid request errors, rather than an HTTP 200 pause_turn stop reason."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
+    "sourceNote": "pause_turn occurs when server tool sampling loop hits limit; continue by sending assistant content unchanged",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-debugging-and-incident-response-007",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-debugging-and-incident-response",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A software development team uses Claude Code to refactor an enterprise application. During a long debugging session, the CLI suddenly halts and displays the error message: \"Autocompact is thrashing: the context refilled to the limit...\". The engineer notes that automatic compaction previously succeeded earlier in the session. What underlying operational condition causes this error, and how should the engineer recover?",
+    "options": [
+      {
+        "id": "a",
+        "text": "An MCP server exceeded its token quota; restart the session with safe mode enabled to deactivate all custom external integrations."
+      },
+      {
+        "id": "b",
+        "text": "A tool output or file read refilled the context window immediately after compaction; read files in chunks or run compact with a focused topic."
+      },
+      {
+        "id": "c",
+        "text": "The local JavaScript heap memory exceeded 2.5 GB; run the hidden heapdump command to purge active memory references from the heap."
+      },
+      {
+        "id": "d",
+        "text": "The session hit the organization monthly spend cap; wait for the monthly billing cycle reset or request a tier upgrade in the console."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Claude Code's autocompact thrashing error occurs when automatic context compaction successfully summarizes earlier turns, but a massive file read or tool execution immediately refills the context window back to the token limit several times in succession. To avoid wasting API calls on non-progressing loops, Claude Code stops retrying. The documented recovery actions are reading files in smaller line ranges, running /compact with a focus query that prunes the large output, or moving the large-file task to a subagent.",
+    "distractorNotes": {
+      "a": "MCP token quotas produce tool error blocks or rate limit errors, not context window autocompaction thrashing warnings.",
+      "c": "High heap memory triggers a critical memory warning rather than the context refilling thrashing error, and heapdump writes diagnostics rather than purging context.",
+      "d": "Hitting an organization spend cap returns an HTTP 429 or 400 error rather than a local CLI autocompact loop detection halt."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/troubleshooting",
+    "sourceNote": "Autocompact thrashing happens when large tool outputs refill context immediately after compaction; recover by chunking or focused compact",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-debugging-and-incident-response-008",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-debugging-and-incident-response",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A security team deploys a PreToolUse hook script in Claude Code to intercept shell commands and block access to production database credentials. Due to an unhandled null pointer in the validation script, the hook terminates unexpectedly with exit code 1. How does Claude Code handle this tool call, and what exit code must the hook return to explicitly block unauthorized execution?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The tool call is automatically blocked because any non-zero exit code cancels execution; the hook should return exit code 1 to indicate a generic denial."
+      },
+      {
+        "id": "b",
+        "text": "The tool call is suspended until a user manually approves it in the terminal; the hook should return exit code 0 with an empty JSON object to block it."
+      },
+      {
+        "id": "c",
+        "text": "The tool call proceeds as a non-blocking error because only exit code 2 blocks execution; the hook must return exit code 2 with the reason on stderr."
+      },
+      {
+        "id": "d",
+        "text": "The tool call causes the active session to abort immediately; the hook should return exit code 127 to notify the runtime of a policy violation."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "In Claude Code command hooks, exit code 0 indicates success. Exit code 2 is specifically designated as a blocking error; for events that can block (such as PreToolUse), exit code 2 halts the tool call and displays the hook's stderr as the blocking reason. Any other non-zero exit code (such as exit code 1) is treated as a non-blocking error, meaning Claude Code logs a hook error notice but allows the tool execution to proceed normally unless configured to block on failure.",
+    "distractorNotes": {
+      "a": "Non-zero exit codes other than 2 are non-blocking errors by default; exit code 1 does not block the tool call from running.",
+      "b": "Exit code 0 with empty output signifies no decision, allowing the tool call to proceed without blocking or prompting for user approval.",
+      "d": "Command hook failures do not crash or abort the Claude Code session process, and exit code 127 is not the documented blocking signal."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/hooks",
+    "sourceNote": "PreToolUse hooks use exit code 2 for blocking errors with stderr as reason; other non-zero exit codes are non-blocking errors",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-debugging-and-incident-response-009",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-debugging-and-incident-response",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An enterprise batch pipeline suddenly fails across all worker nodes with HTTP 429 rate_limit_error responses. The on-call engineer notices that automated exponential backoff retries fail continuously over an extended period. What header inspection and diagnostic step allows the engineer to determine whether the incident is caused by transient token concurrency limits or by reaching the usage tier monthly spend cap?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Check the anthropic-ratelimit-tier header; if it displays custom, the organization has exceeded its hard daily concurrency quota."
+      },
+      {
+        "id": "b",
+        "text": "Inspect the x-api-key-status response header; if it reads throttled, the request rate exceeded the provisioned token bucket capacity."
+      },
+      {
+        "id": "c",
+        "text": "Verify the content-length header value; empty error payloads signify transient rate limits, whereas structured JSON indicates spend exhaustion."
+      },
+      {
+        "id": "d",
+        "text": "Inspect the retry-after header; its absence indicates the tier spend cap has been reached, whereas transient limits provide a retry delay."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "When an application encounters an HTTP 429 rate_limit_error due to transient request or token concurrency limits, the Claude API returns a retry-after response header indicating the number of seconds to wait before retrying. However, when an organization reaches its usage tier's monthly spend cap (or workspace spend limit), the 429 response contains no retry-after header and retries continue failing until the cap is raised or the billing cycle resets.",
+    "distractorNotes": {
+      "a": "There is no anthropic-ratelimit-tier header that switches to custom to indicate concurrency overages.",
+      "b": "The Claude API does not return an x-api-key-status header with a throttled value; rate limiting is indicated by HTTP 429 and standard rate limit headers.",
+      "c": "Both transient rate limit errors and spend cap errors return standard JSON error response envelopes containing error type and message fields."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/api/errors",
+    "sourceNote": "HTTP 429 caused by tier spend cap has no retry-after header and keeps failing, unlike transient rate limits",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-debugging-and-incident-response-010",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-debugging-and-incident-response",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "During a peak traffic event, an API gateway routing requests to Claude observes widespread HTTP 529 overloaded_error responses. When hundreds of distributed worker pods retry using standard deterministic exponential backoff (e.g., 1s, 2s, 4s, 8s), backend metrics reveal severe recurring traffic spikes at synchronized intervals, prolonging the outage. What modification to the client retry strategy resolves this synchronization problem?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Incorporate randomized jitter into the backoff calculation to decorrelate retry timestamps across worker pods and prevent thundering herd spikes."
+      },
+      {
+        "id": "b",
+        "text": "Switch from exponential backoff to a constant 500ms polling interval, ensuring requests arrive steadily without clustering into discrete bursts."
+      },
+      {
+        "id": "c",
+        "text": "Immediately redirect all failing traffic to an alternative organization workspace, bypassing the overloaded cluster's rate limiting counters."
+      },
+      {
+        "id": "d",
+        "text": "Strip all system prompts and tool declarations from retried requests to reduce payload size and bypass backend overload admission controllers."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "An HTTP 529 overloaded_error occurs when the API experiences temporary high traffic across all users. When multiple distributed clients experience 529 errors simultaneously and retry using deterministic exponential backoff, their retries align into synchronized waves (\"thundering herds\") that repeatedly re-overload the service. Adding randomized jitter spreads retries evenly across time intervals, decorrelating traffic and allowing the API cluster to recover smoothly.",
+    "distractorNotes": {
+      "b": "Constant interval polling without backoff or jitter exacerbates API overload by maintaining intense aggregate pressure on struggling servers.",
+      "c": "Overloaded errors (529) reflect system-wide API load rather than workspace-specific quotas; switching workspaces does not bypass API overload.",
+      "d": "Modifying application prompts does not bypass server-level overload admission filters and would compromise the functionality of the request."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/api/errors",
+    "sourceNote": "529 overloaded_error requires exponential backoff with jitter to prevent synchronized retry spikes across clients",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-debugging-and-incident-response-011",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-debugging-and-incident-response",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An engineering team updates their automated testing pipeline from an older Claude generation to a newer model generation. Immediately following deployment, all API requests configuring forced tool use (tool_choice set to any or an explicit tool name) fail with an HTTP 400 invalid_request_error. How should the incident responders update the request configuration to resolve this error on newer model families?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Increase the request max_tokens parameter to allow the model sufficient token budget to output tool selection metadata."
+      },
+      {
+        "id": "b",
+        "text": "Set tool_choice to auto and enable strict tool use on the tool definitions to enforce precise schema adherence without forced choice."
+      },
+      {
+        "id": "c",
+        "text": "Move the tool choice directive into the user message turn as an explicit natural language instruction rather than an API parameter."
+      },
+      {
+        "id": "d",
+        "text": "Add an empty assistant prefill turn specifying the desired tool call name to steer the model toward using the specified function."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "On newer Claude model generations (such as Claude Opus 5.5, Sonnet 5.5, and Fable 5.1), forced tool use via tool_choice values \"any\" and explicit named tools is deprecated and returns an HTTP 400 invalid_request_error. The documented mitigation is to configure tool_choice to \"auto\" and specify strict: true (strict tool use) on the tool definitions, or provide behavioral steering in the system prompt.",
+    "distractorNotes": {
+      "a": "Raising max_tokens does not resolve request validation failures caused by unsupported or deprecated parameter values.",
+      "c": "Natural language prompts in user messages cannot guarantee structured tool invocation with the programmatic certainty required by schemas.",
+      "d": "Assistant prefill is also deprecated and returns an HTTP 400 error on modern Claude models, making it unusable as a workaround."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/api/errors",
+    "sourceNote": "HTTP 400 invalid_request_error occurs when using deprecated features like forced tool_choice on newer models",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-debugging-and-incident-response-012",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "advanced-debugging-and-incident-response",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "Following a production incident where an automated deployment agent misinterpreted a bash tool output and prematurely executed an irreversible database migration, the site reliability team retrieves the full OpenTelemetry trace of the failing agent session. Which TWO engineering practices extract the maximum value from this incident trace to establish a reliable learning loop? (Select TWO.)",
+    "options": [
+      {
+        "id": "a",
+        "text": "Extract the exact conversational history and tool outputs from the failing turn into a deterministic regression test case for the evaluation suite."
+      },
+      {
+        "id": "b",
+        "text": "Clear all cached prompt prefix blocks across the agent deployment to ensure subsequent sessions re-parse tool schemas from scratch."
+      },
+      {
+        "id": "c",
+        "text": "Implement code-based assertion grading on the agent tool invocation outputs to verify that dangerous migrations require human confirmation."
+      },
+      {
+        "id": "d",
+        "text": "Replace the dynamic tool calling interface with static few-shot examples embedded directly in every user prompt across all environments."
+      },
+      {
+        "id": "e",
+        "text": "Downgrade the production agent to use basic single-turn completions without tools to eliminate model decision-making risks entirely."
+      }
+    ],
+    "correct": [
+      "a",
+      "c"
+    ],
+    "explanation": "Converting production incident traces into durable learning loops involves: (1) extracting the real-world failing turn (inputs, conversational context, tool outputs) into an offline regression evaluation test case that can be replayed deterministically, and (2) creating explicit code-based or LLM-based grading criteria (such as asserting that high-risk migration commands trigger human confirmation or approval checks) to prevent regressions before new prompts, models, or tool schemas are deployed.",
+    "distractorNotes": {
+      "b": "Invalidating prompt caching does not alter agent reasoning or prevent the model from misinterpreting tool outputs in future sessions.",
+      "d": "Replacing structured tool use with few-shot text examples reduces reliability and does not guarantee safe tool invocation boundaries.",
+      "e": "Removing tool calling entirely disables the agent's core operational capabilities rather than fixing the failure mode or hardening verification."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "sourceNote": "Incident traces should be converted into deterministic evaluation test cases and code-based grading assertions in CI",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-debugging-and-incident-response-013",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-debugging-and-incident-response",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An on-call engineer investigates an incident where an agent application reports that customer queries are timing out after 45 seconds. The central monitoring dashboard shows that HTTP error metrics for the Claude Messages API endpoint report zero 504 Gateway Timeout or 500 timeout_error events. What diagnostic conclusion should the engineer draw, and what component requires investigation?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The Claude Messages API encountered an internal network partition; check the Anthropic public status page for global region outages."
+      },
+      {
+        "id": "b",
+        "text": "The client SDK silently absorbed the 504 gateway timeout during automatic retries; inspect the client process memory logs for retry counters."
+      },
+      {
+        "id": "c",
+        "text": "The timeout originated locally within client-side tool execution rather than the model API; inspect latency telemetry for external tool calls."
+      },
+      {
+        "id": "d",
+        "text": "The request exceeded the maximum allowed payload size of 128 MB; verify network egress logs for dropped TCP packets during transmission."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Anthropic API generation timeouts return an HTTP 504 status code (or HTTP 500 with error.type: \"timeout_error\") when a request times out processing on Anthropic's servers. If API metrics show zero 504 or timeout_error responses, the Claude API responded successfully. The 45-second timeout therefore occurred in the application runtime while executing a client-side tool (such as an external API or database call hanging), requiring per-tool timeout controls and latency telemetry.",
+    "distractorNotes": {
+      "a": "A backend network partition on Anthropic's side would generate connection errors or 5xx gateway timeouts rather than clean API metrics.",
+      "b": "Client SDK retries for 5xx errors surface in retry telemetry and ultimately raise an API error if timeouts persist across all retries.",
+      "d": "Exceeding request size limits produces an immediate HTTP 413 request_too_large error from Cloudflare, not a 45-second timeout."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/api/errors",
+    "sourceNote": "Distinguish tool timeouts from API timeouts: Anthropic server timeouts return HTTP 504 timeout_error",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-debugging-and-incident-response-014",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-debugging-and-incident-response",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "Several developers report that after launching Claude Code inside the integrated terminals of VS Code and Cursor, the command output renders corrupted characters, showing smeared glyphs, misplaced text blocks, and box symbols. The underlying process is responsive, and executing shell commands outside the integrated terminal displays normal text. Which initial action resolves this display corruption?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Run the compact command inside the session to clear ANSI escape sequences from the active conversational message context."
+      },
+      {
+        "id": "b",
+        "text": "Reinstall the Claude Code command line interface using npm with the force flag to recompile native terminal PTY bindings."
+      },
+      {
+        "id": "c",
+        "text": "Restart the host operating system with UTF-8 locale variables set to C to bypass terminal font ligature rendering bugs."
+      },
+      {
+        "id": "d",
+        "text": "Run terminal-setup inside Claude Code or set terminal.integrated.gpuAcceleration to off in the editor configuration settings."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "In editor integrated terminals (such as VS Code or Cursor), terminal GPU acceleration can corrupt ANSI/VTE escape sequences, rendering garbled text, misplaced characters, and box glyphs. Claude Code documents running /terminal-setup or setting terminal.integrated.gpuAcceleration to \"off\" in the editor settings as the solution to disable the GPU renderer and restore clean text output.",
+    "distractorNotes": {
+      "a": "Running /compact summarizes conversation history; it does not alter terminal display rendering or integrated terminal GPU settings.",
+      "b": "Reinstalling the package does not fix editor-level rendering defects caused by the terminal emulator's GPU acceleration layer.",
+      "c": "Setting locale to C disables Unicode support and causes further character encoding issues rather than fixing GPU rendering artifacts."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/troubleshooting",
+    "sourceNote": "Terminal rendering corruption in VS Code/Cursor is fixed by /terminal-setup or setting gpuAcceleration to off",
+    "sourceCheckedAt": "2026-11-18"
+  }
+]

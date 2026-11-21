@@ -1,0 +1,982 @@
+[
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-001",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A long-running research agent on the Messages API makes dozens of fetch and file-read tool calls per session. To stay under its context limit, the team enabled server-side tool result clearing with a low trigger threshold. Context now stays small, but per-session input cost rose and cache reads dropped sharply: clearing fires on almost every turn and removes only a few thousand tokens each time. Which change best fixes the cost regression while keeping tool result clearing?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Disable prompt caching for these sessions, since tool result clearing makes cached prefixes stale and the cache writes are wasted on every turn."
+      },
+      {
+        "id": "b",
+        "text": "Move the clearing into the application so it edits its own history before each request, leaving the prefix the API caches unchanged."
+      },
+      {
+        "id": "c",
+        "text": "Require each clearing pass to remove a substantial minimum of tokens with clear_at_least, so the cache invalidation is paid rarely and amortized."
+      },
+      {
+        "id": "d",
+        "text": "Switch to thinking block clearing instead, since clearing thinking blocks frees comparable context while leaving the prompt cache intact."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Tool result clearing invalidates the cached prompt prefix whenever content is cleared, so each clearing pass incurs a fresh cache write. Clearing a few thousand tokens nearly every turn pays that write repeatedly for little context gained. The documented remedy is to clear enough tokens per pass to make the invalidation worthwhile, which the clear_at_least parameter enforces; later requests then reuse the newly cached prefix.",
+    "distractorNotes": {
+      "a": "Plausible because clearing does invalidate the cache, but abandoning caching removes the read savings entirely; the documented fix is to clear less often in larger amounts.",
+      "b": "Editing earlier turns client-side still changes the prompt prefix the API sees, so it invalidates the cache just the same, and it gives up the server-side mechanism.",
+      "d": "Thinking block clearing preserves the cache only while thinking blocks are kept; clearing them invalidates the cache at that point, and it does not target tool results."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/context-editing",
+    "sourceNote": "Context editing and prompt caching: tool result clearing invalidates cached prefixes; use clear_at_least",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-002",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An enterprise security agent analyzes external code contributions submitted to open-source repositories. The agent must inspect untrusted pull request patches, query public package registries, and run static analysis tools. Security policy dictates that untrusted code strings or malicious instructions embedded in pull request comments must not be able to execute unauthorized shell commands or modify local files in the root execution environment. Which orchestration pattern best enforces this boundary?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Delegate untrusted code and comment inspection to a specialized read-only subagent with an isolated context window and restricted tool permissions, returning only structured diagnostic findings to the primary agent."
+      },
+      {
+        "id": "b",
+        "text": "Execute all inspection tasks within the primary agent session while appending a persistent system prompt instruction directing Claude to disregard any instructions contained within retrieved pull request comments or commits."
+      },
+      {
+        "id": "c",
+        "text": "Employ peer-to-peer message passing across multiple autonomous worker agents that share a single underlying shell environment, using an external post-processing filter to intercept disallowed bash commands after execution."
+      },
+      {
+        "id": "d",
+        "text": "Implement an Evaluator-Optimizer loop where a primary agent executes shell tools and a secondary evaluator agent inspects command outputs afterward to detect whether an exploit was executed."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Subagents execute in isolated context windows with their own scoped tool sets and system prompts. Delegating the ingestion of untrusted inputs to a child agent configured with read-only tools prevents prompt injection payloads from accessing sensitive write or execution tools. The child agent returns only vetted, structured text findings to the orchestrator, neutralizing injection attempts. Relying on system prompt instructions, post-execution command inspection, or shared execution environments fails to establish a secure privilege boundary.",
+    "distractorNotes": {
+      "b": "Prompt-level instructions to ignore malicious comments cannot guarantee security against adversarial prompt injections when untrusted data shares the execution context with privileged tools.",
+      "c": "Sharing an underlying shell environment breaks isolation; if any peer agent is subverted by untrusted input, the shared environment and credentials are fully compromised.",
+      "d": "An Evaluator-Optimizer loop that inspects actions after execution is a reactive detection mechanism rather than an execution boundary; the exploit has already executed."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/sub-agents",
+    "sourceNote": "Subagents provide context and tool isolation; restrict tools to read-only for untrusted inputs",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-003",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An order fulfillment platform automates customer cancellation requests requiring coordination across inventory reservation, payment processing, and notification services. The team initially deployed a decentralized peer-to-peer agent architecture where each domain agent directly invoked the next agent. In production, transient payment gateway timeouts cause tasks to stall, fail silently, or initiate circular handoffs. Which architectural refactoring best restores reliable end-to-end execution?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Retain the peer-to-peer delegation graph but increase the maximum conversation turn limit on each agent, allowing stalled agents additional retries before abandoning their handoffs."
+      },
+      {
+        "id": "b",
+        "text": "Transition to an orchestrator-workers pattern where a central orchestrator dynamically decomposes the request, delegates scoped subtasks to specialist workers, and synthesizes the results."
+      },
+      {
+        "id": "c",
+        "text": "Replace the specialist domain agents with a single monolithic prompt that receives all customer cancellation inputs and performs all service updates sequentially within a single conversation turn."
+      },
+      {
+        "id": "d",
+        "text": "Have peer agents publish intermediate cancellation state to an uncoordinated shared message bus, relying on individual subscribers to determine when an order is finalized."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "In 'Building Effective Agents', Anthropic defines the orchestrator-workers pattern where a central LLM dynamically breaks down tasks, delegates them to worker LLMs, and synthesizes their results. Decentralized or ad-hoc chaining across independent workers lacks centralized coordination to break down dynamic dependencies and synthesize outcomes, leading to fragmented state and stalled handoffs. An orchestrator coordinates subtask dispatch and synthesizes worker outputs into a cohesive result.",
+    "distractorNotes": {
+      "a": "Increasing turn limits does not resolve circular delegation or state fragmentation, and it can prolong latency or consume excessive tokens when handoffs stall.",
+      "c": "A single monolithic prompt combines unrelated tool schemas and business logic into one context window, increasing error rates and losing modular domain isolation.",
+      "d": "An uncoordinated shared message bus lacks a centralized coordinator to handle transaction rollbacks, timeout escalation, or authoritative state reconciliation."
+    },
+    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceNote": "Orchestrator-workers: a central LLM dynamically breaks down tasks, delegates to worker LLMs, and synthesizes results",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-004",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An automated site reliability engineering agent responds to high-severity infrastructure alerts. The agent must gather diagnostics from distributed tracing backends, server logs, and metrics stores before synthesizing a mitigation plan. To minimize time-to-mitigation and avoid degrading model reasoning, the architecture must parallelize data collection while keeping raw telemetry dumps out of the primary reasoning loop. Which TWO design practices best achieve these goals? (Select TWO)",
+    "options": [
+      {
+        "id": "a",
+        "text": "Deploy specialized diagnostic collector subagents concurrently to query their respective observability backends in parallel."
+      },
+      {
+        "id": "b",
+        "text": "Chain diagnostic collectors sequentially in a prompt chain so that each collector appends its complete raw payload to the next query."
+      },
+      {
+        "id": "c",
+        "text": "Require each diagnostic subagent to filter raw telemetry and return only concise, structured diagnostic summaries to the orchestrator."
+      },
+      {
+        "id": "d",
+        "text": "Execute all telemetry queries within the primary orchestrator session using standard bash tools so all agents share active context."
+      },
+      {
+        "id": "e",
+        "text": "Stream raw log entries directly into the orchestrator system prompt using dynamic variables updated at high frequency during analysis."
+      }
+    ],
+    "correct": [
+      "a",
+      "c"
+    ],
+    "explanation": "Running specialized subagents in parallel (fan-out) minimizes data collection latency by querying independent telemetry stores concurrently rather than serially. Furthermore, requiring subagents to analyze raw logs and metrics within their own isolated context windows and return only concise, structured summaries protects the orchestrator from context pollution and token bloat. Chaining collectors sequentially increases latency, running queries in the main session floods the context window with raw text, and streaming raw logs into the system prompt busts prompt caching.",
+    "distractorNotes": {
+      "b": "Sequential chaining introduces unnecessary serial latency and forces downstream collectors to carry growing volumes of raw, unparsed telemetry.",
+      "d": "Running queries in the root session dumps high-volume raw telemetry into the primary context window, consuming token budget and degrading reasoning performance.",
+      "e": "Injecting high-frequency dynamic log data into the system prompt invalidates prompt cache prefixes on every turn and rapidly exceeds token limits."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/sub-agents",
+    "sourceNote": "Subagents parallelize execution and isolate large raw outputs from the orchestrator context",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-005",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A code modernization platform automates the extraction of legacy monolithic applications into modular packages. Because codebases vary widely, the number of target packages, shared library dependencies, and interface boundaries cannot be predicted before analyzing the abstract syntax tree. The team needs an architecture where an initial analysis determines the required work packages, delegates scoped refactoring tasks to concurrent workers, and merges their outputs. Which workflow pattern best fits this requirement?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Static sectioning parallelization where a predetermined number of worker prompts process hardcoded subdirectories independently."
+      },
+      {
+        "id": "b",
+        "text": "An Evaluator-Optimizer loop that prompts a single model to rewrite the entire repository repeatedly until all unit tests pass cleanly."
+      },
+      {
+        "id": "c",
+        "text": "A fixed prompt chain that passes the entire codebase sequentially through extraction, dependency resolution, and test generation steps."
+      },
+      {
+        "id": "d",
+        "text": "An Orchestrator-Workers architecture where a lead agent analyzes the code dynamically, spawns modular subtasks, and reconciles results."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "The Orchestrator-Workers pattern is explicitly designed for complex tasks where the required subtasks cannot be predicted in advance. A central orchestrator examines the input dynamically, determines how many worker subtasks are needed and what their scopes should be, delegates the work to specialist workers, and synthesizes their results into a cohesive output. Static sectioning and fixed prompt chains require pre-known task boundaries, while an unsegmented Evaluator-Optimizer loop on a full repository quickly exceeds context capacity.",
+    "distractorNotes": {
+      "a": "Static sectioning relies on predetermined task boundaries, which fails when package boundaries depend on dynamic syntax tree analysis.",
+      "b": "Rewriting an entire monolithic repository in a single prompt loop exceeds context and output limits and lacks targeted modular decomposition.",
+      "c": "A fixed prompt chain cannot dynamically adapt its decomposition when different modules require differing numbers of extraction steps."
+    },
+    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceNote": "Orchestrator-workers dynamically decomposes tasks when subtasks cannot be predicted in advance",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-006",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "In an automated bug-fixing system based on the orchestrator-workers pattern, a lead agent delegates two concurrent tasks on a repository: Worker 1 optimizes database connection pooling in src/db.py, while Worker 2 refactors error handling across the same file. Both workers complete their tasks successfully and return valid unified diffs. However, when the system applies both diffs directly to the working branch, conflicting line edits break the build. How should the orchestrator architecture resolve this?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Instruct all worker agents to push diffs directly to the repository working branch concurrently, letting git automatic merge resolution handle conflicts."
+      },
+      {
+        "id": "b",
+        "text": "Configure workers to run at temperature zero so their generated diffs naturally align on the exact same line offsets without causing textual overlap."
+      },
+      {
+        "id": "c",
+        "text": "Collect the candidate diffs at the orchestrator and execute an explicit synthesis and reconciliation step that integrates changes and verifies tests."
+      },
+      {
+        "id": "d",
+        "text": "Discard the slower worker diff automatically and re-run that worker task serially against the committed modifications of the faster worker."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "In the Orchestrator-Workers architecture, the orchestrator is responsible for both task delegation and synthesis. When concurrent workers produce complementary modifications to overlapping files, their outputs cannot be blindly concatenated or merged without coordination. The orchestrator (or a designated reconciler agent) must ingest both candidate solutions, synthesize a unified modification, and validate the combined change against test suites before committing.",
+    "distractorNotes": {
+      "a": "Concurrent uncoordinated git pushes cause merge conflicts, failed rebase operations, and broken builds when workers touch overlapping lines.",
+      "b": "Setting temperature to zero affects model sampling determinism within a prompt, but does not prevent two independently authored code changes from conflicting.",
+      "d": "Discarding valid work by the slower worker wastes tokens and latency, and re-running serially eliminates the throughput benefits of parallel delegation."
+    },
+    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceNote": "Orchestrator-workers: synthesis phase resolves worker conflicts and integrates results",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-007",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A developer productivity tool embeds Claude Code subagents to perform end-to-end integration test execution while an engineer interacts with the primary agent in a terminal session. The test suite takes four minutes to execute. If the primary agent runs the test tool synchronously, the interactive conversation locks up until the suite completes. Which architectural approach best maintains conversational responsiveness while managing test execution?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Execute the test runner synchronously within the main conversation turn while raising the client HTTP socket timeout to ten minutes."
+      },
+      {
+        "id": "b",
+        "text": "Launch the test runner as an asynchronous background subagent and continue interactive dialogue, checking test status when notified."
+      },
+      {
+        "id": "c",
+        "text": "Partition the four-minute test suite across twenty parallel synchronous tool calls invoked within a single conversational turn."
+      },
+      {
+        "id": "d",
+        "text": "Instruct the model to simulate test execution outcomes in memory based on recent git diffs rather than invoking actual shell tools."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Claude Code and modern agent frameworks support asynchronous background subagents. When an operation requires extended execution time (such as compiling code or running a multi-minute test suite), running it as an asynchronous background agent allows the primary agent to return control to the user immediately. The primary agent can continue conversational interactions and inspect background agent status or receive completion notifications when the task finishes.",
+    "distractorNotes": {
+      "a": "Synchronous execution blocks the conversational session, freezing user interaction and leaving the client vulnerable to connection drops or perceived hangs.",
+      "c": "Invoking twenty parallel synchronous calls still blocks the turn until all calls complete, maintaining the conversational latency bottleneck.",
+      "d": "Simulating test execution hallucinates outcomes rather than executing real test suites against compiled binaries, masking actual regressions."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/sub-agents",
+    "sourceNote": "Async background subagents run long tasks without blocking the interactive primary agent session",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-008",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An autonomous accounts payable agent built with the Claude Agent SDK executes supplier payments using an in-process custom MCP tool (process_supplier_payment). During execution, an external payment API returns an HTTP 503 gateway error. To allow Claude to understand the specific transient failure and decide whether to retry or escalate without crashing the agent execution loop, how should the custom tool handler report this failure?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Throw an uncaught fatal exception from the tool handler function to abort the agent session immediately and prevent further tool execution."
+      },
+      {
+        "id": "b",
+        "text": "Return a standard HTTP 200 mock response payload to Claude with an empty settlement identifier so the agent loop terminates cleanly."
+      },
+      {
+        "id": "c",
+        "text": "Suppress the error silently inside the handler and return an empty string text block so Claude assumes the settlement succeeded."
+      },
+      {
+        "id": "d",
+        "text": "Catch the failure and return a tool result with isError: true containing a composed error message explaining the 503 status and retry guidance."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "In the Claude Agent SDK custom tool architecture, an error in a tool handler does not crash the agent loop. Catching the error and returning an object with `isError: true` (or `is_error: True` in Python) signals to Claude that the call failed rather than returning valid data, and allows the developer to compose an informative error message explaining the 503 status and suggesting next steps (such as retrying). Uncaught throws yield raw exception messages, while returning mock data or empty text misleads the model into believing the action succeeded.",
+    "distractorNotes": {
+      "a": "An uncaught throw in a custom tool handler surfaces a raw exception string to Claude rather than crashing the SDK process, but it deprives Claude of structured guidance on how to recover or retry.",
+      "b": "Returning mock success data misleads Claude into assuming the payment succeeded, which corrupts downstream accounting and prevents appropriate retry handling.",
+      "c": "Suppressing the error and returning an empty string hides the 503 failure from Claude, leading the model to hallucinate or report an unverified settlement."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/agent-sdk/custom-tools",
+    "sourceNote": "Custom tool error handling: catch errors and return isError: true with a descriptive message for Claude to react without breaking the loop",
+    "sourceCheckedAt": "2026-11-19"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-009",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A cloud infrastructure migration agent built with the Claude Agent SDK executes a multi-hour database schema conversion spanning thirty sequential steps. During step 18, the ephemeral container hosting the worker process crashes due to an out-of-memory error and is rescheduled onto a new host. To ensure the agent can resume execution from step 18 without losing conversation history or re-executing completed steps, which architectural approach should the team implement?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Configure an external SessionStore adapter (implementing append and load) backed by a shared datastore, and resume the session by ID on the new host."
+      },
+      {
+        "id": "b",
+        "text": "Set persistSession: false in the SDK client options so all state is maintained exclusively in process memory across container restarts."
+      },
+      {
+        "id": "c",
+        "text": "Re-run the migration prompt from step 1 on the new container with a system prompt instructing Claude to skip any table that already exists."
+      },
+      {
+        "id": "d",
+        "text": "Maintain session history in local container disk files under ~/.claude/projects/ and rely on ephemeral container volume mounts to survive rescheduling."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "By default, the Claude Agent SDK writes session transcripts to local JSONL files under `~/.claude/projects/`, which do not survive container restarts or multi-host rescheduling. Implementing a `SessionStore` adapter with `append` and `load` methods allows the SDK to mirror session transcripts to an external datastore (such as an object store, key-value store, or database). When the worker container restarts on another host, passing the stored session ID to `resume` restores full conversation context and execution state.",
+    "distractorNotes": {
+      "b": "Setting persistSession: false keeps the session in memory only, which guarantees complete data loss when the container process terminates.",
+      "c": "Restarting from step 1 wastes tokens re-evaluating prior steps and risks partial state corruption or schema lock contention.",
+      "d": "Local filesystem paths under ~/.claude/projects/ are ephemeral to the specific container and do not survive rescheduling onto a different host."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/agent-sdk/session-storage",
+    "sourceNote": "SessionStore: implement append and load to mirror transcripts to external storage for durable resume across container restarts",
+    "sourceCheckedAt": "2026-11-19"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-010",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An automated refactoring agent built with the Claude Agent SDK modifies three core modules across two conversational turns using Edit and Write tools. An automated test suite run at turn 2 reveals severe type regressions. The orchestrator needs to revert all disk modifications made during turn 2 while preserving the conversation history so Claude can inspect the compiler errors and formulate a different refactoring approach. How does the Claude Agent SDK support this requirement?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Instruct Claude through a new user message to re-read each modified file and attempt to undo its recent string replacements in reverse order."
+      },
+      {
+        "id": "b",
+        "text": "Terminate the session and execute git hard reset commands via the bash tool, since the SDK does not provide native file tracking or snapshot mechanisms across turns."
+      },
+      {
+        "id": "c",
+        "text": "Call rewindFiles() with the checkpoint user message UUID, which restores modified files and deletes created files on disk while leaving context intact."
+      },
+      {
+        "id": "d",
+        "text": "Call rewindFiles(), which rolls back both the files on disk and truncates all subsequent turns and compiler error messages from transcript memory."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "The Claude Agent SDK provides file checkpointing, which automatically snapshots files modified or created via `Write`, `Edit`, or `NotebookEdit` tools at each turn, keyed by the user message's UUID. Calling `rewindFiles()` (or `rewind_files()` in Python) restores modified files to their checkpoint content and deletes newly created files on disk. Crucially, file checkpointing restores files on disk while leaving the conversation history and context intact, enabling Claude to reason over the previous attempt's failure output.",
+    "distractorNotes": {
+      "a": "Prompting the model to manually reverse its own edits is non-deterministic, error-prone, and consumes additional context tokens without restoring exact byte-level snapshots.",
+      "b": "The Claude Agent SDK includes native file checkpointing; relying on external git commands is unnecessary and risks wiping unstaged manual changes or repository metadata.",
+      "d": "File rewinding in the SDK restores files on disk to a previous state, but it explicitly does not rewind conversation history; transcript context remains fully intact."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/agent-sdk/file-checkpointing",
+    "sourceNote": "File checkpointing: rewindFiles() restores files on disk to a checkpoint UUID while leaving conversation context intact",
+    "sourceCheckedAt": "2026-11-19"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-011",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An automated IT access management agent built with the Claude Agent SDK processes corporate role changes in non-interactive headless mode. Low-risk permissions are granted automatically, but elevated database access requires manual review and sign-off by a security administrator, which can take several business days. The architecture must suspend execution without keeping cloud compute instances idling or losing conversational context. Which TWO design practices allow the agent workflow to pause and resume durably? (Select TWO)",
+    "options": [
+      {
+        "id": "a",
+        "text": "Keep the active container process running and execute a synchronous sleep loop that polls the ticketing system every five seconds."
+      },
+      {
+        "id": "b",
+        "text": "Register a PreToolUse hook that returns permissionDecision: \"defer\" for privileged tool calls, ending the turn with stop_reason: \"tool_deferred\"."
+      },
+      {
+        "id": "c",
+        "text": "Hardcode administrator credentials into the agent system prompt so it can bypass manual sign-off when approval requests exceed four hours."
+      },
+      {
+        "id": "d",
+        "text": "Resume the session by its session ID once human approval is granted, allowing the PreToolUse hook to return permissionDecision: \"allow\"."
+      },
+      {
+        "id": "e",
+        "text": "Discard the existing session entirely and spawn a fresh ungrounded agent instance that prompts the administrator to re-enter all employee details."
+      }
+    ],
+    "correct": [
+      "b",
+      "d"
+    ],
+    "explanation": "In non-interactive Claude Code and Agent SDK integrations, when a tool call requires human review or an out-of-band approval that will take longer than the session should wait, a `PreToolUse` hook can return `permissionDecision: \"defer\"`. This immediately pauses execution, ending the turn with `stop_reason: \"tool_deferred\"` and returning the session ID and deferred tool metadata without keeping compute instances running. Once approval is granted, the application resumes the session by ID; the `PreToolUse` hook fires again and returns `allow`, enabling execution to continue seamlessly.",
+    "distractorNotes": {
+      "a": "Long polling in an active container ties up compute resources, risks socket timeouts, and fails if the container restarts during the multi-day wait.",
+      "c": "Embedding administrator credentials in prompts circumvents security governance, creates severe vulnerability risks, and violates privilege separation.",
+      "e": "Discarding the session loses established context and validation history, creating friction and forcing repetitive manual data entry."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/hooks",
+    "sourceNote": "PreToolUse hook returns permissionDecision: \"defer\" to pause with stop_reason: \"tool_deferred\", resuming later via session ID",
+    "sourceCheckedAt": "2026-11-19"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-012",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A financial regulatory filing engine must generate quarterly compliance disclosures following a mandatory five-stage procedure: data ingestion, threshold validation, variance auditing, legal review drafting, and executive sign-off formatting. In pilot testing with an autonomous agent given tools for all five stages, the model occasionally skipped variance auditing or executed sign-off formatting before legal review. Which architectural approach best guarantees strict procedural adherence?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Append emphatic instructions to the system prompt in capital letters commanding the agent never to deviate from the five-stage order."
+      },
+      {
+        "id": "b",
+        "text": "Implement the process as a workflow where LLMs and tools are orchestrated through predefined code paths rather than an autonomous agent."
+      },
+      {
+        "id": "c",
+        "text": "Run three autonomous agent instances concurrently and accept the filing only if at least two instances executed identical tool sequences."
+      },
+      {
+        "id": "d",
+        "text": "Lower model sampling temperature to zero while adding ten synthetic few-shot demonstrations showing successful sequential tool runs."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Anthropic's 'Building Effective Agents' draws an architectural distinction between workflows and agents: 'Workflows are systems where LLMs and tools are orchestrated through predefined code paths', offering predictability and consistency for well-defined, structured tasks. 'Agents, on the other hand, are systems where LLMs dynamically direct their own processes and tool usage.' For a mandatory, multi-stage compliance procedure requiring strict step sequencing, a workflow orchestrated through predefined code paths prevents the model from skipping or reordering steps.",
+    "distractorNotes": {
+      "a": "Prompt instructions provide soft behavioral steering rather than hard programmatic guarantees, and autonomous agents can still reorder or skip tools.",
+      "c": "Voting across three autonomous agents multiplies execution cost and latency by three without preventing failure modes shared across instances.",
+      "d": "Lowering temperature and adding few-shot examples improves pattern matching but does not provide deterministic code-path enforcement."
+    },
+    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceNote": "Workflows orchestrate LLMs and tools through predefined code paths for predictability, unlike agents which direct their own processes",
+    "sourceCheckedAt": "2026-11-19"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-013",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An engineering organization deploys four parallel worker agents to generate integration test suites across independent services in a shared repository. All workers execute concurrently in isolated workspaces. During execution, Worker 1 generates a shared mock authentication helper in tests/common/auth.py. Workers 2, 3, and 4 do not receive this update and each author incompatible, duplicate mock helpers in their respective workspaces. What state coordination mechanism best prevents this duplication?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Have the orchestrator maintain a centralized artifact registry and synchronization protocol to register and broadcast shared utilities."
+      },
+      {
+        "id": "b",
+        "text": "Grant worker processes unconstrained concurrent write access to the same shared directory without locking or file synchronization controls."
+      },
+      {
+        "id": "c",
+        "text": "Serialize all worker execution so that each test suite is generated strictly one after another over an extended sequential pipeline."
+      },
+      {
+        "id": "d",
+        "text": "Instruct workers via system prompts to use bash grep commands to search other workers' private virtual machine filesystems every turn."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "When parallel subagents operate across a shared problem domain, an out-of-band coordination mechanism is required to share common discoveries and artifacts. A centralized artifact registry or shared workspace synchronization protocol managed by the orchestrator allows workers to publish reusable components (such as shared mock utilities) and check for existing assets before authoring redundant, conflicting implementations.",
+    "distractorNotes": {
+      "b": "Unconstrained concurrent file writes without locking or coordination lead to file corruption, race conditions, and overwritten code changes.",
+      "c": "Complete serialization eliminates the throughput and latency benefits of parallel subagent execution when services are otherwise independent.",
+      "d": "Subagents operating in isolated execution environments cannot arbitrarily inspect private filesystems of sibling containers without established network shares."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/sub-agents",
+    "sourceNote": "Multi-agent coordination: orchestrators must provide synchronization mechanisms for shared artifacts",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-014",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An insurance claim intake service extracts structured incident details from scanned crash reports, validates the extracted policy number against a customer database, and generates an acknowledgment letter. Extraction requires multimodal parsing, policy lookup is a deterministic SQL query, and letter generation is template-based text synthesis. The team is deciding between an autonomous agent with SQL tools and a prompt chain. Why is prompt chaining the superior architectural choice?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Because prompt chaining allows the model to dynamically replan extraction steps whenever multimodal parsing confidence is low."
+      },
+      {
+        "id": "b",
+        "text": "Because autonomous agents require deploying separate dedicated models per tool, whereas prompt chaining shares a single model."
+      },
+      {
+        "id": "c",
+        "text": "Because prompt chaining eliminates programmatic validation gates, delegating intermediate schema verification to model reasoning."
+      },
+      {
+        "id": "d",
+        "text": "The workflow follows a fixed sequential path with programmatic gates, providing predictable latency, lower cost, and hard validation."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Prompt chaining is ideal for tasks that decompose into fixed, sequential steps with deterministic programmatic checks in between. Here, policy validation is deterministic SQL that should be enforced by application code rather than an autonomous agent deciding what to query. Chaining with programmatic gates provides lower latency, lower token cost, and predictable execution compared to an open-ended agent loop that risks tool-calling errors or unneeded exploration.",
+    "distractorNotes": {
+      "a": "Plausible because dynamic replanning is a desirable feature, but dynamic replanning is a hallmark of autonomous agent loops, not prompt chaining; prompt chains follow predetermined paths.",
+      "b": "Autonomous agents execute multiple tools using a single model session; there is no requirement to deploy separate dedicated models for each tool.",
+      "c": "Prompt chaining explicitly incorporates programmatic code gates between LLM steps to enforce schema validation and data integrity rather than relying on model reasoning alone."
+    },
+    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceNote": "Prompt chaining decomposes sequential tasks with programmatic checks between steps, avoiding agent loop overhead",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-015",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An enterprise IT helpdesk system handles requests across four distinct categories: password resets, software license provisioning, network VPN diagnostics, and hardware replacement requests. A pilot implementation used a single monolithic agent with twenty tools covering all four categories. In production, the agent frequently selects incorrect tools, experiences high input token latency, and costs $0.12 per turn on simple password resets. Which architecture best resolves these operational issues?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Consolidate the twenty tool definitions into a single generic bash execution tool and let the model author bash scripts for all requests."
+      },
+      {
+        "id": "b",
+        "text": "Invoke all four specialist category models in parallel on every user ticket and use a consensus voting mechanism to pick the best response."
+      },
+      {
+        "id": "c",
+        "text": "Implement a classification router that directs user requests to lightweight, specialized handlers equipped only with category-specific tools."
+      },
+      {
+        "id": "d",
+        "text": "Retain the monolithic agent prompt while increasing model thinking budget to maximum so the model evaluates all twenty tool schemas thoroughly."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "The Routing pattern classifies incoming requests and dispatches them to specialized prompts, tools, or models optimized for that specific category. By routing simple password resets to a lightweight model with minimal tools, the system avoids loading twenty unnecessary tool schemas into context, eliminates tool selection ambiguity, dramatically reduces input token costs, and cuts response latency.",
+    "distractorNotes": {
+      "a": "A single generic bash tool increases security risk, removes structured schema validation, and worsens tool hallucination on simple administrative tasks.",
+      "b": "Running all four categories in parallel on every ticket quadruples inference costs and still requires downstream logic to discard irrelevant outputs.",
+      "d": "Maximizing thinking budget increases latency and cost on every turn without addressing tool schema clutter or context bloat."
+    },
+    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceNote": "Routing classifies inputs to direct them to specialized, scoped prompts and tools, cutting cost and confusion",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-016",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An engineering team is building automated verification pipelines for a financial clearing platform. Pipeline 1 must review pull requests across three distinct, orthogonal dimensions: security compliance, database migration safety, and API backward compatibility. Pipeline 2 must validate complex cryptographic signing algorithms where single model runs exhibit unpredictable stochastic oversights. Which TWO architectural pairings correctly map parallelization patterns to these requirements? (Select TWO)",
+    "options": [
+      {
+        "id": "a",
+        "text": "Pipeline 1 should use Sectioning to evaluate security, database, and API dimensions concurrently with specialized prompts and aggregate findings."
+      },
+      {
+        "id": "b",
+        "text": "Pipeline 1 should use Voting by running three identical general-purpose prompts and discarding any security finding not flagged by all three."
+      },
+      {
+        "id": "c",
+        "text": "Pipeline 2 should use Sectioning by slicing the cryptographic algorithm into three isolated code snippets reviewed without cross-context."
+      },
+      {
+        "id": "d",
+        "text": "Pipeline 2 should use Voting with diverse prompts or seeds across multiple runs to detect subtle vulnerabilities through pooled observations."
+      },
+      {
+        "id": "e",
+        "text": "Both pipelines should be implemented as an autonomous unconstrained agent loop to let the model decide whether parallelization is required."
+      }
+    ],
+    "correct": [
+      "a",
+      "d"
+    ],
+    "explanation": "Anthropic's parallelization taxonomy distinguishes between Sectioning and Voting. Sectioning divides a task into independent, specialized subtasks executed concurrently (such as separate, focused reviews for security, database, and API compatibility) and aggregates their distinct outputs. Voting executes the same task multiple times with varied prompts, temperatures, or perspectives to achieve higher confidence or detect subtle edge-case bugs that a single run might miss.",
+    "distractorNotes": {
+      "b": "Voting across identical general prompts on Pipeline 1 would discard valid critical security findings if only one reviewer caught them, defeating specialized review.",
+      "c": "Slicing cryptographic code into isolated snippets destroys the cross-function algorithmic context needed to identify mathematical vulnerabilities.",
+      "e": "Unconstrained autonomous agent loops introduce serial latency, stochastic execution graphs, and unpredictable token costs without structural guarantees."
+    },
+    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceNote": "Parallelization: Sectioning breaks tasks into independent subtasks; Voting runs multiple passes on the same task for consensus",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-017",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A software team deploys an Evaluator-Optimizer loop to automatically modernize legacy code into idiomatic modern syntax. In initial testing, the generator and evaluator agents enter an infinite loop: the evaluator continuously suggests minor stylistic rearrangements (such as variable renames and comment rewording) without improving code functionality, burning through the token budget. Which architectural control best stabilizes this workflow?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Remove the evaluator agent and instruct the generator agent to evaluate its own code quality internally before emitting final tokens."
+      },
+      {
+        "id": "b",
+        "text": "Define objective evaluation criteria with deterministic test execution and enforce a strict maximum iteration bound on the loop."
+      },
+      {
+        "id": "c",
+        "text": "Raise the sampling temperature of the evaluator model to 1.0 to encourage more diverse and creative code critique suggestions."
+      },
+      {
+        "id": "d",
+        "text": "Switch the evaluator agent to an autonomous agent loop with web search tools so it can search public forums for styling debates."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "The Evaluator-Optimizer workflow is effective only when there are clear, measurable evaluation criteria and iterative refinement produces tangible value. Without objective stopping gates (such as deterministic test suites, linters, or a minimum quality threshold) and a strict hard ceiling on iteration count, the evaluator can offer perpetual subjective critiques that consume tokens without functional improvement.",
+    "distractorNotes": {
+      "a": "Self-evaluation within the generator suffers from self-reinforcing blind spots and lacks independent objective verification.",
+      "c": "Increasing evaluator temperature exacerbates subjective variability and inconsistency, increasing the likelihood of infinite loops.",
+      "d": "Adding web search tools introduces network latency and noise without establishing objective stopping criteria or iteration boundaries."
+    },
+    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceNote": "Evaluator-optimizer requires objective criteria, clear stopping conditions, and iteration bounds to prevent runaway loops",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-018",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A customer flight-booking assistant was deployed as an open-ended autonomous agent loop that sequentially searches flights, evaluates seat availability, queries hotel options, and prices rental cars. In production, 95th-percentile response latency exceeds 50 seconds and per-request costs escalate rapidly because the agent averages 16 serial tool turns, re-transmitting the accumulated conversation history on each turn. Which architectural refactoring best mitigates this latency and cost compounding?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Decompose the itinerary search into parallel subtasks executed concurrently via sectioning, then synthesize the results in a single step."
+      },
+      {
+        "id": "b",
+        "text": "Retain the 16-turn serial agent loop but truncate tool schemas by removing argument descriptions to trim input token transmission."
+      },
+      {
+        "id": "c",
+        "text": "Instruct the model via system prompt to skip intermediate flight validations and select the first available flight without tool verification."
+      },
+      {
+        "id": "d",
+        "text": "Enable streaming output on all API calls so the client UI renders token chunks progressively while keeping the 16 serial steps unchanged."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Autonomous agent loops compound latency and cost linearly with turn count because each step requires a full network round-trip and accumulates token history (serial latency and quadratic input token growth without aggressive caching or clearing). For predictable composite tasks like travel booking, refactoring to parallel sectioning (searching flights, hotels, and cars concurrently) collapses the serial round-trips into a single parallel fan-out followed by a synthesis step, drastically slashing latency and cost.",
+    "distractorNotes": {
+      "b": "Trimming tool descriptions yields minor token reductions but fails to eliminate the primary bottleneck: 16 sequential model round-trips.",
+      "c": "Skipping validations causes inaccurate bookings, hallucinated flight numbers, and booking failures.",
+      "d": "Streaming improves time-to-first-token for individual calls but does not reduce total wall-clock duration or cumulative token cost across 16 sequential turns."
+    },
+    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceNote": "Agent loops compound latency and cost over deep turn counts; use parallel sectioning to collapse round-trips",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-019",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A logistics company processes 250,000 standardized bill-of-lading documents per day. The document schema is strictly defined, exceptions occur in fewer than 1% of shipments, and audit regulations require 100% deterministic traceability for compliance reports. An engineering team proposes replacing the legacy ingestion parser with an autonomous multi-agent swarm that dynamically plans parsing steps. Why should the architecture review board reject this proposal?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Because autonomous agent loops cannot invoke programmatic schema validation tools to verify structured field extractions."
+      },
+      {
+        "id": "b",
+        "text": "Because compliance auditing requires replacing the parser with an Evaluator-Optimizer loop rather than an open-ended agent swarm."
+      },
+      {
+        "id": "c",
+        "text": "Because prompt caching cannot be utilized on autonomous agent sessions, whereas deterministic workflows guarantee 100% cache hits."
+      },
+      {
+        "id": "d",
+        "text": "Because autonomous swarms introduce non-deterministic execution paths, higher costs, and failure modes on a standardized task."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Anthropic's architectural guidance recommends using the simplest pattern that solves the problem. Autonomous agents provide value for open-ended, unpredictable problems, but for standardized, high-volume tasks with strict compliance and deterministic traceability requirements, autonomous swarms introduce non-deterministic execution paths, higher latency, unpredictable token cost spikes, and compounding failure modes without any operational benefit over structured code workflows.",
+    "distractorNotes": {
+      "a": "Autonomous agents are fully capable of invoking schema validation tools; the proposal should be rejected because autonomous planning adds non-deterministic execution and unnecessary cost to a standardized task.",
+      "b": "An Evaluator-Optimizer loop still introduces iterative LLM calls and latency; a standardized, high-volume document task should be handled by predictable code workflows rather than iterative model loops.",
+      "c": "Prompt caching operates on any session with a stable prompt prefix, including agent sessions; the rejection is based on predictability and cost, not caching incompatibility."
+    },
+    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceNote": "Start with the simplest solution: prefer predictable workflows over autonomous agent swarms for standardized tasks",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-020",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A customer support agent on the Messages API has prompt caching enabled to reduce costs across long conversations. The engineering team configures the application to inject dynamic per-request metadata—including the current UTC millisecond timestamp, a unique request identifier, and the active container ID—at the very beginning of the system prompt parameter on every turn. In production, metrics show that prompt cache read hit rates are 0%. What causes this issue?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The Messages API disables prompt caching automatically whenever conversations exceed five conversational turns."
+      },
+      {
+        "id": "b",
+        "text": "Prompt caching requires that the system prompt be omitted entirely in favor of an initial user message containing instructions."
+      },
+      {
+        "id": "c",
+        "text": "Modifying content at the start of the system prompt changes the prefix, invalidating the cached prompt prefix for all turns."
+      },
+      {
+        "id": "d",
+        "text": "Cache breakpoints cannot be applied to system prompts and are valid only when placed on tool result blocks in user turns."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Prompt caching requires exact byte-for-byte prefix matching from the very beginning of the prompt. Placing dynamic, volatile values (such as timestamps, request UUIDs, or container IDs) at the start of the system prompt alters the initial tokens on every single turn, completely invalidating the cached prefix and preventing any cache read hits. To maintain cache prefix stability, static instructions and tools should be placed at the beginning, while dynamic or ephemeral metadata must be placed at the end of the prompt.",
+    "distractorNotes": {
+      "a": "The Messages API supports prompt caching across conversations of arbitrary turn lengths as long as token minimums are satisfied.",
+      "b": "Prompt caching fully supports the system prompt parameter; in fact, caching large static system prompts is a primary documented use case.",
+      "d": "Cache breakpoints (cache_control) are explicitly supported on system prompt blocks, tool definitions, and message blocks."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "sourceNote": "Prompt caching requires prefix stability: changes at the start of prompts invalidate the cache for all subsequent content",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-021",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A complex diagnostic agent assists engineers with database performance tuning over sessions that often reach 35 turns. To stay within the context window limit, the team configured a sliding window that retains only the 8 most recent conversation turns. Users report that after turn 12, the agent repeatedly asks for the database version and hardware specs that were provided in turn 1, and re-suggests indexing strategies that were already tested and rejected in turns 4 through 6. Which memory architecture best fixes this degradation?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Enlarge the sliding window buffer from 8 turns to 10 turns to capture earlier conversation turns without altering the truncation mechanism."
+      },
+      {
+        "id": "b",
+        "text": "Implement structured summarization checkpoints that distill settled facts and ruled-out hypotheses into a persistent context block."
+      },
+      {
+        "id": "c",
+        "text": "Prompt the user at turn 8 to paste their original database version and hardware specifications into the chat before proceeding further."
+      },
+      {
+        "id": "d",
+        "text": "Eliminate conversation history entirely and convert each turn into a stateless single-turn prompt containing only the current user message."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Naive sliding-window truncation discards the oldest messages, which inevitably purges foundational constraints established at session intake (database version, hardware specs) as well as critical negative findings (tested and rejected indexing strategies). A structured compaction or checkpointing strategy addresses this by periodically distilling settled facts, operational constraints, and eliminated options into a persistent working memory block that survives window pruning.",
+    "distractorNotes": {
+      "a": "Slightly increasing the sliding window to 10 turns only delays the same failure mode until turn 14 without solving context loss.",
+      "c": "Relying on manual user re-entry degrades user experience and fails to preserve intermediate diagnostic findings discovered by the agent.",
+      "d": "Stateless single-turn prompting discards all prior context, exacerbating repetition and preventing iterative troubleshooting."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/context-editing",
+    "sourceNote": "Context management: use structured compaction checkpoints to preserve critical early constraints and decisions",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-022",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An orchestration system fans out a code review task to 16 parallel subagents simultaneously. All 16 subagents share an identical 35,000-token system prompt containing coding standards, security rules, and architectural guidelines. The developers configure a cache breakpoint on the system prompt and issue all 16 API requests concurrently. Telemetry indicates that 15 of the 16 requests incurred full cache creation (write) token charges rather than cache read hits. Which TWO architectural adjustments ensure the parallel subagents benefit from prompt cache reads? (Select TWO)",
+    "options": [
+      {
+        "id": "a",
+        "text": "Prepend a unique per-worker random identifier to the system prompt of each subagent to prevent concurrent cache read conflicts."
+      },
+      {
+        "id": "b",
+        "text": "Issue a single warm-up priming request with the shared system prompt before fanning out the 16 parallel subagent review requests."
+      },
+      {
+        "id": "c",
+        "text": "Delay the concurrent fan-out until the first subagent request has completed or begun streaming its initial response."
+      },
+      {
+        "id": "d",
+        "text": "Remove the cache breakpoint from the system prompt and place it exclusively on the final line of each individual diff payload."
+      },
+      {
+        "id": "e",
+        "text": "Reduce the size of the shared system prompt below 1,024 tokens so that the platform exempts the prompt from cache creation costs."
+      }
+    ],
+    "correct": [
+      "b",
+      "c"
+    ],
+    "explanation": "When using prompt caching, a cache entry is created and written during the execution of the initial request containing the breakpoint. If multiple requests with the same prefix are issued concurrently before the initial cache write has settled, each concurrent request encounters a cache miss and initiates its own independent cache write. To ensure parallel workers read from cache, the system must either issue a priming or warm-up request first or stagger the initial worker until its cache write completes before fanning out the remaining requests.",
+    "distractorNotes": {
+      "a": "Adding unique identifiers to each system prompt changes the prefix, guaranteeing 0% cache hits across all workers.",
+      "d": "Placing breakpoints on unique diff payloads fails because diffs differ per worker, preventing any shared prefix cache reuse.",
+      "e": "Prompts below 1,024 tokens are not cached at all; this eliminates caching rather than enabling cache reads."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
+    "sourceNote": "Prompt caching: concurrent requests fired before a cache write finishes result in multiple writes; prime first",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-023",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A multi-turn architectural reasoning agent utilizes Claude's extended thinking capabilities to synthesize complex distributed system designs. Over an extended 18-turn session, accumulated thinking blocks from previous reasoning turns consume over 45,000 tokens of context, reducing the token capacity available for incoming tool results. The team wants to reclaim this context in ongoing turns without altering client-side message structures or losing Claude's visible text responses. Which built-in platform capability addresses this need?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Enable server-side thinking block clearing so the API automatically strips thinking blocks from prior turns in subsequent requests."
+      },
+      {
+        "id": "b",
+        "text": "Set the thinking token budget to zero on subsequent turns, which instructs the model to delete historical thinking blocks from memory."
+      },
+      {
+        "id": "c",
+        "text": "Configure client-side interceptors to strip user prompt turns while leaving all assistant thinking blocks intact in the message array."
+      },
+      {
+        "id": "d",
+        "text": "Disable streaming response mode so that thinking blocks are omitted from the conversation history generated by the Messages API."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Claude's context editing features include server-side thinking block clearing. When enabled, the API automatically clears thinking blocks from earlier turns once that turn is complete, preserving the assistant's final text responses and tool interactions while freeing up tens of thousands of tokens of context for subsequent turns without requiring complex manual message manipulation on the client.",
+    "distractorNotes": {
+      "b": "Setting the thinking budget to zero disables extended thinking on the new turn; it does not clear thinking blocks already stored in conversation history.",
+      "c": "Stripping user prompts destroys conversational coherence and context while keeping the verbose thinking blocks that the team wanted to remove.",
+      "d": "Streaming mode controls how responses are delivered over the wire; it has no effect on whether thinking blocks are retained in conversation context."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/context-editing",
+    "sourceNote": "Thinking block clearing automatically clears prior thinking blocks server-side to reclaim context capacity",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-024",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An enterprise legal research agent assists compliance teams by querying a repository of 8,000 corporate vendor agreements. An engineer proposes injecting the entire contract corpus directly into the agent's context window on every turn because Claude's context window is large enough to hold several million tokens. In benchmark testing, this design results in $18 per query in input costs, 35-second response latency, and degraded recall on niche clauses. Which architectural refactoring best resolves these problems?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Retain the full corpus in context while running an Evaluator-Optimizer loop on every query to cross-verify clause citations."
+      },
+      {
+        "id": "b",
+        "text": "Deploy parallel reader subagents using static sectioning to summarize contract clusters into the prompt context before querying."
+      },
+      {
+        "id": "c",
+        "text": "Fine-tune Claude on the 8,000 contracts so the agreement text is embedded into model parameters, eliminating context retrieval."
+      },
+      {
+        "id": "d",
+        "text": "Implement an external retrieval index that fetches only top-k relevant contract sections into the active working context."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Sound context and memory architecture separates working memory (the prompt context holding current query state and reasoning) from external storage (an indexed retrieval system such as vector search or hybrid BM25 and semantic retrieval). Brute-force context stuffing across thousands of documents incurs massive token costs, high latency, and needle-in-a-haystack recall degradation. Using targeted retrieval to inject only the relevant top-k clauses into working context optimizes accuracy, cost, and speed.",
+    "distractorNotes": {
+      "a": "Running an Evaluator-Optimizer loop over the full corpus doubles token consumption and latency without solving the underlying needle-in-a-haystack retrieval dilution.",
+      "b": "Summarizing clusters of 8,000 contracts on every query still incurs prohibitive token costs and wall-clock latency, and summaries discard the precise clause phrasing needed for legal analysis.",
+      "c": "Fine-tuning adapts model style, tone, and formatting; it does not reliably memorize thousands of dense contracts for exact factual retrieval, and it cannot be dynamically updated as contracts change."
+    },
+    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceNote": "Augmented LLM: use external retrieval memory to fetch relevant context rather than stuffing massive document corpora",
+    "sourceCheckedAt": "2026-11-18"
+  }
+]

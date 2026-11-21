@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "cert": "ccdv-p",
+  "name": "Claude Certified Developer – Professional",
+  "vendor": "Anthropic",
+  "status": "draft",
+  "updatedAt": "2026-11-19",
+  "examUrl": "https://cc.sj-cdn.net/instructor/6nizmqk8tpzpfjvt6qmmav7rh/public/1794947325/Claude_Certified_Developer-Professional_Exam_Guide.pdf",
+  "contentLicense": "CC-BY-SA-4.0",
+  "examQuestionCount": 70,
+  "examDurationMinutes": 120,
+  "domains": [
+    {
+      "slug": "advanced-agent-architecture-and-orchestration",
+      "name": "Advanced Agent Architecture and Orchestration",
+      "weight": 17
+    },
+    {
+      "slug": "production-integration-reliability-and-knowledge-grounding",
+      "name": "Production Integration, Reliability, and Knowledge Grounding",
+      "weight": 20
+    },
+    {
+      "slug": "observability-and-production-monitoring",
+      "name": "Observability and Production Monitoring",
+      "weight": 12
+    },
+    {
+      "slug": "advanced-debugging-and-incident-response",
+      "name": "Advanced Debugging and Incident Response",
+      "weight": 10
+    },
+    {
+      "slug": "evaluation-engineering-and-quality-assurance",
+      "name": "Evaluation Engineering and Quality Assurance",
+      "weight": 12
+    },
+    {
+      "slug": "cost-and-latency-optimization-at-scale",
+      "name": "Cost and Latency Optimization at Scale",
+      "weight": 8
+    },
+    {
+      "slug": "runtime-guardrails-and-production-security",
+      "name": "Runtime Guardrails and Production Security",
+      "weight": 11
+    },
+    {
+      "slug": "agent-fleet-operations-for-software-delivery",
+      "name": "Agent Fleet Operations for Software Delivery",
+      "weight": 10
+    }
+  ]
+}

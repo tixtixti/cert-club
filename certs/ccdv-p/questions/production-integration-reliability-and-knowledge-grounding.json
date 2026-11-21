@@ -1,0 +1,1142 @@
+[
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-001",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A nightly job submits its whole workload to the Messages API in the first few seconds after midnight. The organization's usage view shows the job well under its ITPM and OTPM limits for the model, yet many early requests fail with a 429 rate_limit_error, and the job only completes once retries spread the traffic out. The team plans to request higher rate limits. What should they do instead?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Raise the SDK's automatic retry count so the early 429s are absorbed, since the job already completes once its retries spread the traffic out."
+      },
+      {
+        "id": "b",
+        "text": "Start the job at a low rate and spread requests evenly, raising throughput gradually, since a sudden burst can hit a limit set below the rate limit."
+      },
+      {
+        "id": "c",
+        "text": "Treat the 429s as the tier's monthly spend cap and pause the job until access resumes, since those responses also arrive while under rate limits."
+      },
+      {
+        "id": "d",
+        "text": "Split the workload across two API keys in the same organization, so that each key carries half of the burst against its own per-minute limits."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "A ramp limit caps how fast an organization's token usage on a model can grow, so a sharp increase, including a burst within a few seconds, can return a 429 while usage is still under the ITPM and OTPM limits. The guidance is to hold traffic where requests succeed, raise it gradually, and start scheduled or bulk jobs at a low rate with evenly spread requests. The error_code ramp_limit_exceeded distinguishes it from an ordinary rate limit; a higher rate limit does not lift the ramp step.",
+    "distractorNotes": {
+      "a": "More retries hide the symptom and add load at the worst moment; the documented response is to shape the traffic, not to absorb repeated 429s.",
+      "c": "A spend-cap 429 has no retry-after header and keeps failing until access resumes, which contradicts a job that succeeds once retries spread out.",
+      "d": "Ramp limits are tracked against the organization's usage of the model, so dividing the same burst across keys in one organization does not lower it."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/api/rate-limits",
+    "sourceNote": "Rate limits / Ramp limits: 429 under ITPM and OTPM after a sharp increase; start bulk jobs low and ramp",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-002",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A mission-critical payment processing workflow calls the Messages API synchronously. During peak global traffic events, several requests fail with HTTP status code 529 and error type overloaded_error. The integration client currently uses fixed 500-millisecond retries up to five times, which rapidly exhausts attempts and compounds load on the upstream service. How should the engineering team reconfigure the retry strategy to handle these errors reliably?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Configure the client to drop synchronous retries and immediately fail over to the Files API endpoint, which operates on separate infrastructure and bypasses platform load."
+      },
+      {
+        "id": "b",
+        "text": "Replace the fixed delay with immediate back-to-back retries while increasing max_retries to twenty, ensuring the request succeeds as soon as capacity frees up."
+      },
+      {
+        "id": "c",
+        "text": "Adopt exponential backoff with full jitter and honor the retry-after response header when present, pausing subsequent retries until the specified duration elapses."
+      },
+      {
+        "id": "d",
+        "text": "Catch the 529 error code and retransmit the exact request payload using an alternate API key within the same organization to escape the model concurrency throttle."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "HTTP status 529 overloaded_error indicates that the Anthropic API is experiencing high traffic across all users. The official SDK and recommended architecture handle transient 5xx errors by applying exponential backoff with random jitter and strictly respecting the retry-after response header when supplied. Immediate retries or tight fixed intervals generate retry storms that exacerbate upstream overload and fail repeatedly.",
+    "distractorNotes": {
+      "a": "The Files API is dedicated to managing file assets for tool use and document analysis rather than serving general language model completions, so routing payment messages to it is invalid.",
+      "b": "Immediate tight looping without backoff causes thundering herd retry storms that overwhelm client network buffers and fail repeatedly during sustained load spikes.",
+      "d": "A 529 overloaded_error reflects global system-wide platform capacity rather than an organization-specific concurrency cap, so swapping API keys within the same organization does not alleviate the issue."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/api/errors",
+    "sourceNote": "Claude API errors: 529 overloaded_error indicates temporary high traffic; official SDK retries with exponential backoff and retry-after",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-003",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An interactive customer support web portal consumes Claude completions via the streaming Messages API using Server-Sent Events (SSE). During a multi-turn session, the server returns an initial HTTP 200 OK status line with headers, but an internal infrastructure timeout occurs halfway through token generation. The frontend interface hangs indefinitely because standard HTTP status code error handlers are not triggered. How must the frontend client detect and recover from this failure?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Parse incoming SSE stream messages for an error event block and trigger fallback recovery logic when an error event is received after the HTTP 200 response."
+      },
+      {
+        "id": "b",
+        "text": "Rely on the browser's native EventSource reconnection logic to issue an HTTP HEAD request and check whether the endpoint status has changed to an HTTP 504."
+      },
+      {
+        "id": "c",
+        "text": "Inspect the content-type response header on every received data chunk to verify it has not dynamically transitioned from text/event-stream to application/json."
+      },
+      {
+        "id": "d",
+        "text": "Close the connection and fail over only when an empty data chunk arrives without a message_delta stop_reason, treating missing stop reasons as network drops."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "When consuming a streaming response over Server-Sent Events, the HTTP response headers with status 200 OK are sent before text generation finishes. If an error occurs mid-stream, standard HTTP status code handlers cannot intercept it. Instead, the API emits an SSE event with event type error containing error details, which client streaming parsers must intercept to execute proper failover and recovery.",
+    "distractorNotes": {
+      "b": "Standard EventSource reconnection does not convert established HTTP 200 connections into HTTP 504 status codes via HEAD requests; stream failures are reported inline within SSE event frames.",
+      "c": "An established HTTP response cannot change its Content-Type header mid-stream; all SSE event blocks including error events remain framed inside the text/event-stream channel.",
+      "d": "Relying on missing stop reasons or stream termination heuristics is fragile and leaves the interface hanging; the API explicitly publishes an error event when mid-stream exceptions happen."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/api/errors",
+    "sourceNote": "Claude API errors / Streaming: Mid-stream errors occur after HTTP 200 and arrive as SSE error events rather than standard HTTP status codes",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-004",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An automated medical triage assistant routes urgent user inquiries to Claude Opus. During a regional cloud outage, calls to the primary model fail repeatedly with consecutive HTTP 504 gateway timeouts. The engineering team wants to implement an automated circuit breaker pattern that prevents request pileups, protects the user experience, and automatically restores normal operations when the primary model recovers. Which architecture accomplishes this?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Keep retrying requests against the primary model endpoint while caching failure payloads in local memory until the gateway returns an HTTP 200 status code."
+      },
+      {
+        "id": "b",
+        "text": "Route failed requests to an asynchronous webhook that resubmits them once an external monitor confirms that Claude Opus latency drops below one second."
+      },
+      {
+        "id": "c",
+        "text": "Buffer inbound requests in an in-memory queue while executing back-to-back synchronous health checks against the primary endpoint on every incoming turn."
+      },
+      {
+        "id": "d",
+        "text": "Open the circuit breaker upon consecutive failure thresholds to route traffic to Claude Sonnet, while probing the primary model asynchronously before closing."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "A resilient client circuit breaker transitions to an open state when consecutive request failures cross a predefined threshold, redirecting active traffic to a compatible fallback model such as Claude Sonnet without blocking client threads. While open, background health probes periodically test the primary model until successful responses allow the circuit breaker to transition back to half-open and closed states.",
+    "distractorNotes": {
+      "a": "Continuously retrying against an unresponsive model and caching failures in local memory exhausts client thread pools and memory without restoring user availability.",
+      "b": "Dumping urgent medical triage inquiries into an asynchronous webhook breaks interactive conversational SLAs and fails to provide timely responses to waiting users.",
+      "c": "Synchronous health checks executed on every incoming request block client threads and multiply upstream latency instead of decoupling failures through an open circuit state."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/api/errors",
+    "sourceNote": "Claude API errors: Circuit breaker handles sustained 504 and 5xx failures by shifting traffic to fallback models and probing health",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-005",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An engineering team manages multiple services calling the Claude API. Following an unexpected traffic surge at the end of the month, one background microservice receives HTTP 400 errors with type invalid_request_error mentioning that a spend limit was reached. Simultaneously, automated developers running Claude Code CLI sessions report receiving HTTP 429 rate_limit_error responses. What explains the different error codes for these spend limits?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The background microservice exceeded its monthly payment credit card authorization, whereas the Claude Code CLI sessions encountered standard organization RPM limits."
+      },
+      {
+        "id": "b",
+        "text": "Organization or workspace spend limits configured by administrators return HTTP 400, whereas spend limits on the Claude Code workspace can return HTTP 429 instead."
+      },
+      {
+        "id": "c",
+        "text": "The background microservice ran out of prepaid token grants in the console, while Claude Code triggered a hard ramp limit due to rapid burst command submissions."
+      },
+      {
+        "id": "d",
+        "text": "Workspaces using standard API keys produce HTTP 400 when rate limited, whereas OAuth tokens used by interactive command-line sessions always map limits to HTTP 429."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "According to the Claude API errors documentation, reaching a customer-configured organization or workspace spend limit returns an HTTP 400 invalid_request_error. However, spend limits configured specifically on the Claude Code workspace represent an exception where the platform can return an HTTP 429 status code instead.",
+    "distractorNotes": {
+      "a": "Credit card failures and billing issues return HTTP 402 billing_error, not HTTP 400 invalid_request_error.",
+      "c": "Prepaid token exhaustion is governed by billing error codes, and ramp limits return 429 with error_code ramp_limit_exceeded rather than spend limit error messages.",
+      "d": "Authentication mechanism (API key versus OAuth) does not dictate whether spend limits map to HTTP 400 or HTTP 429; the documented exception is specific to Claude Code workspace limits."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/api/errors",
+    "sourceNote": "Claude API errors: 400 invalid_request_error for org/workspace spend limits, except Claude Code workspace which can return 429",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-006",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A high-volume data pipeline encounters intermittent HTTP 500 api_error responses that persist across SDK automatic retries. The operations team logs the failure and prepares an escalation ticket for Anthropic support. Which specific data element returned in the Claude API error response body should the team capture and provide to support to accelerate diagnosis across distributed infrastructure?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The request_id string contained in the top-level error response JSON body, which uniquely identifies the specific transaction in Anthropic server logs."
+      },
+      {
+        "id": "b",
+        "text": "The client-generated idempotency_key header transmitted with the initial HTTP request, which support engineers use to match upstream load balancer traces."
+      },
+      {
+        "id": "c",
+        "text": "The ephemeral session_fingerprint token generated by the SDK client socket connection, which indexes internal gateway container allocation records."
+      },
+      {
+        "id": "d",
+        "text": "The numeric Cloudflare data center ray ID parsed from the response headers, which isolates internal model server rack clusters during support triage."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "The Claude API error response format always includes a top-level request_id field alongside the error type and message. Capturing and providing this request_id to Anthropic support allows their engineering team to immediately trace the exact internal transaction, identify the failing component, and resolve persistent api_error events.",
+    "distractorNotes": {
+      "b": "Client-side idempotency keys are not standard top-level tracking identifiers on Anthropic error payloads and do not replace the server-generated request_id.",
+      "c": "There is no documented session_fingerprint field in the Claude API error JSON schema; the authoritative identifier is the top-level request_id.",
+      "d": "While Cloudflare ray headers identify edge proxy routing, Anthropic support requires the internal API request_id to inspect backend model server traces and logs."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/api/errors",
+    "sourceNote": "Claude API errors: API error responses include a top-level request_id field for tracking, debugging, and support escalations",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-007",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A legal document analysis platform submits large contract bundles containing hundreds of pages of text to the Messages API using synchronous non-streaming requests. Occasionally, requests that require extensive reasoning and generation time fail with an HTTP 504 status code and error type timeout_error after reaching the server's connection time limit. What is the recommended architectural remedy to avoid these timeout errors?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Split the prompt across multiple simultaneous non-streaming connections and concatenate their completions inside a client-side aggregation proxy."
+      },
+      {
+        "id": "b",
+        "text": "Append a custom keep-alive header to the HTTP request payload and reduce the socket read timeout to twenty seconds on the client network interface."
+      },
+      {
+        "id": "c",
+        "text": "Increase the max_tokens parameter to its upper ceiling so the server allocates a dedicated processing thread with an extended gateway connection window."
+      },
+      {
+        "id": "d",
+        "text": "Switch to the streaming Messages API or Message Batches API, since streaming transmits tokens incrementally before server connection time limits expire."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "For long-running Messages API requests that risk exceeding HTTP server or gateway time limits, the documentation recommends adopting the streaming Messages API or using the asynchronous Message Batches API. Streaming begins transmitting token chunks as soon as generation starts, preventing gateway timeouts, while the Batches API runs heavy workloads asynchronously with up to a 24-hour processing window.",
+    "distractorNotes": {
+      "a": "Arbitrarily splitting a single prompt across simultaneous connections fragments context and does not resolve server-side per-request generation time limits.",
+      "b": "HTTP keep-alive headers and reducing client socket timeouts do not alter the server's internal processing time limits before generation begins.",
+      "c": "Increasing max_tokens does not extend server gateway timeout thresholds; in fact, requesting larger generation buffers can increase the likelihood of hitting timeouts."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/api/errors",
+    "sourceNote": "Claude API errors: Long-running requests returning 504 timeout_error should use the streaming Messages API or Message Batches API",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-008",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A financial trading platform runs a distributed fleet of worker agents communicating with the Messages API. During market opening volatility, the workers experience bursts of HTTP 429 rate_limit_error and HTTP 529 overloaded_error responses. Which TWO client-side design patterns should the engineering team implement to maximize overall throughput and prevent thundering herd retry storms? (Select TWO.)",
+    "options": [
+      {
+        "id": "a",
+        "text": "Dispatch retries immediately with zero backoff while rotating through a pool of distinct user-agent strings to bypass edge rate limit counters."
+      },
+      {
+        "id": "b",
+        "text": "Incorporate full random jitter into the exponential backoff calculation to desynchronize retry timing across the distributed fleet of worker agents."
+      },
+      {
+        "id": "c",
+        "text": "Override default client behavior to retry HTTP 400 invalid_request_error responses automatically up to ten times before recording an operational failure."
+      },
+      {
+        "id": "d",
+        "text": "Inspect response headers and pause retries for the duration indicated by the retry-after header when that header is present in the API error response."
+      },
+      {
+        "id": "e",
+        "text": "Buffer throttled requests in local client threads and replay them concurrently in parallel batches immediately after receiving any HTTP 200 response."
+      }
+    ],
+    "correct": [
+      "b",
+      "d"
+    ],
+    "explanation": "Resilient distributed integrations prevent thundering herd congestion by adding full jitter to exponential backoff, which spreads retry attempts across random intervals rather than synchronized waves. Furthermore, clients must honor the retry-after HTTP header when present on 429 or 529 responses, ensuring workers do not make futile requests before the rate limit or system recovery window has opened.",
+    "distractorNotes": {
+      "a": "Immediate retries without backoff create catastrophic thundering herd traffic, and rotating user-agent strings does not bypass organization-level token and rate limits.",
+      "c": "HTTP 400 invalid_request_error indicates a malformed or invalid payload (or spend limit), which cannot be resolved by retrying without altering the request.",
+      "e": "Replaying buffered requests concurrently in parallel batches immediately after a single success creates a new traffic surge that triggers immediate 429 and 529 errors."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/api/errors",
+    "sourceNote": "Claude API errors: Transient failures require exponential backoff with jitter and honoring retry-after to prevent thundering herds",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-009",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An internal enterprise assistant operates under a tier rate limit of 1,000,000 input tokens per minute (ITPM). The service sends requests where each call includes a static 150,000-token product documentation catalog followed by a short 100-token user query. During peak usage, the application processes 20 requests in a single minute (representing 3,002,000 total input tokens). The team expects to hit 429 rate limit errors, but all 20 requests succeed without throttling. What explains this outcome?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The API dynamically shifts excess input tokens above the minute threshold into the next minute's quota window whenever overall concurrency remains low."
+      },
+      {
+        "id": "b",
+        "text": "Static documentation payloads are automatically compressed by the edge gateway, reducing raw input tokens by seventy percent before limit evaluation."
+      },
+      {
+        "id": "c",
+        "text": "Default ITPM limits count only uncached input tokens and cache creation tokens; cached tokens read from prompt caching do not count against the ITPM quota."
+      },
+      {
+        "id": "d",
+        "text": "The organization's usage tier calculates ITPM as a rolling six-hour moving average rather than enforcing per-minute request boundaries at runtime."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Anthropic API rate limits evaluate cache-aware ITPM: only uncached tokens (tokens after the last cache breakpoint) and cache_creation_input_tokens count toward the ITPM limit. Tokens read from cache (cache_read_input_tokens) do not count toward ITPM. Once the 150,000-token documentation catalog is cached, subsequent requests only count the new 100 query tokens toward ITPM, allowing effective throughput to far exceed the raw token limit.",
+    "distractorNotes": {
+      "a": "Input tokens are evaluated per minute window and cannot be rolled over or deferred into future quota windows without hitting a 429.",
+      "b": "The API does not perform lossy or arbitrary token compression on inputs to reduce counted token consumption against rate limits.",
+      "d": "ITPM rate limits are strictly enforced on per-minute intervals rather than amortized across a rolling six-hour window."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/api/rate-limits",
+    "sourceNote": "Rate limits: Cache-aware ITPM counts only uncached and cache creation tokens; cache_read_input_tokens do not count toward ITPM",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-010",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A developer deploys a summarization pipeline using the Messages API. To ensure comprehensive responses are never cut off unexpectedly, the developer configures max_tokens to 8192 across all requests, even though average completions only generate roughly 500 tokens. A teammate warns that setting max_tokens so high will prematurely exhaust the organization's output tokens per minute (OTPM) rate limit. How does the Claude API evaluate OTPM against max_tokens?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The API pre-allocates the full max_tokens quota at the moment of request dispatch, locking those tokens against the OTPM limit until generation completes."
+      },
+      {
+        "id": "b",
+        "text": "The API evaluates OTPM in real time as tokens are produced, counting only actual generated tokens; max_tokens does not factor into OTPM calculations."
+      },
+      {
+        "id": "c",
+        "text": "The API charges fifty percent of max_tokens against OTPM upfront, reconciling the remainder against actual generated output tokens when the request ends."
+      },
+      {
+        "id": "d",
+        "text": "The API counts max_tokens against OTPM for synchronous requests, but counts only generated tokens when client connections use streaming Server-Sent Events."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "According to the rate limits documentation, OTPM rate limits are evaluated in real time as output tokens are produced, counting only the actual tokens generated. The max_tokens parameter does not factor into OTPM rate limit calculations, meaning there is no rate limit downside to configuring a higher max_tokens value.",
+    "distractorNotes": {
+      "a": "The API does not pre-allocate or lock the max_tokens value against the OTPM rate limit bucket when a request begins.",
+      "c": "There is no fractional pre-charging or upfront deduction of max_tokens; OTPM tracks strictly real-time output token generation.",
+      "d": "OTPM rate limit calculations function identically for both synchronous and streaming calls, tracking only real output tokens produced."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/api/rate-limits",
+    "sourceNote": "Rate limits: OTPM evaluates actual generated tokens in real time; max_tokens does not factor into OTPM calculations",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-011",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A proxy service monitors Claude API traffic to implement client-side token bucket shaping before requests reach upstream endpoints. The proxy inspects response headers from recent successful calls and observes anthropic-ratelimit-input-tokens-remaining set to 25000 and anthropic-ratelimit-input-tokens-reset set to 2026-11-18T14:30:00Z. How does the API calculate and report these rate limit header values?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The remaining tokens value is rounded to the nearest thousand, and the reset header specifies the exact RFC 3339 timestamp when the limit fully replenishes."
+      },
+      {
+        "id": "b",
+        "text": "The remaining tokens value reflects an exact integer count, and the reset header indicates the integer number of elapsed milliseconds since window start."
+      },
+      {
+        "id": "c",
+        "text": "The remaining tokens value is an estimated fraction of the monthly spend cap, and the reset header records the end of the current billing cycle at midnight."
+      },
+      {
+        "id": "d",
+        "text": "The remaining tokens value shows unallocated prompt cache blocks, and the reset header denotes when cached KV embeddings expire from memory buffers."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "The Claude API response headers provide real-time visibility into enforced limits and remaining capacity. As documented, anthropic-ratelimit-*-remaining headers report the tokens remaining rounded to the nearest thousand, while the anthropic-ratelimit-*-reset headers provide the time when the rate limit is fully replenished in RFC 3339 timestamp format.",
+    "distractorNotes": {
+      "b": "Token remaining headers are rounded to the nearest thousand rather than exact integer values, and reset is an RFC 3339 timestamp rather than millisecond offsets.",
+      "c": "Rate limit headers reflect per-minute token and request capacities rather than monthly spend caps or billing cycle reset dates.",
+      "d": "The rate limit headers track rate limiting quotas, not prompt cache eviction timers or KV embedding memory allocation buffers."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/api/rate-limits",
+    "sourceNote": "Rate limits / Response headers: Tokens remaining is rounded to nearest thousand; reset time is provided in RFC 3339 format",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-012",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An organization shares a single Anthropic account across several development teams. Recently, an automated testing suite run by an experimental research team generated massive bursts of requests, exhausting the organization's Tier 4 ITPM limits and starving a customer-facing production pipeline of tokens. How should the account administrator isolate and protect the production pipeline from unconstrained experimental traffic?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Issue separate API keys for each developer and rely on client SDK configuration to restrict individual connection pools to ten requests per minute."
+      },
+      {
+        "id": "b",
+        "text": "Provision separate virtual private clouds (VPCs) on AWS and configure egress security group filters that drop TCP packets exceeding bandwidth limits."
+      },
+      {
+        "id": "c",
+        "text": "Enforce distinct HTTP user-agent header values across services and request Anthropic support to apply backend routing tags to the development key."
+      },
+      {
+        "id": "d",
+        "text": "Organize teams into separate Workspaces and set lower per-minute token and request limits on the research Workspace via the Console or Rate Limits API."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Anthropic Console allows administrators to segment an organization into distinct Workspaces. Administrators can configure lower per-minute request (RPM), input token (ITPM), and output token (OTPM) rate limits on specific Workspaces using the Console or programmatically via the Rate Limits API, preventing non-critical or experimental workloads from consuming shared organization quotas.",
+    "distractorNotes": {
+      "a": "Issuing separate API keys within an unconstrained workspace does not isolate quotas, as rate limits are tracked across the workspace and organization.",
+      "b": "VPC egress filtering drops raw network packets but does not provide rate-limiting controls over API tokens or prevent upstream quota exhaustion.",
+      "c": "Anthropic rate limiting does not partition organization quotas based on custom User-Agent headers or manual backend support routing tags."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/api/rate-limits",
+    "sourceNote": "Rate limits: Workspace rate limits allow setting lower per-minute token and request limits to prevent noisy-neighbor starvation",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-013",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A product team processes historical support logs by running sentiment and entity extraction across 80,000 customer transcripts every weekend. The jobs do not require real-time streaming or low-latency turnarounds, but the team's cloud budget is tight and the synchronous pipeline risks hitting daytime interactive rate limits. Which architecture should the team implement to satisfy these cost and throughput constraints?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Route transcripts through the Token Counting API to compress document payloads before submitting them to synchronous Messages endpoints at night."
+      },
+      {
+        "id": "b",
+        "text": "Submit transcripts to the Message Batches API, which processes requests asynchronously at fifty percent of standard prices with separate rate limits."
+      },
+      {
+        "id": "c",
+        "text": "Establish a WebSocket connection pool that dispatches single-turn requests sequentially with fixed one-second delays between successive message blocks."
+      },
+      {
+        "id": "d",
+        "text": "Configure prompt caching with ephemeral breakpoints on each transcript and execute parallel synchronous requests across multiple regional gateways."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "The Message Batches API is designed for bulk, non-interactive workloads such as data analysis and evaluations. It processes requests asynchronously with separate batch rate limits, delivers most batch results within 1 hour (with a 24-hour completion window), and charges all input and output tokens at 50 percent of standard API prices.",
+    "distractorNotes": {
+      "a": "The Token Counting API only calculates token counts without generating model completions or compressing text.",
+      "c": "Sequential WebSocket calls with fixed delays add complexity, remain charged at standard API rates, and consume interactive request limits.",
+      "d": "Prompt caching provides savings on shared repeated prefixes, but unique customer transcripts do not share context, and synchronous calls pay full standard rates."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "sourceNote": "Message Batches API: Asynchronous bulk processing charged at 50 percent of standard API prices with separate rate limits",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-014",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An engineering team designs an automated ingestion pipeline that submits bulk document extraction jobs to the Message Batches API. Which TWO operational characteristics and constraints of the Message Batches API must the team incorporate into their pipeline architecture? (Select TWO.)",
+    "options": [
+      {
+        "id": "a",
+        "text": "Individual requests within a batch are processed independently, so a validation error on one message does not halt processing for other messages."
+      },
+      {
+        "id": "b",
+        "text": "A single message batch accepts up to one million individual requests provided the total JSON payload remains under five gigabytes in compressed size."
+      },
+      {
+        "id": "c",
+        "text": "A message batch is constrained to either 100,000 message requests or 256 MB in size, and batches expire if processing is not completed within 24 hours."
+      },
+      {
+        "id": "d",
+        "text": "Setting max_tokens to zero is required on the first batched request to pre-warm the prompt cache across subsequent batched message executions."
+      },
+      {
+        "id": "e",
+        "text": "Downloadable batch completion results are permanently purged from Claude Console workspace storage exactly twenty-four hours after batch creation."
+      }
+    ],
+    "correct": [
+      "a",
+      "c"
+    ],
+    "explanation": "According to the Message Batches API documentation, requests in a batch are processed independently, meaning individual request failures (such as invalid parameters) do not fail the overall batch. Additionally, batch size is limited to either 100,000 requests or 256 MB in size, whichever is reached first, and batches expire if processing does not complete within 24 hours (results remain available for download for 29 days).",
+    "distractorNotes": {
+      "b": "The batch limit is 100,000 requests or 256 MB, not one million requests or five gigabytes.",
+      "d": "Cache pre-warming with max_tokens: 0 is explicitly unsupported inside batches because ephemeral cache entries would likely expire before follow-up requests run.",
+      "e": "Batch results are retained and accessible for download for 29 days after creation, not purged after 24 hours."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
+    "sourceNote": "Message Batches API: Limited to 100k requests or 256 MB, expires at 24 hours, and requests are processed independently",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-015",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A platform engineering team needs to expose an internal ticketing system to automated developer agents running on remote workstations and in continuous integration (CI) runners. The team evaluates the Model Context Protocol (MCP) standard transports to determine how to deploy the server securely across the corporate network. Which transport should the team select?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Streamable HTTP, because the server operates as an independent network service handling multiple concurrent client connections over HTTP POST."
+      },
+      {
+        "id": "b",
+        "text": "stdio, because standard stream redirection over secure shell (SSH) tunnels is the mandatory transport binding for all multi-client network deployments."
+      },
+      {
+        "id": "c",
+        "text": "WebSocket, because bidirectional socket streams are the default transport binding specified by the MCP core protocol for remote tool invocation."
+      },
+      {
+        "id": "d",
+        "text": "gRPC, because binary protocol buffers provide the required transport framing for streaming MCP tool definitions across distributed cluster nodes."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "In the Model Context Protocol specification, Streamable HTTP is the standard network transport where the server operates as an independent service capable of handling multiple concurrent client connections over HTTP POST endpoints. The stdio transport is designed exclusively for client-launched local subprocesses communicating over standard input and output streams.",
+    "distractorNotes": {
+      "b": "The stdio transport is intended for local subprocess execution where the client launches the process; it is not the standard binding for remote network deployments.",
+      "c": "WebSocket is not a standard MCP specification transport binding; remote communication is standardized on Streamable HTTP.",
+      "d": "gRPC is not an official MCP specification transport; MCP uses JSON-RPC 2.0 message framing over stdio or Streamable HTTP."
+    },
+    "sourceUrl": "https://modelcontextprotocol.io/specification/2026-07-28/basic/transports",
+    "sourceNote": "MCP Transports: Streamable HTTP enables independent multi-client servers via HTTP POST, while stdio binds to local subprocess streams",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-016",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An integration architect audits a third-party MCP connector written against an older specification revision. The connector exposes two separate HTTP paths: a GET /sse endpoint that opens a persistent Server-Sent Events stream, and a POST /messages endpoint that accepts client JSON-RPC commands. What architectural migration is required to bring this connector into compliance with the current MCP specification?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Consolidate the two endpoints into a single bidirectional WebSocket endpoint that multiplexes JSON-RPC commands and streaming responses on a shared TCP socket."
+      },
+      {
+        "id": "b",
+        "text": "Keep the GET /sse endpoint for authentication handshakes while modifying POST /messages to return chunked multipart MIME attachments for binary payloads."
+      },
+      {
+        "id": "c",
+        "text": "Migrate from the deprecated HTTP+SSE transport to Streamable HTTP, exposing a single endpoint where clients send POST requests and receive JSON or SSE streams."
+      },
+      {
+        "id": "d",
+        "text": "Retain the dual-endpoint structure but replace SSE message framing with raw newline-delimited JSON streaming over persistent HTTP/2 connection tunnels."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "The legacy HTTP+SSE transport, which used separate GET and POST endpoints, was deprecated in favor of Streamable HTTP. Under Streamable HTTP, the server exposes a single MCP endpoint accepting HTTP POST requests. Each client request or notification is sent as an HTTP POST, and the server replies with either a single JSON object or a request-scoped SSE stream.",
+    "distractorNotes": {
+      "a": "The MCP specification does not standardize on WebSockets; the standard network transport is Streamable HTTP.",
+      "b": "Streamable HTTP eliminates the separate GET /sse stream endpoint entirely rather than keeping it for authentication.",
+      "d": "The specification replaces the dual-endpoint pattern with single-endpoint Streamable HTTP, rather than retaining dual endpoints over HTTP/2."
+    },
+    "sourceUrl": "https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http",
+    "sourceNote": "MCP Streamable HTTP: Replaces deprecated HTTP+SSE with a single MCP endpoint handling client POST requests and returning JSON or SSE",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-017",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An engineer builds a custom MCP server providing tools for querying a PostgreSQL database. During execution of a query tool, the database engine returns a SQL syntax error because the model provided an invalid column name. How should the MCP server format its JSON-RPC response to inform the model and client about this execution failure?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Return a standard JSON-RPC protocol error response with code -32602 (Invalid params) containing the SQL syntax error message inside the data object."
+      },
+      {
+        "id": "b",
+        "text": "Return a JSON-RPC result object containing content with the error description and isError set to true, allowing the language model to self-correct."
+      },
+      {
+        "id": "c",
+        "text": "Close the underlying transport stream immediately and emit a stderr diagnostic log line that prompts the client to reinitialize the MCP session."
+      },
+      {
+        "id": "d",
+        "text": "Return an empty result object with HTTP status code 422 Unprocessable Entity on the Streamable HTTP transport to force an automatic client retry."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "In the MCP specification, tool execution errors (such as SQL syntax errors or failed business logic) are reported inside a normal JSON-RPC result object with isError: true and error details placed in content. Clients provide these tool execution errors to the language model so that it can inspect what went wrong and attempt self-correction. JSON-RPC protocol errors are reserved for protocol-level failures such as malformed requests or unknown methods.",
+    "distractorNotes": {
+      "a": "JSON-RPC protocol error codes (like -32602) indicate protocol or framing errors; tool execution failures must be reported as result objects with isError: true.",
+      "c": "Closing transport streams or writing to stderr crashes the connection rather than returning a structured error message that allows model recovery.",
+      "d": "Streamable HTTP transports do not map tool execution errors to HTTP 422 codes; the HTTP layer returns status 200 with a JSON-RPC result payload carrying isError: true."
+    },
+    "sourceUrl": "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+    "sourceNote": "MCP Tools: Tool execution errors must be reported in result with isError: true and content to allow LLM self-correction",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-018",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A software engineering team configures twelve internal MCP servers in Claude Code, exposing over eighty specialized tools across multiple repositories. Developers notice that despite the large number of tools, session startup remains instantaneous and initial context window consumption is minimal. What mechanism in Claude Code is responsible for this context efficiency?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Claude Code runs a local embedding model that prunes ninety percent of tool description text before passing schemas to the language model context."
+      },
+      {
+        "id": "b",
+        "text": "Claude Code establishes WebSocket connections to all twelve servers but disables schema transmission until an explicit /tools refresh command is run."
+      },
+      {
+        "id": "c",
+        "text": "Claude Code converts tool schemas into compressed binary protocol buffers and transmits them over standard Unix domain sockets to save token space."
+      },
+      {
+        "id": "d",
+        "text": "Tool search is enabled by default, deferring full tool schemas until needed and loading only tool names and server instructions at session start."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "In Claude Code, tool search is enabled by default. It keeps MCP context usage low by deferring full tool JSON schemas until Claude needs them. At session start, only tool names and server instructions load into context. When a user prompt requires external tools, Claude dynamically searches for and loads the necessary tool schemas on demand.",
+    "distractorNotes": {
+      "a": "Claude Code does not run a local embedding model to prune or compress tool description text.",
+      "b": "Tool availability is dynamic and automated through tool search; it does not require running a manual /tools refresh command.",
+      "c": "MCP uses JSON-RPC over stdio or HTTP rather than binary protocol buffers over Unix domain sockets."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/mcp",
+    "sourceNote": "Claude Code MCP: Tool search is on by default, deferring tool schemas and loading only names and instructions at session start",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-019",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An automated site reliability engineering (SRE) agent uses Claude Code with tool search enabled. The agent connects to an MCP server providing two core metric-querying tools that must be invoked on virtually every turn. To avoid the additional latency and token overhead of an explicit tool search step on every turn, the engineering team wants these specific tools to be permanently visible in context. What configuration achieves this?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Configure alwaysLoad to true in the server's entry within .mcp.json so its tool definitions load upfront into context at session start."
+      },
+      {
+        "id": "b",
+        "text": "Assign the tools an priority: high parameter in their inputSchema to force upfront loading while keeping the rest of the server deferred."
+      },
+      {
+        "id": "c",
+        "text": "Prefix the server's name with core_ in the project configuration file to trigger Claude Code's built-in priority tool reservation logic."
+      },
+      {
+        "id": "d",
+        "text": "Set the environment variable MCP_DEFER_ALL=false in the shell profile to globally disable tool schema deferral across all installed servers."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "In Claude Code, setting alwaysLoad: true in a server's configuration (such as in .mcp.json) exempts that server from tool search deferral. The server's tool definitions then load upfront into context at session start regardless of the global ENABLE_TOOL_SEARCH setting, eliminating search latency for frequently called tools.",
+    "distractorNotes": {
+      "b": "There is no priority: high parameter defined in MCP tool inputSchema for controlling upfront client loading.",
+      "c": "Server naming prefixes such as core_ have no semantic meaning in Claude Code configuration.",
+      "d": "Globally disabling tool search across all servers is controlled by ENABLE_TOOL_SEARCH=false, not MCP_DEFER_ALL, and would load all twelve servers upfront rather than targeting only this specific server."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/mcp",
+    "sourceNote": "Claude Code MCP: Setting alwaysLoad to true in server config exempts its tools from deferral, loading them upfront at session start",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-020",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An operations team monitors a fleet of autonomous agents connected via Streamable HTTP to an MCP server that exposes server configuration files as resources. When an operator updates a configuration file on the server, connected agents must receive real-time notifications of the change without repeatedly polling the resources/read endpoint. Which MCP protocol mechanism delivers these change notifications over Streamable HTTP?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The server initiates a new HTTP POST connection to a webhook listener registered by the client during the initial initialize handshake."
+      },
+      {
+        "id": "b",
+        "text": "The client establishes a separate persistent Server-Sent Events stream by sending an HTTP GET request to a dedicated events endpoint."
+      },
+      {
+        "id": "c",
+        "text": "Long-lived notifications for resource updates and list changes are delivered on the response stream of a subscriptions/listen request."
+      },
+      {
+        "id": "d",
+        "text": "The server sends an HTTP 304 Not Modified status code on the next scheduled client poll to signal that cached resources are invalidated."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "In the MCP Streamable HTTP transport, servers do not initiate separate inbound HTTP connections to clients. Instead, long-lived change notifications—such as resource updates and list changes—are delivered to the client along the persistent response stream of a subscriptions/listen request.",
+    "distractorNotes": {
+      "a": "MCP servers do not initiate reverse HTTP POST connections or call client webhooks; all traffic travels on client-initiated requests.",
+      "b": "A dedicated GET endpoint for SSE streams was the pattern in the deprecated HTTP+SSE transport; Streamable HTTP consolidates change notifications onto the subscriptions/listen request stream.",
+      "d": "Change notifications are pushed actively over the subscriptions/listen SSE response stream rather than relying on HTTP 304 polling."
+    },
+    "sourceUrl": "https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http",
+    "sourceNote": "MCP Streamable HTTP: Long-lived change notifications (resource updates, list changes) are delivered via subscriptions/listen stream",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-021",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An enterprise security architect establishes security and governance boundaries for custom MCP servers before approving their deployment into production agent environments. Which TWO architectural controls must be enforced by MCP servers and clients to ensure secure tool execution and data integrity? (Select TWO.)",
+    "options": [
+      {
+        "id": "a",
+        "text": "MCP servers must encrypt all JSON-RPC message payloads using client-generated public keys to prevent local inspection of tool parameters."
+      },
+      {
+        "id": "b",
+        "text": "MCP servers must independently validate all tool inputs against declared schemas, enforce access controls, and rate limit tool invocations."
+      },
+      {
+        "id": "c",
+        "text": "MCP clients should run all tools inside privileged root containers on the host machine to prevent permission errors during automated execution."
+      },
+      {
+        "id": "d",
+        "text": "MCP servers must enforce read-only execution at the transport layer by blocking any tool whose schema contains optional modifier fields."
+      },
+      {
+        "id": "e",
+        "text": "MCP clients should prompt for user confirmation or guardrail approval on sensitive operations and present tool inputs before dispatching calls."
+      }
+    ],
+    "correct": [
+      "b",
+      "e"
+    ],
+    "explanation": "According to the MCP security guidelines, MCP servers must validate all tool inputs against their declared inputSchema, implement proper access controls, rate limit tool calls, and sanitize outputs. On the client side, applications should maintain a human-in-the-loop or policy guardrail by prompting for user confirmation on sensitive operations and displaying tool inputs to prevent unintended actions or data exfiltration.",
+    "distractorNotes": {
+      "a": "Application-layer payload encryption does not validate tool parameters or enforce access controls; servers must validate arguments against declared JSON schemas.",
+      "c": "Executing tools in privileged root containers violates the principle of least privilege and increases risk; clients must obtain user or policy confirmation on sensitive actions.",
+      "d": "Blocking tools with optional fields at the transport layer prevents valid mutations; safety is governed by server-side input schema validation and client approval."
+    },
+    "sourceUrl": "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+    "sourceNote": "MCP Tools / Security: Servers must validate inputs and enforce access controls; clients should prompt for sensitive operations",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-022",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A legal research platform uses Claude to synthesize complex multi-jurisdictional contracts. Attorneys require that every factual statement generated by the model be directly verifiable against the underlying document text, with exact character-level provenance surfaced in the user interface to eliminate hallucinations. Which native Claude feature should the platform implement to achieve this verification standard?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Enable prompt caching with checksum verification so that document tokens are immutably locked and mirrored in response telemetry headers."
+      },
+      {
+        "id": "b",
+        "text": "Parse model reasoning tokens from extended thinking blocks to reconstruct which internal attention heads contributed to each claim."
+      },
+      {
+        "id": "c",
+        "text": "Instruct the model in the system prompt to append synthetic footnote indices corresponding to an external BM25 keyword index."
+      },
+      {
+        "id": "d",
+        "text": "Use the Citations API to receive cited text blocks with exact character locations and document indices alongside the generated response."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "The Claude Citations API grounds responses in provided source documents by returning exact cited text passages, character ranges, and document indices alongside generated text. This enables client applications to programmatically verify claims and display precise source highlights to end users, ensuring verifiable factual grounding.",
+    "distractorNotes": {
+      "a": "Prompt caching reduces latency and token pricing on repeated prefixes; it does not return source document citations or character-level provenance.",
+      "b": "Extended thinking blocks contain intermediate reasoning prose; they do not provide structured character-level source citations or attention maps.",
+      "c": "Prompting for manual footnote text is prone to formatting inconsistencies and hallucinations, whereas the Citations API returns verified source spans."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/citations",
+    "sourceNote": "Citations API: Grounds responses by returning exact supporting passages, character ranges, and source document indices",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-023",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A developer builds a retrieval-augmented generation (RAG) assistant that queries a knowledge base of technical manuals. The application retrieves relevant documentation snippets dynamically and passes them to Claude in each turn. The team wants Claude to cite these external search results naturally in its prose and return structured source attribution without requiring complex regex parsing. Which feature should the application use?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Embed documents as tool execution result payloads with isError set to false and rely on tool call IDs as citation references."
+      },
+      {
+        "id": "b",
+        "text": "Supply retrieved snippets via the search results feature, allowing Claude to return natural citations attributed to source items."
+      },
+      {
+        "id": "c",
+        "text": "Convert retrieved documentation into JSON schema definitions and inject them as strict structured output constraints."
+      },
+      {
+        "id": "d",
+        "text": "Write document chunks to temporary cloud storage buckets and reference their signed URLs in the request metadata block."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Claude's search results feature is specifically designed for RAG applications. It enables applications to provide search results with source attribution in the request, and Claude generates natural citations that ground its response in those specific search results, avoiding custom citation parsing.",
+    "distractorNotes": {
+      "a": "Tool execution results are meant for model-directed tool invocations rather than standard RAG document citation and attribution.",
+      "c": "Structured outputs enforce schema adherence on generated JSON; they do not generate source citations or ground prose in search results.",
+      "d": "Referencing signed URLs in metadata does not inject document text into context or generate grounded citations."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/search-results",
+    "sourceNote": "Search results: Provides natural citations for RAG applications by passing search results with source attribution",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-024",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An enterprise architect is designing the technical stack for an organization-wide knowledge retrieval system. The team plans to use Claude Sonnet for reasoning and generation and wants to standardize on Anthropic's first-party proprietary embedding model to generate dense vector embeddings for document chunks. What does Anthropic's documentation state regarding embedding models?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Anthropic offers native text-embedding-claude models accessible through the Messages API with customizable vector dimensions."
+      },
+      {
+        "id": "b",
+        "text": "Embedding endpoints are available exclusively on Claude Enterprise plans under zero data retention compliance agreements."
+      },
+      {
+        "id": "c",
+        "text": "Anthropic does not offer its own embedding model; documentation recommends third-party providers such as Voyage AI for embeddings."
+      },
+      {
+        "id": "d",
+        "text": "Dense embeddings must be extracted from Claude's internal hidden layers using the experimental token representations endpoint."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Anthropic documentation explicitly states that Anthropic does not offer its own embedding model. Instead, Anthropic guides developers to assess dedicated third-party embedding providers, highlighting Voyage AI as a provider offering general-purpose, multimodal, contextualized, and domain-specific embedding models and rerankers.",
+    "distractorNotes": {
+      "a": "Anthropic does not offer a proprietary text-embedding-claude model or native embedding endpoints.",
+      "b": "Enterprise plans and ZDR agreements do not include proprietary Anthropic embedding models.",
+      "d": "The Claude API does not expose internal hidden layer activations or token representation endpoints for generating embeddings."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/embeddings",
+    "sourceNote": "Embeddings: Anthropic does not offer its own embedding model; documentation guides developers to providers such as Voyage AI",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-025",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A customer support RAG system retrieves software troubleshooting guides. Users submit queries containing exact error codes (such as ERR_SYS_4091_FATAL) as well as broad conceptual descriptions (such as 'database disconnects during overnight backup'). The engineering team discovers that pure dense vector search frequently fails to retrieve the correct guide for exact error codes, while pure BM25 lexical search misses conceptual queries. How should the team resolve this retrieval gap?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Implement hybrid search combining dense vector embeddings for semantic recall with sparse lexical search like BM25 for exact token matches."
+      },
+      {
+        "id": "b",
+        "text": "Increase dense vector dimensions to 4096 and rely on cosine similarity thresholds to force dense embeddings to isolate exact alphanumeric strings."
+      },
+      {
+        "id": "c",
+        "text": "Prepend an exhaustive static synonym glossary of all internal error codes into the system prompt to guide standard vector retrieval algorithms."
+      },
+      {
+        "id": "d",
+        "text": "Apply hypothetical document embeddings (HyDE) to generate synthetic troubleshooting prose before computing dense vector similarity scores."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Hybrid search combines dense vector retrieval (which excels at semantic similarity, synonyms, and conceptual intent) with sparse lexical retrieval such as BM25 (which excels at exact keyword, code, and identifier matching). By fusing scores from both retrieval methods, the system reliably retrieves documents for both conceptual queries and exact alphanumeric error codes.",
+    "distractorNotes": {
+      "b": "Increasing vector dimensions does not make bi-encoder dense embedding models reliable for arbitrary exact alphanumeric string matching.",
+      "c": "Injecting static synonym glossaries into system prompts consumes context and does not solve vector index retrieval misses for unindexed error codes.",
+      "d": "HyDE generates hypothetical narrative text that can improve semantic search for vague questions, but it cannot reliably predict or match exact arbitrary error code strings."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/embeddings",
+    "sourceNote": "Embeddings / Retrieval: Hybrid search combines dense semantic embeddings with sparse BM25 search for exact identifiers",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-026",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An enterprise RAG architecture indexes millions of product policy articles. A single-stage dense vector search retrieves the top 100 candidate chunks to maximize recall. However, injecting all 100 chunks into Claude's prompt increases latency and cost, while truncating naively to the top 5 chunks frequently excludes the most relevant policy exceptions. What two-stage retrieval design optimizes both precision and cost?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Group candidate chunks into clusters using k-means and prune clusters whose centroid distance exceeds the median similarity threshold."
+      },
+      {
+        "id": "b",
+        "text": "Concatenate the candidate chunks into an in-memory document and execute binary search over chunk boundaries using token count heuristics."
+      },
+      {
+        "id": "c",
+        "text": "Prompt a lightweight language model to summarize candidate chunks into a single condensed abstract before passing the abstract to Claude."
+      },
+      {
+        "id": "d",
+        "text": "Use the first-stage retriever to gather candidates, then apply a cross-encoder reranker to score relevance and select the top five chunks."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "A two-stage retrieval architecture pairs a fast, high-recall first-stage retriever (such as bi-encoder vector embeddings or hybrid search) with a high-precision cross-encoder reranker (such as Voyage AI rerankers). The reranker jointly attends to the query and each candidate chunk, producing accurate relevance scores to filter down the candidate pool to the top 5-10 chunks.",
+    "distractorNotes": {
+      "a": "K-means clustering does not measure fine-grained query-document relevance and can discard nuanced policy exceptions.",
+      "b": "Binary search over token offsets assumes sorted data and cannot determine semantic relevance to an unstructured user query.",
+      "c": "Summarizing 100 chunks with an LLM adds significant latency, cost, and potential hallucinations compared to dedicated cross-encoder rerankers."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/embeddings",
+    "sourceNote": "Embeddings: Two-stage retrieval pairs bi-encoder retrieval for candidate recall with cross-encoder rerankers for top-chunk precision",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-027",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A customer support RAG system splits long engineering manuals into 300-token chunks. A chunk describing a critical configuration rule reads: 'Set the connection timeout parameter to 30 seconds.' Because the parent section header ('PostgreSQL Primary Cluster Settings') was separated into an earlier chunk, retrieval for queries like 'PostgreSQL timeout' fails to surface this rule. What retrieval architecture technique resolves this chunk context loss?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Increase the fixed chunk size to 5000 tokens across all documents so that section headers remain adjacent to all indexed text chunks."
+      },
+      {
+        "id": "b",
+        "text": "Run a post-retrieval fuzzy regex filter across candidate chunks to dynamically inject inferred database names into prompt context."
+      },
+      {
+        "id": "c",
+        "text": "Generate chunk-specific explanatory context using an LLM and prepend it to each chunk before generating embeddings and building indexes."
+      },
+      {
+        "id": "d",
+        "text": "Attach section header metadata tags to chunks and filter retrieval results using strict equality filters against query keyword tokens."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Contextual Retrieval addresses chunk context loss by using a language model to generate succinct, document-wide context (such as the document title, active section heading, and relevant topic) and prepending this context to each individual chunk before generating embeddings and creating BM25 index tokens. This ensures isolated chunks retain their overarching meaning during search.",
+    "distractorNotes": {
+      "a": "Arbitrarily increasing chunk size dilutes embedding specificity, increases prompt token usage, and still risks splitting text across section boundaries.",
+      "b": "Post-retrieval regex filters cannot rescue chunks that were never retrieved in the first place due to missing index keywords.",
+      "d": "Strict metadata equality filtering requires exact keyword matches against extracted tags and does not enrich the chunk's embedding or lexical representation for unmentioned terms."
+    },
+    "sourceUrl": "https://www.anthropic.com/engineering/contextual-retrieval",
+    "sourceNote": "Introducing Contextual Retrieval / The context conundrum in traditional RAG",
+    "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-production-integration-reliability-and-knowledge-grounding-028",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "production-integration-reliability-and-knowledge-grounding",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A financial analysis assistant answers investor inquiries regarding corporate quarterly earnings reports. Corporate compliance requires that the assistant never extrapolate beyond verified report data or hallucinate unstated financial metrics. Which TWO architectural and prompting practices should the engineering team combine to enforce rigorous knowledge grounding? (Select TWO.)",
+    "options": [
+      {
+        "id": "a",
+        "text": "Instruct the model with a strict system prompt persona emphasizing that it is an expert auditor forbidden from stating inaccuracies."
+      },
+      {
+        "id": "b",
+        "text": "Fine-tune a custom model checkpoint on historical financial statements so the model memorizes corporate earnings figures in weights."
+      },
+      {
+        "id": "c",
+        "text": "Provide retrieved transcript passages directly in context and instruct the model to state clearly when an answer is not in the text."
+      },
+      {
+        "id": "d",
+        "text": "Route generated answers through a secondary model that cross-checks claims against external public search engine summaries."
+      },
+      {
+        "id": "e",
+        "text": "Enable the Citations API so the model returns exact quoted passages and document offsets justifying each factual assertion made."
+      }
+    ],
+    "correct": [
+      "c",
+      "e"
+    ],
+    "explanation": "Rigorous knowledge grounding requires supplying relevant retrieved source documents in context with explicit instructions to refuse or hedge when information is not present, combined with enabling the Citations API. The Citations API forces the model to cite exact supporting text passages and character offsets, allowing downstream systems to verify that claims are faithfully grounded in source documents.",
+    "distractorNotes": {
+      "a": "Persona and negative system prompts ('you are an auditor; do not hallucinate') reduce overconfidence but cannot verify factual claims without grounded context and citation proof.",
+      "b": "Fine-tuning memorizes data into static weights, which suffers from knowledge drift across quarters and cannot provide verifiable character-level provenance.",
+      "d": "Cross-checking against external web search summaries introduces third-party inaccuracies and does not ground answers in authoritative corporate earnings filings."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/citations",
+    "sourceNote": "Citations: Grounding responses with explicit context, clear refusal instructions, and exact cited passage spans minimizes hallucinations",
+    "sourceCheckedAt": "2026-11-18"
+  }
+]

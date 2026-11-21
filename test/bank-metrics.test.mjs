@@ -672,6 +672,7 @@ test("buildRepositoryMetrics reports every bank when no slug is given", async ()
     "ccar-f",
     "ccar-p",
     "ccdv-f",
+    "ccdv-p",
     "iaap-was",
     "sc-900",
   ]);
