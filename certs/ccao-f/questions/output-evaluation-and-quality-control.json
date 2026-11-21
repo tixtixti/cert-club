@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-001",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "draft",
+    "stem": "An operations lead uses Claude to assist with two separate deliverables: an internal weekly brainstorming summary for team peers, and a formal compliance report for external regulatory auditors. When establishing the quality control and review depth standards for each deliverable, which approach correctly reflects human accountability standards?",
+    "options": [
+      {
+        "id": "differentiated-review-depth",
+        "text": "The external filing requires independent human verification of all cited facts, whereas the internal team digest permits lightweight spot-checking."
+      },
+      {
+        "id": "identical-legal-verification",
+        "text": "Both deliverables require identical line-by-line verification by legal counsel before being shared with colleagues or external stakeholders."
+      },
+      {
+        "id": "rely-on-automated-evaluations",
+        "text": "The regulatory report can rely on Claude's self-generated verification notes if executed using maximum reasoning effort settings."
+      },
+      {
+        "id": "intensify-internal-draft-review",
+        "text": "The internal digest requires deeper factual verification than the regulatory filing because team members act on preliminary ideas quickly."
+      }
+    ],
+    "correct": [
+      "differentiated-review-depth"
+    ],
+    "explanation": "Review depth and verification standards must scale with the risk profile and consequence of error. High-stakes external regulatory filings require rigorous independent human verification, whereas low-stakes internal team digests tolerate lightweight spot-checks.",
+    "distractorNotes": {
+      "identical-legal-verification": "Applying identical formal legal verification to informal internal brainstorming digests creates unnecessary operational overhead.",
+      "rely-on-automated-evaluations": "High effort levels improve model reasoning but do not eliminate hallucinations or satisfy human accountability requirements for regulatory compliance.",
+      "intensify-internal-draft-review": "Review depth scales directly with the severity of error consequences, which are substantially higher for external regulatory filings than internal digests."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them",
+    "sourceNote": "Help Center guidance on review depth, accountability, and appropriate artifact sharing",
+    "sourceCheckedAt": "2026-11-21"
+  }
+]

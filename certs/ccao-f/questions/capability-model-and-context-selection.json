@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ccao-f-capability-model-and-context-selection-001",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "medium",
+    "status": "draft",
+    "stem": "An operations manager wants to explore several sensitive reorganization scenarios with Claude. Company policy requires that this exploratory session must leave no trace in the account's historical conversation list and must not influence Claude's contextual recall during future work. Which approach meets both requirements?",
+    "options": [
+      {
+        "id": "enable-incognito-mode",
+        "text": "Start an incognito chat, which avoids recording the session in chat history and excludes it from memory."
+      },
+      {
+        "id": "disable-memory-toggle",
+        "text": "Disable memory in account settings, which prevents memory retention while retaining the full chat transcript."
+      },
+      {
+        "id": "create-restricted-project",
+        "text": "Set up a private Project, which isolates the discussion while preserving the conversation log for team members."
+      },
+      {
+        "id": "delete-messages-manually",
+        "text": "Conduct a normal conversation and manually delete each message pair after reviewing Claude's recommendations."
+      }
+    ],
+    "correct": [
+      "enable-incognito-mode"
+    ],
+    "explanation": "Incognito chats are designed for temporary sessions: they are excluded from the user's chat history and do not update or consult Claude's memory.",
+    "distractorNotes": {
+      "disable-memory-toggle": "Disabling memory prevents memory updates but still saves the entire conversation transcript to past chat history.",
+      "create-restricted-project": "Projects isolate files and custom instructions but continue recording all session chats in the project history.",
+      "delete-messages-manually": "Deleting messages after the fact is error-prone and does not prevent the ongoing session from being recorded or feeding memory while active."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/12260368-use-incognito-chats",
+    "sourceNote": "Claude Help Center guide on incognito chat behavior, retention, and memory controls",
+    "sourceCheckedAt": "2026-11-21"
+  }
+]

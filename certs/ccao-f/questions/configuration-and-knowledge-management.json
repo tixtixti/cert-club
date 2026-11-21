@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-001",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "medium",
+    "status": "draft",
+    "stem": "A content marketing team configures a Claude Project to produce promotional articles across several product lines. The team requires Claude to consistently maintain an informal, engaging tone under 300 words, while drawing upon detailed technical product specifications that update bi-weekly. What is the most effective Project configuration strategy?",
+    "options": [
+      {
+        "id": "instructions-style-knowledge-specs",
+        "text": "Specify the tone and length constraints in Project instructions, and upload technical specifications into Project knowledge."
+      },
+      {
+        "id": "embed-both-in-project-instructions",
+        "text": "Embed both the tone rules and full technical specifications together directly inside the Project instructions text box."
+      },
+      {
+        "id": "upload-all-to-project-knowledge",
+        "text": "Combine the tone rules and technical specifications into a single document and upload it into Project knowledge."
+      },
+      {
+        "id": "require-per-prompt-style-definitions",
+        "text": "Keep the Project unconfigured and require team members to paste both tone rules and specifications into each prompt."
+      }
+    ],
+    "correct": [
+      "instructions-style-knowledge-specs"
+    ],
+    "explanation": "Project instructions should contain persistent behavioral rules, tone preferences, and formatting constraints that govern every conversation, while Project knowledge should hold reference documents and technical facts that change or update over time.",
+    "distractorNotes": {
+      "embed-both-in-project-instructions": "Placing dynamic technical specifications in Project instructions clutters persistent directives and complicates routine document updates.",
+      "upload-all-to-project-knowledge": "Uploading behavioral constraints as knowledge files fails to enforce them as persistent instructions across every session turn.",
+      "require-per-prompt-style-definitions": "Relying on manual per-prompt pasting creates workflow friction and leads to inconsistent tone across team members."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects",
+    "sourceNote": "Claude Help Center guide on project instructions and knowledge base configuration",
+    "sourceCheckedAt": "2026-11-21"
+  }
+]

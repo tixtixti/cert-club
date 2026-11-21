@@ -669,6 +669,7 @@ test("buildRepositoryMetrics reports every bank when no slug is given", async ()
     "aws-clf-c02",
     "aws-dva-c02",
     "az-900",
+    "ccao-f",
     "ccar-f",
     "ccar-p",
     "ccdv-f",

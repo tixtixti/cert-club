@@ -25,11 +25,13 @@ fabrication problem in a new place.
 
 ## Anthropic
 
-_Checked 2026-11-21 · banks: `ccdv-f`, `ccar-p` (`ccar-f` checked 2026-10-05)_
+_Checked 2026-11-21 · banks: `ccdv-f`, `ccar-p`, `ccao-f` (`ccar-f` checked 2026-10-05)_
 
-- **Exam guides** are PDFs on Anthropic's Everpath CDN, all under one
-  instructor path, with adjacent numeric IDs per guide:
+- **Exam guides** are PDFs on Anthropic's Everpath / Skilljar CDN, all under one
+  instructor path (`instructor/6nizmqk8tpzpfjvt6qmmav7rh/public/<id>/<Guide_Name>.pdf`):
   `https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F<id>%2F<Guide+Name>.pdf`
+  or Skilljar CDN:
+  `https://cc.sj-cdn.net/instructor/6nizmqk8tpzpfjvt6qmmav7rh/public/<id>/<Guide_Name>.pdf`
   The Partner Academy certification page for a cert links its guide directly.
 - **Current guides carry a version block** on page 1:
   `Version 1.0 · Effective July 2026 · Exam code: CCAR-F`. Read it.
@@ -95,7 +97,10 @@ _Checked 2026-11-21 · banks: `ccdv-f`, `ccar-p` (`ccar-f` checked 2026-10-05)_
 - **Citable documentation:**
   - `https://platform.claude.com/docs/en/*` — platform and API
   - `https://code.claude.com/docs/en/*` — Claude Code
+  - `https://support.claude.com/en/articles/*` — Claude Help Center
+  - `https://academy.claude.com/tutorials/*` — Claude Academy tutorials
   - `https://www.anthropic.com/research/*` — research and engineering posts (`/engineering/*` paths 308-redirect here)
+  - `https://www.anthropic.com/legal/*` — Usage Policy and legal terms
   - `https://modelcontextprotocol.io/docs/*` — MCP
 - **These docs render client-side.** Append `.md` to a page URL to read it as
   text: `curl -sL https://code.claude.com/docs/en/mcp.md`. This works on

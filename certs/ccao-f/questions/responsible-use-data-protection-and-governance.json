@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-001",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "draft",
+    "stem": "A recruiting team proposes an automated pipeline using Claude to screen job applicants. Under the proposal, Claude evaluates candidate resumes against job criteria and automatically transmits final rejection letters to candidates who score below a set threshold, without human recruiter review. How does this use case align with the Anthropic Usage Policy?",
+    "options": [
+      {
+        "id": "violates-high-risk-employment-policy",
+        "text": "It is inappropriate because using AI as the sole automated decision-maker for employment opportunities requires meaningful human review."
+      },
+      {
+        "id": "permitted-if-scoring-rubric-provided",
+        "text": "It is permitted provided the prompt contains an objective scoring rubric that eliminates subjective recruiter bias from the ranking."
+      },
+      {
+        "id": "permitted-with-incognito-processing",
+        "text": "It is permitted if resume evaluations run in incognito sessions to prevent candidate information from updating model memory."
+      },
+      {
+        "id": "requires-paid-enterprise-subscription",
+        "text": "It is permitted only if the organization operates on an Enterprise plan that signs a dedicated commercial recruitment addendum."
+      }
+    ],
+    "correct": [
+      "violates-high-risk-employment-policy"
+    ],
+    "explanation": "The Anthropic Usage Policy requires meaningful human oversight for high-risk applications, including employment and hiring decisions. Fully automated pipelines that reject job applicants without human evaluation are prohibited.",
+    "distractorNotes": {
+      "permitted-if-scoring-rubric-provided": "Objective prompt rubrics do not substitute for the human review required in employment decisions.",
+      "permitted-with-incognito-processing": "Incognito sessions protect conversation privacy but do not permit prohibited autonomous decision-making.",
+      "requires-paid-enterprise-subscription": "Enterprise licensing does not waive policy prohibitions on unreviewed automated hiring decisions."
+    },
+    "sourceUrl": "https://www.anthropic.com/legal/aup",
+    "sourceNote": "Anthropic Usage Policy on high-risk use case requirements and human oversight in employment",
+    "sourceCheckedAt": "2026-11-21"
+  }
+]

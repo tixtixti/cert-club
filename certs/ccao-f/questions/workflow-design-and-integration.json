@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ccao-f-workflow-design-and-integration-001",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "draft",
+    "stem": "A customer service team evaluates its dispute resolution workflow to incorporate Claude. The process includes four sequential tasks:\n\n1. Categorizing incoming dispute emails by complaint type.\n2. Synthesizing previous customer communications into a brief timeline.\n3. Conducting a live phone call to deliver an adverse refund decision to an upset customer.\n4. Drafting a formal post-call settlement confirmation message.\n\nUnder the Delegation competency, which step should be retained entirely by human staff rather than delegated to AI?",
+    "options": [
+      {
+        "id": "deliver-sensitive-decision",
+        "text": "Delivering the live resolution call to the customer, because it carries irreversible emotional consequences and demands empathetic personal judgment."
+      },
+      {
+        "id": "categorize-dispute-emails",
+        "text": "Categorizing incoming dispute emails, because misclassifying a complaint type could misroute the dispute to the wrong tier-two support queue."
+      },
+      {
+        "id": "synthesize-customer-timeline",
+        "text": "Synthesizing previous customer interactions, because summarizing multi-party email chains requires interpreting unstructured complaint narratives."
+      },
+      {
+        "id": "draft-settlement-confirmation",
+        "text": "Drafting the post-call settlement message, because formal settlement confirmations must adhere strictly to agreed legal resolution standards."
+      }
+    ],
+    "correct": [
+      "deliver-sensitive-decision"
+    ],
+    "explanation": "Under the Delegation criteria in Domain 4, tasks with high stakes, low reversibility, and the requirement for human empathy and interpersonal sensitivity (such as communicating adverse decisions directly to upset customers) must remain human-retained. Routine intake classification, narrative synthesis, and initial drafting are suitable for AI delegation.",
+    "distractorNotes": {
+      "categorize-dispute-emails": "Categorizing text by issue type is a reversible operational task that Claude executes reliably.",
+      "synthesize-customer-timeline": "Summarizing customer ticket histories into timelines is a core synthesis capability appropriate for AI execution.",
+      "draft-settlement-confirmation": "Drafting follow-up correspondence from structured call outcomes is a standard AI drafting task subject to human review."
+    },
+    "sourceUrl": "https://cc.sj-cdn.net/instructor/6nizmqk8tpzpfjvt6qmmav7rh/public/1794946609/Claude_Certified_Associate_-_Foundations_Exam_Guide_Updated_Dec_7.pdf",
+    "sourceNote": "Exam guide Section 5 Domain 4 on Delegation criteria: reversibility, stakes, and human empathy",
+    "sourceCheckedAt": "2026-11-21"
+  }
+]
