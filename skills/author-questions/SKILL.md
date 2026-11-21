@@ -20,7 +20,7 @@ both; this skill is the order of operations, not a second copy.
    ccar-f shipped 15 questions where a padded distractor wore the `correct`
    key instead of the real answer — caught by `evaluate-questions`, not by
    this skill. Loop this skill per domain yourself, or fan the domains out
-   with `Agent`/`Workflow` if the orchestrating session has one.
+   through `orchestrate-bank`, which owns the rules for doing that in parallel.
 1. **Orient.** Read the cert's `manifest.json`, the target `questions/*.json`,
    and `review-progress.md` — the review file records earlier judgement calls
    as intent, and re-deciding them silently is the main failure mode here.
@@ -28,6 +28,10 @@ both; this skill is the order of operations, not a second copy.
    `npm run metrics -- <slug>`. The target bank baseline is 2x the live exam's
    question count.
 
+   Read `certs/VENDORS.md` for the vendor before citing any host this bank
+   has not cited yet. If the bank records a calibration set, its _parameters_
+   are your depth input — never re-open the set while drafting (`AGENTS.md`
+   § The calibration firewall).
    **Batch size is a balance output, not a user preference.** If the user asks
    for ten and the target skill or domain is four short, say so and reconcile
    before drafting — writing ten pushes the skill out the other side.
@@ -42,8 +46,10 @@ both; this skill is the order of operations, not a second copy.
    the claim. `sourceCheckedAt` is the date you actually read the page.
    Apply `CONTRIBUTING.md` § Question content requirements for prevention: do
    not write a figure or API term into an option, explanation, or distractor
-   note that you cannot quote from the cited page, and prefer the vendor's
-   mechanism phrasing over marketing numbers.
+   note you cannot quote from the cited page, and prefer the vendor's
+   mechanism phrasing over marketing numbers. Write option `text` bare and any
+   gloss into `hintText`, per CONTRIBUTING's _Bare option text_ rule — a gloss
+   baked into `text` is rework for `add-option-hints` later.
 3. **Depth gate, per question.** Apply the three anchors in
    `ADDING-A-CERT.md` § How deep should a question go?. Anchor 2 is the one
    that gets missed, and it reduces to one testable rule:
@@ -63,6 +69,7 @@ both; this skill is the order of operations, not a second copy.
    `scripts/test.sh`, which is strictly weaker.
 7. **Append a dated batch note to `review-progress.md`** in the same change:
    what was added, which sources, which judgement calls, what is still thin.
+   Under `orchestrate-bank`, return the note to the coordinator instead.
 
 ## Stop and ask
 
@@ -81,15 +88,19 @@ both; this skill is the order of operations, not a second copy.
 ## Done when
 
 - `npm run check` is green.
+- Every new or rewritten question is `status: "draft"` — the pass that wrote
+  it cannot review it.
 - Every new question's `sourceCheckedAt` is the date its page was read.
-- The target skill's delta is inside tolerance in `npm run balance -- --strict`.
+- The target domain's delta in `npm run balance -- --2x <slug>` is closed, and
+  on a bank declaring skills the skill is inside `--strict` tolerance.
 - `review-progress.md` is updated in the same change.
 
 When several domains were drafted as separate invocations, `npm run check`'s
 position- and length-bias guards are still whole-bank, not per-domain — a
 later domain's invocation can fail on skew a different domain's batch
 introduced. Fix it the same way regardless of who authored the offending
-item: pad a distractor, don't touch a key.
+item: pad a distractor, don't touch a key. Under `orchestrate-bank`, report
+the failure to the coordinator instead of editing another domain's file.
 
 Green here means schema-valid, not correct — every key was written by the
 same pass that will judge it correct. Run `evaluate-questions` next, ideally

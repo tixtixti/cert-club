@@ -27,8 +27,9 @@ Phase two of `assess-new-cert`'s recon, run against the guide
    anchor (`ADDING-A-CERT.md` § How deep should a question go?, anchor 2). A
    guide with none means the bank has no vendor-published calibration and
    depends on the calibration stop-and-ask back in `assess-new-cert`.
-4. **Format audit.** Quote the guide's own sentence on item format into the
-   review file rather than summarising it; a summary hides a misread, and
+4. **Format audit.** Capture the guide's own sentence on item format verbatim,
+   for `assess-new-cert` to put in the review file, rather than summarising
+   it; a summary hides a misread, and
    whether the exam ships multiple-response items shapes every batch after
    this one. Then: does any objective need a question type the schema does
    not have? Default answer: no. Multi-select expresses more than expected —

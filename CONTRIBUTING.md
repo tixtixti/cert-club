@@ -99,10 +99,22 @@ breaking them fails CI rather than review.
   Explanatory glosses ("..., which is a managed ETL service") belong in the
   optional `hintText` field, revealed by a candidate toggle during practice.
   Glosses in `hintText` are option claims — they follow the same sourcing rule
-  as `text`, and are verified by `check-claims` when run standalone.
-  Statement-style options whose
-  text IS the answer content ("Security groups are stateful firewalls, so…")
-  stay intact in `text` with no `hintText`.
+  as `text` (see *Explanations and free-text fields* above: a keyed option's
+  hint must be supported by the question's own cited page; a distractor's may
+  draw on another official page per *Cross-page facts*). `check-claims` reads
+  them, but only on the `.md`-serving hosts it fetches — elsewhere it reports
+  inconclusive, so a quiet run is not verification. Statement-style options
+  whose text IS the answer content ("Security groups are stateful firewalls,
+  so…") stay intact in `text` with no `hintText`. Three rules keep a hint from
+  answering the item:
+  - *All options or none.* Within one item, gloss every option or none of them;
+    a partial set telegraphs which options the author thought needed defending.
+  - *Define, don't adjudicate.* A gloss says what the mechanism does, never
+    whether it fits the stem's scenario.
+  - *Don't move the tells into the hint.* The bias guards below read option
+    `text` only, never `hintText`. A gloss set where only the key's hint lacks
+    an absolute qualifier, or where the key's hint is conspicuously the longest,
+    reintroduces the pattern the guards exist to remove.
 - **Do not let the correct answer be the longest option.** Keys tend to grow
   because they carry the source doc's full hedged claim while distractors get
   written as crisp wrong assertions. Fix this by padding distractors with

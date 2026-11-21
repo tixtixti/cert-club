@@ -7,12 +7,12 @@ allowed-tools: Read, Edit, Glob, Grep, AskUserQuestion, Bash
 
 # Condense a bank's review record
 
-Each `review-progress.md` opens with the rule: "Chronology lives in git;
-this file holds the reasons." During drafting, authoring batches, and drift
-audits, authors append
-execution notes, triage tables, and narrative updates. Once work lands, these
-files become bloated with walls of prose and repetitive tables that bury the
-standing rationale a future author needs.
+The governing principle — stated at the top of most condensed records — is
+"Chronology lives in git; this file holds the reasons." During drafting,
+authoring batches, and drift audits, authors append execution notes, triage
+tables, and narrative updates. Once work lands, these files become bloated
+with walls of prose and repetitive tables that bury the standing rationale a
+future author needs.
 
 This skill distills `certs/<slug>/review-progress.md` down to its essential
 architectural decisions without discarding critical context.
@@ -63,9 +63,11 @@ Never prune or weaken any of the following:
    the deliverable):
    - Replace prose narratives with concise bullet points or summary tables.
    - Collapse clean-pass audit rows into aggregate counts.
-   - Ensure headings follow standard structure: Blueprint and weights,
-     Composition, Sample question inventory, Calibration, Adjudications,
-     and Maintenance audits.
+   - Ensure headings follow the structure the condensed records share: Bank
+     status, Blueprint and weights, Composition and coverage audit, Known
+     coverage limits, Source classification, Sample question inventory,
+     Calibration, Adjudications, and Maintenance audits — omitting only those
+     with nothing to hold.
 4. **Verify integrity**: Ensure no invariant, domain rationale, or non-defect
    was dropped. Check that all referenced questions still exist in the bank.
 5. **Present diff to maintainer**: Report line and byte reductions, highlight
@@ -77,3 +79,18 @@ Never prune or weaken any of the following:
    not run.
 7. **Verify repository checks**: Run `npm run check` to confirm formatting and
    validation remain clean.
+
+## Stop and ask
+
+- **A passage you cannot classify** as invariant or condensable — an
+  adjudication whose question no longer exists, say, or a note that might be a
+  standing decision. Ask rather than prune; a lost reason is not recoverable
+  from git by anyone who does not know to look.
+- **Records that contradict the bank** — a composition figure or a status
+  rationale that no longer matches `manifest.json` or the question files.
+  Report it; correcting it is `audit-coverage` work, not condensing.
+
+## Done when
+
+The file on disk is condensed, every invariant above survives in it, the
+maintainer confirmed the diff, and `npm run check` is green.

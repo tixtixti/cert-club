@@ -15,10 +15,9 @@ the order of operations for applying those to one domain; it restates them
 only in the shorthand the procedure needs.
 
 The anchor is not your judgement of "feels hard." It is the guide's own
-**sample questions**, inventoried per bank in `review-progress.md` (as ccar-f
-and ccdv-f already do). The vendor publishes those as representative of the
-exam's cognitive level, a claim no third-party set carries. Calibrate to them,
-not to instinct.
+**sample questions**, inventoried per bank in `review-progress.md`. The vendor
+publishes those as representative of the exam's cognitive level, a claim no
+third-party set carries. Calibrate to them, not to instinct.
 
 ## Stage 0 — default to no change
 
@@ -73,8 +72,8 @@ that touches nothing and says why is a successful pass.
    than a second defensible answer: two options both defensible against that
    source is _ambiguous_, not hard — back it out; a discrimination now turning
    on a rule past the blueprint's level is _deeper_ — back that out too.
-   Do not introduce out-of-scope mechanics or excessive depth; route questions
-   that need fundamental rework to `author-questions`.
+   A replaced distractor on a hinted item needs its `hintText` replaced too,
+   or the gloss set breaks CONTRIBUTING's all-or-none hint rule.
 6. **Respect the bias guards.** Padding moves the length and position figures;
    never trim a key to compensate — fidelity to the cited doc outranks cosmetic
    balance. If padding cannot close a gap, escalate to the author.
@@ -82,9 +81,10 @@ that touches nothing and says why is a successful pass.
    _calibrated — no change_, or _hardened_ with the axis lifted (weak
    distractor, obvious key, definition-prompt stem) — plus a dated line on the
    domain's standing versus its anchor, as the existing calibration sections do.
+   Under `orchestrate-bank`, return the note to the coordinator instead; either
+   way, hardened items need an independent `evaluate-questions --diff` pass.
 8. **Land green.** `npm run metrics -- <slug>` is the diagnostic and
-   `npm run check` is the gate; it stays green throughout — this pass changes
-   difficulty, never schema validity.
+   `npm run check` is the gate — this pass changes difficulty, never validity.
 
 ## Stop and ask
 
