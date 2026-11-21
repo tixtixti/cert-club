@@ -127,3 +127,13 @@ Post-migration audit:
 - **Longest option as key share**: 20 of 107 single-select items (18.7%), unchanged.
 - **Position distribution**: 28 A / 27 B / 26 C / 26 D, unchanged.
 - **Bias guards**: All guards continue to pass cleanly (`positionBias`, `lengthBiasMeanDelta`, `longestOptionIsKey`).
+
+### Recurring source drift audit (2026-11-21)
+
+Periodic drift audit across all 114 URLs following `audit-sources`:
+
+- **Blueprint drift**: 0% drift. Upstream exam guide verified live at `manifest.examUrl` and updated to Version 1.3 (October 29, 2026). Domain names, weights (24/30/34/12), and format specifications remain 100% intact.
+- **Documentation redirects re-cited (5 items)**:
+  - `cloud-concepts-004`, `-017`, `-018`, `-019`: Re-cited from renamed `wellarchitected/latest/framework/general-design-principles.html` to live `wellarchitected/latest/framework/design-principles.html`. All six tested principles remain identical.
+  - `security-and-compliance-011`: Re-cited from redirecting whitepaper path to canonical `https://aws.amazon.com/compliance/shared-responsibility-model/`.
+- **Dispositions**: 5 re-cite, 125 bump across all 130 items. 0 retire, 0 rewrite. All items verified live (HTTP 200).

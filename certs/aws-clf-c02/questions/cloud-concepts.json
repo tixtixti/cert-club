@@ -173,9 +173,9 @@
       "b": "Driving architectures using data is about collecting evidence to improve design choices over time.",
       "d": "Testing at production scale is about creating and then decommissioning a full-size test environment, not about sizing live capacity."
     },
-    "sourceUrl": "https://docs.aws.amazon.com/wellarchitected/latest/framework/general-design-principles.html",
+    "sourceUrl": "https://docs.aws.amazon.com/wellarchitected/latest/framework/design-principles.html",
     "sourceNote": "Well-Architected Framework - general design principle: stop guessing your capacity needs",
-    "sourceCheckedAt": "2026-09-17"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "aws-clf-c02-cloud-concepts-005",
@@ -760,9 +760,9 @@
       "d": "AWS advocates 'stop guessing your capacity needs' and using elasticity to scale automatically, rather than overprovisioning peak capacity upfront.",
       "e": "Compliance is a shared responsibility between AWS and the customer; customers always retain responsibility for their own data governance."
     },
-    "sourceUrl": "https://docs.aws.amazon.com/wellarchitected/latest/framework/general-design-principles.html",
+    "sourceUrl": "https://docs.aws.amazon.com/wellarchitected/latest/framework/design-principles.html",
     "sourceNote": "Well-Architected Framework - general design principles overview",
-    "sourceCheckedAt": "2026-09-11"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "aws-clf-c02-cloud-concepts-018",
@@ -805,9 +805,9 @@
       "c": "Test systems at production scale is the principle of creating full-scale test environments on demand and decommissioning them after testing.",
       "d": "Stop guessing capacity needs focuses on eliminating overprovisioning and underprovisioning through elasticity, not architectural evolution."
     },
-    "sourceUrl": "https://docs.aws.amazon.com/wellarchitected/latest/framework/general-design-principles.html",
+    "sourceUrl": "https://docs.aws.amazon.com/wellarchitected/latest/framework/design-principles.html",
     "sourceNote": "Well-Architected Framework - general design principle: allow for evolutionary architectures",
-    "sourceCheckedAt": "2026-09-11"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "aws-clf-c02-cloud-concepts-019",
@@ -850,9 +850,9 @@
       "b": "Driving architectures using data is about collecting empirical workload telemetry to guide design choices.",
       "d": "Automating experimentation enables rapid replication of architectures to test novel ideas, but testing full-scale production load specifically embodies testing at production scale."
     },
-    "sourceUrl": "https://docs.aws.amazon.com/wellarchitected/latest/framework/general-design-principles.html",
+    "sourceUrl": "https://docs.aws.amazon.com/wellarchitected/latest/framework/design-principles.html",
     "sourceNote": "Well-Architected Framework - general design principle: test systems at production scale",
-    "sourceCheckedAt": "2026-09-11"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "aws-clf-c02-cloud-concepts-020",

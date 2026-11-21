@@ -420,9 +420,9 @@
       "c": "Skills package multi-step procedures that load when relevant; a single deterministic transformation is not that shape and gains nothing from being a Skill.",
       "d": "Built-in tools are a fixed set and do not cover arbitrary application-specific computation, so assuming one exists leaves the requirement unmet."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "When (and when not) to use agents — find the simplest solution and add complexity only when needed",
-    "sourceCheckedAt": "2026-09-17"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccdv-f-tools-and-mcps-017",

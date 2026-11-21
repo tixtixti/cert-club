@@ -531,9 +531,9 @@
       "b": "Compaction helps continuity, but relying solely on a repeatedly replaced summary leaves critical facts vulnerable to successive summarization losses.",
       "d": "Subagents isolate verbose diagnostic work, but keeping the decision record solely in the coordinator context does not preserve it across later resets."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+    "sourceUrl": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
     "sourceNote": "Context engineering for long-horizon tasks / Compaction / Structured note-taking / Sub-agent architectures",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-claude-models-prompting-and-context-engineering-015",

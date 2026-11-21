@@ -141,3 +141,11 @@ Comprehensive drift audit across all 106 questions and 44 base URLs:
   - `model-...-007`, `-008`, `-012`: Confirmed verbatim vendor facts (1-hr TTL, 5-min TTL / 2,048 tokens comma formatting, 24-hr batch).
   - Engineering blog posts (12 items citing `building-effective-agents` and `effective-context-engineering`): Confirmed intact via manual HTML review.
 - **Dispositions**: 104 bump, 2 re-cite, 0 rewrite, 0 retire. True defect rate: 0 / 106 = **0.0%**. All `sourceCheckedAt` dates updated to `2026-09-17`.
+
+### Canonical URL update for Anthropic research posts (2026-11-21)
+
+Periodic source maintenance pass across all 106 questions:
+
+- **Blueprint drift**: 0% drift. Exam guide v1.0 (July 2026, CCDV-F) re-verified on Everpath CDN. All 8 domains and weights match `manifest.json` exactly.
+- **Canonical re-cites (12 items)**: Updated all 12 questions citing `building-effective-agents` and `effective-context-engineering-for-ai-agents` from `/engineering/*` to canonical `https://www.anthropic.com/research/*` following Anthropic's 308 redirect.
+- **Dispositions**: 12 re-cite, 94 bump. 0 retire, 0 rewrite. All URLs verified live (HTTP 200).

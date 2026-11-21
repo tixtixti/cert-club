@@ -315,9 +315,9 @@
       "c": "Parent expansion can help interpret a retrieved clause, but this failure occurs before the correct child chunk is selected.",
       "d": "Increasing retrieved context pressures the stated prompt budget and leaves the missing qualifiers absent from the indexed clause."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/contextual-retrieval",
+    "sourceUrl": "https://www.anthropic.com/research/contextual-retrieval",
     "sourceNote": "Introducing Contextual Retrieval / The context conundrum in traditional RAG",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-integration-009",
@@ -355,9 +355,9 @@
       "b": "BM25 helps exact matching but discards the semantic signal that already works for narrative procedures; reranking cannot recover absent candidates.",
       "c": "Classifier routing forces an all-or-nothing choice, whereas technical queries (e.g. troubleshooting a specific part number) benefit from both dense semantic and sparse lexical signals fused together."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/contextual-retrieval",
+    "sourceUrl": "https://www.anthropic.com/research/contextual-retrieval",
     "sourceNote": "A primer on RAG / Further boosting performance with Reranking",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-integration-010",
@@ -885,9 +885,9 @@
       "b": "Hierarchical retrieval may become appropriate, but adding it now spends scarce operating capacity without a demonstrated unmet requirement.",
       "d": "A summary reduces context but may omit required details; its smaller size is not a substitute for the prototype's measured task performance."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/contextual-retrieval",
+    "sourceUrl": "https://www.anthropic.com/research/contextual-retrieval",
     "sourceNote": "When to use RAG vs In-Context Retrieval with Prompt Caching",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-integration-023",

@@ -303,9 +303,9 @@
       "d": "Voting combines candidate judgments. Leaving continuation unchanged supplies neither a hard stop nor the requested human blocker checkpoint.",
       "e": "Orchestrator-workers decomposition preserves flexibility, but changing who proposes edits does not establish termination or human escalation."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Agents — ground truth, human-feedback checkpoints, stopping conditions; parallelization and orchestrator-workers",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-governance-safety-and-risk-management-009",
