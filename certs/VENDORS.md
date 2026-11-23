@@ -25,12 +25,13 @@ fabrication problem in a new place.
 
 ## Anthropic
 
-_Checked 2026-11-19 · banks: `ccdv-f`, `ccar-f`, `ccar-p`, `ccdv-p`_
+_Checked 2026-11-21 · banks: `ccdv-f`, `ccar-p`, `ccao-f` (`ccar-f` checked 2026-10-05; `ccdv-p` checked 2026-11-19)_
 
-- **Exam guides** are PDFs on Anthropic's Skilljar and Everpath training CDNs
-  (`cc.sj-cdn.net` and `everpath-course-content.s3-accelerate.amazonaws.com`),
-  both sharing the same instructor path:
-  `https://<cdn-host>/instructor/6nizmqk8tpzpfjvt6qmmav7rh/...`
+- **Exam guides** are PDFs on Anthropic's Everpath / Skilljar CDN, all under one
+  instructor path (`instructor/6nizmqk8tpzpfjvt6qmmav7rh/public/<id>/<Guide_Name>.pdf`):
+  `https://everpath-course-content.s3-accelerate.amazonaws.com/instructor%2F6nizmqk8tpzpfjvt6qmmav7rh%2Fpublic%2F<id>%2F<Guide+Name>.pdf`
+  or Skilljar CDN:
+  `https://cc.sj-cdn.net/instructor/6nizmqk8tpzpfjvt6qmmav7rh/public/<id>/<Guide_Name>.pdf`
   The Partner Academy certification page for a cert links its guide directly.
 - **Current guides carry a version block** on page 1:
   `Version 1.0 · Effective July 2026 · Exam code: CCAR-F`. Read it.
@@ -96,12 +97,15 @@ _Checked 2026-11-19 · banks: `ccdv-f`, `ccar-f`, `ccar-p`, `ccdv-p`_
 - **Citable documentation:**
   - `https://platform.claude.com/docs/en/*` — platform and API
   - `https://code.claude.com/docs/en/*` — Claude Code
-  - `https://www.anthropic.com/engineering/*` — engineering posts
+  - `https://support.claude.com/en/articles/*` — Claude Help Center
+  - `https://academy.claude.com/tutorials/*` — Claude Academy tutorials
+  - `https://www.anthropic.com/research/*` — research and engineering posts (`/engineering/*` paths 308-redirect here)
+  - `https://www.anthropic.com/legal/*` — Usage Policy and legal terms
   - `https://modelcontextprotocol.io/docs/*` — MCP
 - **These docs render client-side.** Append `.md` to a page URL to read it as
   text: `curl -sL https://code.claude.com/docs/en/mcp.md`. This works on
   `modelcontextprotocol.io` too, including its `/specification/` paths.
-- **The `.md` trick does *not* work on `www.anthropic.com`** — the engineering
+- **The `.md` trick does *not* work on `www.anthropic.com`** — the research and engineering
   posts return `404` for a `.md` suffix (re-confirmed 2026-09-17). That host is
   citable, so this is not a sourcing restriction; it is a verification one.
   `npm run check-claims` reads only hosts that serve `.md`, so every citation
@@ -109,7 +113,7 @@ _Checked 2026-11-19 · banks: `ccdv-f`, `ccar-f`, `ccar-p`, `ccdv-p`_
   nothing about it**. These citations can only be confirmed by reading the page
   by hand, and there are enough of them to plan for: they are the single
   largest manual cost in a source audit of the Anthropic banks.
-- **`anthropic.com/engineering` posts are revised in place, keeping their
+- **`anthropic.com/research` posts are revised in place, keeping their
   publication date.** `building-effective-agents` still reads "Published Dec 19,
   2024", but as of 2026-09-13 it carries an editorial note that "much of the
   tooling landscape described in this post has changed since December 2024",
@@ -199,7 +203,7 @@ _Checked 2026-09-03 · bank: `az-900`_
 
 ## AWS
 
-_Checked 2026-09-17 · bank: `aws-clf-c02`_
+_Checked 2026-11-21 · banks: `aws-clf-c02`, `aws-dva-c02` (`aws-aif-c01` checked 2026-10-14)_
 
 - **Exam guides** are HTML on the AWS docs site:
   `https://docs.aws.amazon.com/aws-certification/latest/<guide-slug>/<guide-slug>.html`
@@ -248,7 +252,7 @@ _Checked 2026-09-17 · bank: `aws-clf-c02`_
 
 ## IAAP (International Association of Accessibility Professionals)
 
-_Checked 2026-10-12 · bank: `iaap-was`_
+_Checked 2026-11-21 · bank: `iaap-was`_
 
 - **Exam guides and Bodies of Knowledge** are public PDFs hosted on IAAP's Salesforce Community CDN:
   - WAS Body of Knowledge: `https://www.accessibilityassociation.org/sfsites/c/resource/WASBoK_PDF`
@@ -262,6 +266,15 @@ _Checked 2026-10-12 · bank: `iaap-was`_
   - `https://act-rules.github.io/rules/` — W3C Accessibility Conformance Testing Rules
   - `https://www.etsi.org/deliver/etsi_en/301500_301599/301549/*` — European Accessibility Standard EN 301 549
   - `https://www.accessibilityassociation.org/sfsites/c/resource/*` — Official IAAP BoK and Handbook PDFs
+  - `https://www.freedomscientific.com/training/jaws/*` and `https://support.freedomscientific.com/*` — Freedom Scientific JAWS keystroke references and training guides. Note: `freedomscientific.com` is protected by Cloudflare bot management (`cf-mitigated: challenge`), which returns HTTP 403 to automated checkers like `check-sources`; confirmed open and live in browser.
+  - `https://www.nvaccess.org/files/nvda/documentation/*` — NV Access NVDA User Guide.
+  - `https://support.apple.com/guide/voiceover/*` and `https://support.apple.com/guide/iphone/*` — Apple VoiceOver documentation.
+  - `https://support.google.com/accessibility/android/*` — Google TalkBack Android accessibility documentation.
+  - `https://www.section508.gov/sell/vpat/` and `https://www.itic.org/policy/accessibility/vpat` — ITIC VPAT repository and Section 508 procurement guidance.
+- **W3C WAI documentation moves (adjudicated 2026-11-21):**
+  - `https://www.w3.org/WAI/eval/selecting-tools/` moved to `https://www.w3.org/WAI/test-evaluate/tools/selecting/`.
+  - `https://www.w3.org/WAI/planning/remediating/` was integrated into `https://www.w3.org/WAI/planning-and-managing/implement/`, while tactical interim repair items cite the standalone `https://www.w3.org/WAI/planning/interim-repairs/` page.
+  - `https://www.w3.org/WAI/planning/procurement/` was integrated into `https://www.w3.org/WAI/planning-and-managing/plan/`.
 - **Do not cite:**
   - `https://dequeuniversity.com/*` — course curriculum gated behind paid subscription / user login.
   - `https://stiftelsenfunka.org/*` and `https://www.funka.com/*` — certification training courses are gated paid content.

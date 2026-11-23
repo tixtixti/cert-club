@@ -1507,9 +1507,9 @@
       "c": "Live regions do not require tabindex and should not receive keyboard focus unless they contain interactive controls.",
       "d": "role='alert' is valid on generic <div> elements; using <output> is not required."
     },
-    "sourceUrl": "https://www.w3.org/WAI/ARIA/apg/practices/aria-live/",
-    "sourceNote": "WAI APG ARIA Live Regions practice recommends pre-existing container elements in the DOM for reliability.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceUrl": "https://www.w3.org/WAI/ARIA/apg/patterns/alert/",
+    "sourceNote": "WAI APG Alert Pattern specifies the element as the container where alert content is dynamically added or updated.",
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-cws-038",

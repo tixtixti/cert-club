@@ -75,9 +75,9 @@
       "c": "Reference-text overlap is not an assertion about API payload validity or a rubric-based assessment of the brief's reasoning. Using it for both does not implement the two required checks.",
       "d": "Human evaluation does not scale for continuous automated testing in development and CI pipelines, though human spot-checks remain valuable for calibrating automated graders."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+    "sourceUrl": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
     "sourceNote": "Types of graders for agents: code-based, model-based, and human",
-    "sourceCheckedAt": "2026-09-17"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-evaluation-testing-and-optimization-003",
@@ -115,9 +115,9 @@
       "c": "Pass@k accepts at least one successful attempt. That can be appropriate for some products, but it does not measure the all-attempt consistency required here.",
       "d": "Aggregating single trials across broad synthetic tasks obscures inconsistent failure rates on critical workflows and fails to assess per-task reliability."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+    "sourceUrl": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
     "sourceNote": "How to think about non-determinism in evaluations for agents (pass@k vs pass^k)",
-    "sourceCheckedAt": "2026-09-17"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-evaluation-testing-and-optimization-004",
@@ -280,9 +280,9 @@
       "c": "A/B testing measures real user outcomes but requires sufficient traffic and a deployed change. Dropping the CI gate removes the earlier defense against known regressions.",
       "d": "Manual transcript review is an ongoing practice that builds intuition for failure modes, but the post records that it is time-intensive, does not scale, has inconsistent coverage, and typically yields qualitative signal rather than clear quantitative grading. It supplements automated evals rather than replacing them."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+    "sourceUrl": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
     "sourceNote": "Stage mapping: automated evals pre-launch and in CI, A/B testing once traffic suffices, production monitoring post-launch.",
-    "sourceCheckedAt": "2026-09-17"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-evaluation-testing-and-optimization-008",
@@ -320,9 +320,9 @@
       "b": "Message Batches offers discounted bulk processing without an immediate-response requirement. It does not preserve this assistant's interactive service constraint.",
       "d": "Semantic caching is a real optimization, but the stated pilot found negligible reusable answers after freshness checks. This option leaves most requests on the expensive path."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Workflow: Routing — accurately classify categories; use cost-efficient models for easy tasks and capable models for hard tasks.",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-evaluation-testing-and-optimization-009",
@@ -400,9 +400,9 @@
       "c": "Pass@5 can pass a task after one successful attempt despite failures on the others. That weakens the consistency signal and does not separate baseline regressions from capability experiments.",
       "d": "Harness unit tests verify application code but do not test prompt changes or agent behavior, allowing silent behavioral regressions to merge before nightly runs."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+    "sourceUrl": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
     "sourceNote": "Capability vs. regression evals in agent development",
-    "sourceCheckedAt": "2026-09-17"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-evaluation-testing-and-optimization-011",
@@ -525,9 +525,9 @@
       "c": "A response can be on-topic while wrong. Topic grouping may help prioritize investigation but does not identify whether evidence was missing or misused.",
       "e": "Separate aggregates can flag trends, but without trial-level linkage they do not show whether a particular wrong answer had sufficient context."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+    "sourceUrl": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
     "sourceNote": "The structure of an evaluation; evaluating research agents: groundedness and coverage; outcome and transcript grading.",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-evaluation-testing-and-optimization-014",
@@ -565,9 +565,9 @@
       "c": "Transcript grading evaluates the execution process rather than the outcome; an agent can execute a logical sequence of tool calls while the underlying service remains unhealthy.",
       "d": "Tool return assertions verify that API calls executed without protocol errors, but do not confirm whether the infrastructure incident was actually resolved."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+    "sourceUrl": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
     "sourceNote": "Outcome verification vs. transcript grading in agent evaluation",
-    "sourceCheckedAt": "2026-09-17"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-evaluation-testing-and-optimization-015",
@@ -605,9 +605,9 @@
       "c": "Repeated scores may help estimate scoring variability, but averaging them does not separate the dimensions or reveal a citation failure hidden by polished prose.",
       "d": "Code graders are the right tool for verifiable properties such as citation format, but tone and structure are the open-ended qualities the post assigns to model-based graders. Forcing all four into assertions discards the dimensions that need judgement."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+    "sourceUrl": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
     "sourceNote": "Grade each dimension with an isolated LLM-as-judge against a structured rubric rather than one judge scoring all dimensions.",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-evaluation-testing-and-optimization-016",
@@ -730,9 +730,9 @@
       "b": "A risky-only set cannot reveal unnecessary escalation of routine traffic. It is therefore insufficient for estimating the production queue burden.",
       "d": "Matching queue capacity does not establish that required reviews occur. The missed-risk constraint remains untested."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+    "sourceUrl": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
     "sourceNote": "Step 3: build balanced problem sets; Step 5: calibrate graders with human experts; holistic evaluation methods.",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-evaluation-testing-and-optimization-019",
@@ -810,8 +810,8 @@
       "b": "Evaluator-optimizer loops can improve quality when feedback helps, but these extra serial calls conflict with the explicit latency budget.",
       "c": "Message Batches is designed for requests that do not require immediate results. Successive asynchronous batches do not meet the stated interactive service constraint."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Workflow: Prompt chaining; Workflow: Routing; add complexity only when measured outcomes justify it.",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   }
 ]

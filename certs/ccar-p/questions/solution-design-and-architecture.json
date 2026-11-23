@@ -21,9 +21,9 @@
       "c": "Specialist delegation can help with unpredictable subtasks, but collecting worker reports does not establish the required validation gate before posting.",
       "d": "A model review can assess ambiguous quality criteria, but it substitutes another judgment for the available vendor-master validation and still leaves posting to the model."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "What are agents?; Workflow: Prompt chaining — predefined paths and programmatic gates",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-solution-design-and-architecture-002",
@@ -47,9 +47,9 @@
       "b": "Parallel candidates support comparison, but invoking both models for each inquiry keeps the larger-model cost and waits for its result.",
       "d": "A single larger-model call simplifies dispatch but does not exploit the demonstrated lower-cost routine path."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Workflow: Routing — accurate classification and model specialization",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-solution-design-and-architecture-003",
@@ -73,9 +73,9 @@
       "c": "Adaptive prioritization can save work, but spending the remaining budget on one dimension leaves required dimensions unchecked.",
       "d": "Sharing prior findings may help deduplication, but the checks do not need that dependency and the measured serial design already exceeds the budget."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Workflow: Parallelization — sectioning versus voting",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-solution-design-and-architecture-004",
@@ -99,9 +99,9 @@
       "b": "Independent attempts plus evaluation can select a promising patch, but duplicate the entire migration instead of coordinating complementary specialist work.",
       "c": "A single adaptive agent can discover the edits, but this design does not provide the requested concurrent specialist execution."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Workflow: Orchestrator-workers — input-dependent decomposition and synthesis",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-solution-design-and-architecture-005",
@@ -125,9 +125,9 @@
       "c": "Routing can select a useful starting template, but generating a fresh draft on each failure does not use the demonstrated targeted-revision mechanism.",
       "d": "Specialists can examine different rubric dimensions, but independent whole-clause rewrites do not reconcile their feedback into the existing approved draft."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Workflow: Evaluator-optimizer; Agents — evaluation criteria, measurable refinement, stopping conditions",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-solution-design-and-architecture-006",
@@ -151,9 +151,9 @@
       "b": "Bounded retries may recover transient failures, but returning intent after retries still hides an unresolved failure from the agent.",
       "d": "Restarting can help a failed session, but withholding the execution evidence from the new session loses the information needed to avoid repeating completed actions."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Agents — environmental ground truth, tool results, and checkpoints",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-solution-design-and-architecture-007",
@@ -177,9 +177,9 @@
       "c": "Prompt caching reuses prefixes; it does not remove the filings and database output from the coordinator's context.",
       "d": "Notes help recover progress across context resets, but this design still puts each investigation's raw output in the coordinator first."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+    "sourceUrl": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
     "sourceNote": "Context engineering for long-horizon tasks — Compaction, Structured note-taking, Sub-agent architectures",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-solution-design-and-architecture-008",
@@ -229,9 +229,9 @@
       "c": "Adaptive research is useful when source selection requires multi-step exploration; that capability is not a requirement of the validated corpus search.",
       "d": "Multiple attempts can improve confidence on some tasks, but they add inference work before a measured quality need has justified it."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "When (and when not) to use agents; Combining and customizing these patterns",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-solution-design-and-architecture-010",
@@ -256,9 +256,9 @@
       "c": "Consolidation can be useful for coherent workflows, but a generic command plus detached conventions moves the ambiguity into the arguments rather than explaining it.",
       "e": "Retries can recover transient execution failures. An invalid region requires changed input, and operator-only diagnostics do not help the agent make that change."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/writing-tools-for-agents",
+    "sourceUrl": "https://www.anthropic.com/research/writing-tools-for-agents",
     "sourceNote": "Optimizing tool responses for token efficiency; Prompt-engineering your tool descriptions",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-solution-design-and-architecture-011",
@@ -283,9 +283,9 @@
       "d": "Removing write capabilities prevents an unapproved change, but ending and restarting the investigation does not provide the requested approval-and-continue path.",
       "e": "Model review can supplement oversight, but its judgment is not the on-call engineer's approval required by this scenario."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Agents — maximum-iteration stopping conditions and human-feedback checkpoints",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-solution-design-and-architecture-012",
@@ -309,9 +309,9 @@
       "c": "Parallel execution avoids serial waiting, but invokes an unnecessary path for each single-content claim despite the parser already identifying the available sections.",
       "d": "Chaining is useful when a later step needs an earlier result. Here it adds a dependency the analyses do not have."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Workflow: Routing; Workflow: Parallelization; Combining and customizing these patterns",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-solution-design-and-architecture-013",
@@ -335,9 +335,9 @@
       "c": "A quorum can be appropriate for disruptive blocker decisions, but using it to discard triage candidates violates the minority-finding requirement.",
       "d": "Successive refinement can improve a report, but replacing the candidate set at each stage does not preserve each reviewer's independent findings for triage."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Workflow: Parallelization — voting, vulnerability review, and false-positive/false-negative thresholds",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-solution-design-and-architecture-014",
@@ -361,9 +361,9 @@
       "b": "Peer communication can support collaboration, but circulating full transcripts crosses the information boundary and does not give synthesis to a designated lead.",
       "d": "Compaction helps a long-running single agent, but summarizes investigation inside the same context rather than keeping specialist working contexts separate."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+    "sourceUrl": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
     "sourceNote": "Context engineering for long-horizon tasks — Sub-agent architectures versus Compaction",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-solution-design-and-architecture-015",
@@ -387,9 +387,9 @@
       "b": "Agreement across plausible queries does not establish that referenced columns exist or that the target database accepts the syntax.",
       "c": "Retrieval supplies a useful starting pattern, but adaptation can introduce the same schema or dialect errors and still needs testing."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Agents — environmental ground truth; Appendix 1 B: Coding agents — automated tests as feedback",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-solution-design-and-architecture-016",
@@ -413,9 +413,9 @@
       "c": "Equal-sized partitions balance counts but do not respect transaction and shared-table dependencies, postponing the required decisions until after implementation.",
       "d": "Whole-system independent attempts can provide alternatives, but duplicate the full implementation instead of coordinating complementary specialist work under agreed contracts."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Workflow: Orchestrator-workers — dynamic decomposition, delegation, and synthesis",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-solution-design-and-architecture-017",
@@ -479,9 +479,9 @@
       "b": "Better descriptions can improve selection and arguments, but leave the three data dependencies and associated model round trips in place.",
       "d": "A joined snapshot can avoid lookups, but it changes freshness semantics and fails the stated requirement for live data."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/writing-tools-for-agents",
+    "sourceUrl": "https://www.anthropic.com/research/writing-tools-for-agents",
     "sourceNote": "Choosing the right tools for agents — consolidate chained operations and return relevant customer context",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-solution-design-and-architecture-019",

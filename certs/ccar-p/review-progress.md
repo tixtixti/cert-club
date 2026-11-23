@@ -153,3 +153,11 @@ Bank-wide renovation addressing recognizability and trade-off depth:
 - **Authoring dispositions**: 102 rewrites, 13 repairs, 3 replaces, 8 keeps. Only `architecture-008` moved key (`d` → `a`) to resolve a deadline contradiction.
 - **Independent adversarial evaluation**: All 126 answer sets derived independently before reading keys/rationales. 113 confirmed, 13 fixed-and-confirmed (`architecture-017`, `prompting-007`, `-008`, `-013`, `integration-005`, `-012`, `-016`, `eval-002`, `-003`, `-007`, `-010`, `-014`, `-015`). 0 miskeys.
 - **Final bank status**: All 126 items confirmed `status: "reviewed"`. Difficulty shifted to 59 medium / 67 hard. All bias guards pass cleanly.
+
+### Canonical URL update for Anthropic research posts (2026-11-21)
+
+Periodic source maintenance pass across all 126 questions:
+
+- **Blueprint drift**: 0% drift. Exam guide v1.0 (July 2026, CCAR-P) re-verified on Everpath CDN. All 7 domain names and weights match `manifest.json` exactly.
+- **Canonical re-cites (38 items)**: Anthropic engineering posts 308-redirect to `/research/*`. Re-cited all 38 affected questions across Domains 1, 3, 4, and 6 to their canonical `https://www.anthropic.com/research/*` URLs (`building-effective-agents`, `contextual-retrieval`, `demystifying-evals-for-ai-agents`, `effective-context-engineering-for-ai-agents`, `writing-tools-for-agents`).
+- **Dispositions**: 38 re-cite, 88 bump. 0 retire, 0 rewrite. All URLs verified live (HTTP 200).

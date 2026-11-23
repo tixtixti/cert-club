@@ -468,9 +468,9 @@
       "c": "Physical disk sanitation and hardware decommissioning are inherited physical controls owned entirely by AWS.",
       "d": "Virtualization hypervisor software maintenance is an infrastructure control owned exclusively by AWS."
     },
-    "sourceUrl": "https://docs.aws.amazon.com/whitepapers/latest/aws-risk-and-compliance/shared-responsibility-model.html",
-    "sourceNote": "Shared controls - Patch Management, Configuration Management, and Awareness & Training in AWS Risk & Compliance",
-    "sourceCheckedAt": "2026-09-11"
+    "sourceUrl": "https://aws.amazon.com/compliance/shared-responsibility-model/",
+    "sourceNote": "Shared controls - Patch Management, Configuration Management, and Awareness & Training in AWS Shared Responsibility Model",
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "aws-clf-c02-security-and-compliance-012",

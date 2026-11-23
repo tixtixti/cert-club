@@ -75,9 +75,9 @@
       "c": "Sub-threshold color contrast in a secondary footer element is a moderate defect, not a blocker preventing core transactional progress.",
       "d": "A missing programmatic label association creates an accessibility barrier but can frequently be deduced from context, whereas a keyboard trap completely breaks navigation."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/implement/",
     "sourceNote": "W3C WAI guidance prioritizes critical barriers that prevent core task completion, such as keyboard traps in transaction paths.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-003",
@@ -115,9 +115,9 @@
       "b": "Remediating Level AAA ahead of Level AA inverts accessibility compliance priorities, as Level A and AA form the foundational conformance baseline.",
       "d": "Third-party social widgets are supplementary features and should not take priority over primary internally developed institutional services."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/implement/",
     "sourceNote": "W3C WAI remediation planning emphasizes addressing high-traffic pages and key user journeys before lower-impact content.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-004",
@@ -195,9 +195,9 @@
       "c": "Refactoring global navigation provides high reach but requires extensive architectural redesign and testing, making it a major initiative rather than a quick win.",
       "d": "Re-theming secondary standalone landing pages requires coordinated design and CSS refactoring while impacting only peripheral, low-traffic views."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/implement/",
     "sourceNote": "W3C WAI guidance defines quick wins as low-effort fixes, such as form labeling and page titles, that deliver immediate user value.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-006",
@@ -235,9 +235,9 @@
       "c": "Applying aria-hidden=\"true\" suppresses screen reader announcements but leaves the keyboard trap intact for keyboard-only navigators.",
       "d": "A skip link does not prevent a keyboard trap from halting users once focus enters the widget or when the chatbot auto-focuses on load."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
+    "sourceUrl": "https://www.w3.org/WAI/planning/interim-repairs/",
     "sourceNote": "W3C WAI remediation advice highlights disabling or replacing non-compliant third-party embeds that block essential access.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-007",
@@ -275,9 +275,9 @@
       "b": "Severity is determined by functional user impact, not whether a criterion is classified as Level A or Level AA in WCAG.",
       "d": "Occurrence across templates reflects defect scope and frequency, whereas severity measures the severity of the barrier experienced by an individual user."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/implement/",
     "sourceNote": "Accessibility triage methodologies classify High severity as severe barriers lacking workarounds and Medium as having workarounds.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-008",
@@ -315,9 +315,9 @@
       "b": "Visual dimensions and pixel surface area do not correlate with accessibility barrier severity for screen reader and keyboard users.",
       "c": "Template location indicates component reuse, but user impact depends on whether failing to perceive the content prevents completing the user journey."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/implement/",
     "sourceNote": "W3C WAI remediation prioritization assesses how essential content and interactions are to completing primary user tasks.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-009",
@@ -515,9 +515,9 @@
       "c": "Interim repairs are explicitly temporary expedients, not permanent substitutes for accessible native semantic code.",
       "d": "Interim repairs cannot be used to certify formal Level AAA conformance or bypass underlying database remediation."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
+    "sourceUrl": "https://www.w3.org/WAI/planning/interim-repairs/",
     "sourceNote": "W3C WAI interim repair guidance defines temporary fixes as bridge solutions while sustainable redesigns are engineered.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-014",
@@ -635,9 +635,9 @@
       "b": "Browsers allow loaded scripts to modify DOM attributes freely; overlays fail because heuristic script modifications cannot understand semantic author intent.",
       "c": "Overlay scripts operate across both desktop and mobile web browsers; their fundamental limitation is architectural and semantic, not device-specific."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
+    "sourceUrl": "https://www.w3.org/WAI/planning/interim-repairs/",
     "sourceNote": "W3C WAI guidance emphasizes fixing underlying source code rather than relying on superficial client-side overlay scripts.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-017",
@@ -675,9 +675,9 @@
       "c": "Restricting manual testing to late staging deployment freezes creates bottleneck delays and fails to catch defects early during branch authoring.",
       "d": "Relying on end-user complaints is a post-release reactive mechanism that shifts quality assurance burdens onto users with disabilities."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/implement/",
     "sourceNote": "W3C WAI planning guidelines recommend embedding automated accessibility checks into development toolchains and CI pipelines.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-018",
@@ -835,9 +835,9 @@
       "c": "aria-hidden true on the body hides the entire page from screen readers and creates severe disorientation.",
       "d": "Suppressing focus management leaves screen reader users stranded without feedback, violating WCAG 2.4.2 and 4.1.3."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
-    "sourceNote": "W3C WAI SPA remediation guidance specifies updating document title and shifting focus to the new main content heading.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceUrl": "https://www.w3.org/WAI/WCAG22/Techniques/client-side-script/SCR38",
+    "sourceNote": "W3C Technique SCR38 specifies managing focus and document title during client-side context changes.",
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-022",
@@ -999,9 +999,9 @@
       "c": "Commercially reasonable efforts clauses regarding roadmap reviews lack binding deadlines or remediation commitments, allowing accessibility barriers to persist indefinitely.",
       "d": "Limiting remedies to subscription refunds for automated scanner findings ignores manual assistive technology barriers and fails to provide third-party defense indemnification."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/procurement/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/plan/",
     "sourceNote": "W3C WAI procurement guidelines recommend binding contract clauses with defined remediation SLAs and warranty terms.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-026",
@@ -1123,9 +1123,9 @@
       "b": "Exempting internal tools ignores employee civil rights and workplace productivity for staff with disabilities.",
       "c": "Accepting unverified marketing claims without technical review is characteristic of initial, ad-hoc procurement stages."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/procurement/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/plan/",
     "sourceNote": "W3C WAI procurement maturity emphasizes systematic ACR verification, pre-release testing, and ongoing SLA tracking.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-029",
@@ -1243,9 +1243,9 @@
       "b": "The technical mechanism required for remediation does not determine the severity classification experienced by end users.",
       "d": "Severity is judged by functional barrier impact rather than WCAG level; in fact, blockers almost always violate Level A."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/implement/",
     "sourceNote": "W3C WAI remediation guidance defines critical barriers as those preventing core task completion with no workaround.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-032",
@@ -1283,9 +1283,9 @@
       "b": "Prioritizing low-effort cosmetic defects to artificially burn down bug volume leaves critical functional barriers intact in core workflows.",
       "c": "Prioritizing pages purely by raw automated defect counts diverts resources to low-impact administrative screens away from high-impact user journeys."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/implement/",
     "sourceNote": "W3C WAI remediation planning prioritizes high-traffic pages and key conversion paths such as login and checkout.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-033",
@@ -1363,9 +1363,9 @@
       "c": "Form inputs remain focusable via Tab even when unlabelled; the failure is the absence of an accessible name conveying purpose.",
       "d": "Missing landmarks reduce navigation efficiency but do not break screen reader modes, whereas an unlabelled input directly obscures what information to enter."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/implement/",
     "sourceNote": "W3C WAI triage rubrics prioritize form input barriers over secondary navigational convenience landmarks.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-035",
@@ -1403,9 +1403,9 @@
       "b": "WCAG 2.2 SC 1.3.1 requires programmatic heading semantics, but sequential heading progression is an advisory technique rather than a normative failure.",
       "d": "Browsers correctly expose <h4> elements in the accessibility tree with role heading and level 4 regardless of whether <h3> was present."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/implement/",
     "sourceNote": "W3C WAI guidance notes that non-sequential heading structures are minor advisory issues that do not block access.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-036",
@@ -1603,9 +1603,9 @@
       "b": "Automated linters detect only a subset of issues and cannot automatically remediate functional Level A barriers.",
       "c": "WCAG conformance is strictly cumulative under Section 5.2.1; Level AA conformance cannot be achieved without meeting all Level A criteria."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/implement/",
     "sourceNote": "W3C WAI guidance prioritizes Level A foundational barriers over Level AA enhancements when scheduling remediation.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-041",
@@ -1883,9 +1883,9 @@
       "b": "Linters do not execute in browser runtimes and cannot test assistive technology interactions or dynamic live region updates.",
       "d": "Linters verify the presence of alt attributes on <img> tags but cannot evaluate whether the text accurately describes image context."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/implement/",
     "sourceNote": "W3C WAI remediation planning emphasizes shift-left testing tools to catch semantic errors early during coding.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-048",
@@ -1923,9 +1923,9 @@
       "b": "Automated testing engines compute contrast ratios between rendered CSS text and solid backgrounds with high accuracy.",
       "c": "Detecting missing alt attributes on <img> tags is one of the most reliable automated static and DOM checks."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/implement/",
     "sourceNote": "W3C WAI guidance highlights that automated tools detect missing attributes but cannot judge descriptive accuracy.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-049",
@@ -1963,9 +1963,9 @@
       "c": "Full WCAG-EM audits evaluate entire web properties; running them on every PR is operationally infeasible and halts team velocity.",
       "d": "Standard unit tests evaluate software logic and state, failing to detect semantic markup, keyboard, and screen reader barriers."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/implement/",
     "sourceNote": "W3C WAI remediation guidance emphasizes embedding accessibility criteria into agile user stories and Definition of Done.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-050",
@@ -2003,9 +2003,9 @@
       "c": "Design system tokens cannot reach into or style cross-origin iframes or external third-party embedded plugins.",
       "d": "Design system components require rigorous manual keyboard and screen reader testing in addition to automated checks."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/remediating/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/implement/",
     "sourceNote": "W3C WAI emphasizes building accessibility into shared component libraries to scale fixes across multiple products.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-051",
@@ -2171,9 +2171,9 @@
       "c": "Voluntary roadmap commitments lack legal enforceability and do not bind the vendor to specific remediation deadlines.",
       "d": "Indemnification clauses protect against third-party lawsuits but do not compel the vendor to fix underlying technical accessibility barriers."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/procurement/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/plan/",
     "sourceNote": "W3C WAI procurement guidance recommends formal contract terms with SLAs defining remediation timeframes by severity.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-055",
@@ -2211,9 +2211,9 @@
       "b": "Procurement audit clauses do not govern internal vendor hardware purchasing or workplace accommodation arrangements.",
       "d": "Conducting an independent audit does not transfer statutory legal liability to third-party auditors; the procuring entity remains accountable."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/procurement/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/plan/",
     "sourceNote": "W3C WAI procurement guidelines advise incorporating independent audit rights prior to software acceptance.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "iaap-was-raw-056",
@@ -2415,8 +2415,8 @@
       "b": "Relying solely on periodic external audits without internal engineering competence represents low-to-medium reactive maturity.",
       "c": "Relying on end-user complaints shifts the testing burden to users with disabilities, demonstrating a reactive, low-maturity culture."
     },
-    "sourceUrl": "https://www.w3.org/WAI/planning/procurement/",
+    "sourceUrl": "https://www.w3.org/WAI/planning-and-managing/plan/",
     "sourceNote": "W3C WAI procurement maturity emphasizes institutionalized vendor processes, internal expertise, and transparent ACRs.",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   }
 ]

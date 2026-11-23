@@ -444,9 +444,9 @@
       "c": "There is no runtime setting in Lambda to enable multi-threading; runtime threads depend on underlying hardware cores determined by memory size.",
       "d": "Provisioned concurrency maintains initialized execution environments to prevent cold starts, but does not alter the CPU-to-memory ratio."
     },
-    "sourceUrl": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-function-common.html",
+    "sourceUrl": "https://docs.aws.amazon.com/lambda/latest/dg/lambda-functions.html",
     "sourceNote": "Configuring AWS Lambda function memory and compute resources",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "aws-dva-c02-development-with-aws-services-012",
@@ -529,9 +529,9 @@
       "d": "AWS Lambda does not assign public IP addresses to its managed ENIs; outbound internet traffic must use network address translation.",
       "e": "VPC endpoints connect to supported AWS services and AWS PrivateLink partner services, not arbitrary third-party public endpoints."
     },
-    "sourceUrl": "https://docs.aws.amazon.com/lambda/latest/dg/foundation-networking.html",
+    "sourceUrl": "https://docs.aws.amazon.com/lambda/latest/dg/configuration-vpc.html",
     "sourceNote": "Configuring VPC networking for AWS Lambda functions",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "aws-dva-c02-development-with-aws-services-014",
@@ -613,9 +613,9 @@
       "c": "CloudWatch Logs subscription filters stream raw log events, requiring custom parsing logic to detect invocation status rather than structured execution records.",
       "d": "Building a Step Functions workflow adds orchestration complexity when native Lambda asynchronous destinations fulfill the requirement directly."
     },
-    "sourceUrl": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-async-destinations.html",
+    "sourceUrl": "https://docs.aws.amazon.com/lambda/latest/dg/invocation-async.html",
     "sourceNote": "Configuring destinations for asynchronous invocation in AWS Lambda",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "aws-dva-c02-development-with-aws-services-016",
@@ -1018,9 +1018,9 @@
       "c": "Partition keys in Kinesis determine shard distribution, not distinct subscriber queues for independent consumer workloads.",
       "d": "Sequential synchronous Lambda invocations couple task execution, accumulate latency, and fail entirely if an early invocation throws an error."
     },
-    "sourceUrl": "https://docs.aws.amazon.com/sns/latest/dg/sns-common-scenarios.html",
+    "sourceUrl": "https://docs.aws.amazon.com/sns/latest/dg/sns-sqs-as-subscriber.html",
     "sourceNote": "Common Amazon SNS scenarios and fanout architectures",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "aws-dva-c02-development-with-aws-services-026",
@@ -1315,9 +1315,9 @@
       "b": "Using path parameters exposes internal deployment environments in client URLs and requires custom client routing.",
       "c": "Passing the environment in an HTTP request header requires custom routing logic inside the function and risks unauthorized clients spoofing target environments."
     },
-    "sourceUrl": "https://docs.aws.amazon.com/apigateway/latest/developerguide/amazon-api-gateway-using-stage-variables.html",
+    "sourceUrl": "https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-set-stage-variables-aws-console.html#how-to-set-stage-variables-aws-console-lambda-function",
     "sourceNote": "Using Amazon API Gateway stage variables",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "aws-dva-c02-development-with-aws-services-033",
@@ -1484,9 +1484,9 @@
       "b": "CloudFront response headers policies modify edge responses, but configuring Gateway Responses in API Gateway natively solves the issue at the API layer for all consumers.",
       "d": "AWS WAF custom responses apply only to requests blocked by WAF rules, not native API Gateway authentication or authorization failures."
     },
-    "sourceUrl": "https://docs.aws.amazon.com/apigateway/latest/developerguide/customize-gateway-responses.html",
+    "sourceUrl": "https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html",
     "sourceNote": "Customizing gateway responses in Amazon API Gateway",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "aws-dva-c02-development-with-aws-services-037",
@@ -1528,9 +1528,9 @@
       "b": "Mutations perform write operations to modify server-side data, but do not push updates to other connected clients.",
       "c": "Live queries are not a native AWS AppSync operation type; AppSync implements real-time push delivery through GraphQL subscriptions over WebSockets."
     },
-    "sourceUrl": "https://docs.aws.amazon.com/appsync/latest/devguide/real-time-data.html",
+    "sourceUrl": "https://docs.aws.amazon.com/appsync/latest/devguide/aws-appsync-real-time-data.html",
     "sourceNote": "Real-time data with AWS AppSync GraphQL subscriptions",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "aws-dva-c02-development-with-aws-services-038",
@@ -1617,9 +1617,9 @@
       "c": "Synchronous Express Workflows also have a 5-minute maximum runtime limit and at-least-once execution.",
       "d": "EventBridge rules route events to targets, but do not provide stateful workflow orchestration or visual execution history across multi-day lifecycles."
     },
-    "sourceUrl": "https://docs.aws.amazon.com/step-functions/latest/dg/concepts-standard-vs-express.html",
+    "sourceUrl": "https://docs.aws.amazon.com/step-functions/latest/dg/choosing-workflow-type.html",
     "sourceNote": "Standard vs Express workflows in AWS Step Functions",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "aws-dva-c02-development-with-aws-services-040",
@@ -1697,9 +1697,9 @@
       "b": "Increasing retry attempts without jitter compounds traffic storms and delays failure detection without solving synchronization.",
       "d": "Disabling retries causes immediate application failures and lost updates rather than resolving transient throughput limits."
     },
-    "sourceUrl": "https://docs.aws.amazon.com/general/latest/gr/api-retries.html",
+    "sourceUrl": "https://docs.aws.amazon.com/sdkref/latest/guide/feature-retry-behavior.html",
     "sourceNote": "Error retries and exponential backoff in AWS",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "aws-dva-c02-development-with-aws-services-042",
@@ -1741,8 +1741,8 @@
       "b": "The /transform feature automates language and runtime version upgrades (such as migrating Java versions), rather than generating new function implementations from comments.",
       "c": "The security scan feature scans project code for security vulnerabilities and code quality issues, rather than generating new implementations from comments."
     },
-    "sourceUrl": "https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/software-dev.html",
+    "sourceUrl": "https://docs.aws.amazon.com/amazonq/latest/qdeveloper-ug/inline-suggestions.html",
     "sourceNote": "Generating code suggestions with Amazon Q Developer",
-    "sourceCheckedAt": "2026-10-12"
+    "sourceCheckedAt": "2026-11-21"
   }
 ]

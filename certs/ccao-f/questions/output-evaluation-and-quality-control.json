@@ -1,0 +1,750 @@
+[
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-001",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A conference team used Claude to turn a room schedule into a directory. At rehearsal, staff checked that they could find a session by name; they weren't using the directory to find rooms. The organizer now wants to send the same directory to visitors, who will travel directly to the building listed for their session. What review is needed before sending it?",
+    "options": [
+      {
+        "id": "differentiated-review-depth",
+        "text": "Match each session's building and room in the directory to its assignment in the venue's confirmed schedule."
+      },
+      {
+        "id": "changes-since-rehearsal",
+        "text": "Review the sessions that moved after rehearsal and carry forward the rehearsal result for sessions that stayed put."
+      },
+      {
+        "id": "repeat-lookup",
+        "text": "Have someone unfamiliar with the venue look up sessions from the invitation and flag locations that are hard to find."
+      },
+      {
+        "id": "verify-room-list",
+        "text": "Check the listed buildings and room names against the venue map and correct any locations visitors could not reach."
+      }
+    ],
+    "correct": [
+      "differentiated-review-depth"
+    ],
+    "explanation": "The rehearsal tested whether someone could find a session, not whether it was in the right building. Visitors will now act on each assignment. Checking the directory against the confirmed schedule addresses that new consequence even if the directory itself hasn't changed.",
+    "distractorNotes": {
+      "changes-since-rehearsal": "Checking changes would make sense if the original assignments had been verified. An unchanged entry could have pointed to the wrong building from the start.",
+      "repeat-lookup": "A visitor can find a clearly written entry and still travel to the wrong location. This repeats a usability check rather than checking the assignment.",
+      "verify-room-list": "A map confirms that a room exists and where it is. It does not confirm which session meets there."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/writing-an-ai-diligence-statement",
+    "sourceNote": "FAQ: adjust scrutiny to the task, stakes and verifiability; check claims against their sources.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-002",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A service manager asked whether a new shift reduced the time callers spend waiting. Claude's pilot summary shows that the team answered more calls and spent less time talking to each caller. Both figures match the records. What verdict should the reviewer give?",
+    "options": [
+      { "id": "accept-throughput", "text": "Accept it: the higher number of calls answered measures the shift's effect on the queue." },
+      { "id": "revise-measure", "text": "Request a revision using time to answer, or a statement that wait-time data is missing." },
+      { "id": "qualify-conclusion", "text": "Accept it with a caveat that shorter calls suggest, rather than prove, a shorter wait." },
+      { "id": "normalize-volume", "text": "Request the same figures per staff member to account for differences in shift size." }
+    ],
+    "correct": ["revise-measure"],
+    "explanation": "The figures are accurate but measure what happened after calls were answered or how many were handled. Neither measures the wait before an answer. The report needs evidence for the manager's question or an explicit statement that it cannot answer it.",
+    "distractorNotes": {
+      "accept-throughput": "More calls can be answered even as the wait grows, for example if more callers are arriving.",
+      "qualify-conclusion": "A caveat weakens the inference but does not address the missing measure.",
+      "normalize-volume": "Adjusting for staffing answers a productivity question rather than the wait-time question."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "sourceNote": "Define your success criteria: relevant measures, task fidelity, and whether the output directly addresses the user's question.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-003",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "For a planning call, a chair needs a short list of unresolved questions from a design review. She checks Claude's list against the minutes: it includes each open question, leaves out settled issues and introduces no new claims. A colleague objects that none of the questions has a proposed answer. How should the chair classify the list?",
+    "options": [
+      { "id": "seek-proposals", "text": "Needs revision: include a tentative answer beside each question to make the call productive." },
+      { "id": "attach-history", "text": "Needs revision: restore the settled issues so participants can follow the history of the review." },
+      { "id": "return-to-owners", "text": "Needs human correction: ask the design owners to resolve the questions before circulating it." },
+      { "id": "ready-for-call", "text": "Ready for this call: it accurately identifies the outstanding questions the chair requested." }
+    ],
+    "correct": ["ready-for-call"],
+    "explanation": "The chair asked for an agenda of open questions, not a set of recommendations. She has checked both inclusion and exclusion against the minutes. The absence of proposed answers is appropriate to this deliverable.",
+    "distractorNotes": {
+      "seek-proposals": "Proposals might belong in a decision paper, but they would expand the agenda beyond the brief.",
+      "attach-history": "Restoring settled issues would undo the chair's deliberate scope restriction.",
+      "return-to-owners": "The questions are the purpose of the call; their unresolved status is not a defect in the list."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "sourceNote": "Common success criteria: assess task fidelity, relevance and use of context against the intended purpose.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-004",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A production editor reviews a print proof in an editable Claude artifact. A caption identifies a prototype as the finished product. The editor has the approved caption, is authorized to correct the proof, and the surrounding copy has already been approved. Which action best resolves the defect?",
+    "options": [
+      { "id": "correct-caption", "text": "Replace the caption with the approved wording in the proof and check the corrected caption in place." },
+      { "id": "qualify-description", "text": "Add a qualifier to the generated caption so readers know the pictured product may still be in development." },
+      { "id": "refresh-proof", "text": "Have Claude regenerate the page from the approved copy and use the new proof as the review baseline." },
+      { "id": "refer-to-team", "text": "Return the page to the product team and ask them to determine which stage the photograph depicts." }
+    ],
+    "correct": ["correct-caption"],
+    "explanation": "The source settles the fact and supplies the replacement text. A local correction fixes the verified error without reopening approved copy or asking another team to decide a settled issue.",
+    "distractorNotes": {
+      "qualify-description": "A qualification suggests uncertainty where the approved caption establishes the product stage.",
+      "refresh-proof": "Regenerating the page expands the review surface when the correction is confined to a caption.",
+      "refer-to-team": "Escalation would help if the source were ambiguous or the editor lacked authority; neither holds here."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/collaborate-with-your-team-in-claude-artifacts",
+    "sourceNote": "Edit it yourself or ask Claude: choose direct, localized edits for small fixes rather than reworking the whole deliverable.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-005",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "Claude has turned a meeting transcript into a register of commitments. The chair needs to identify which commitments, if any, were omitted and which owners merely suggested the work. Which checks can pinpoint those errors? Select TWO.",
+    "options": [
+      { "id": "check-names", "text": "Check each name in the owner column against the list of people who attended the meeting." },
+      { "id": "trace-to-register", "text": "Find the commitments in the transcript and trace each one forward to a register entry." },
+      { "id": "check-duplicates", "text": "Group the register by action title and check whether the same promise is listed twice." },
+      { "id": "trace-owner-back", "text": "Trace each named owner back to a passage where that person accepted or was assigned the work." },
+      { "id": "compare-counts", "text": "Compare the register's row count with the number of commitments the chair recorded by hand." }
+    ],
+    "correct": ["trace-to-register", "trace-owner-back"],
+    "explanation": "Tracing each commitment from the transcript to the register identifies any missing rows. Tracing each owner back to the transcript shows whether that person accepted or was assigned the work, rather than merely suggesting it.",
+    "distractorNotes": {
+      "check-names": "Attendance establishes presence, not responsibility.",
+      "check-duplicates": "Duplicate removal improves the register but cannot establish who accepted the work or what was omitted.",
+      "compare-counts": "A difference in totals can flag a problem without identifying the missing commitment. Matching totals can hide an omission offset by a spurious row."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/discernment-toolkit",
+    "sourceNote": "Building your discernment toolkit: task-specific checks and source grounding against exact passages for factual claims.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-006",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "Two editors agree that Claude's service-delay notices are factually accurate but disagree about which sound helpful. House standards say a notice should acknowledge the inconvenience, use plain language and tell the reader what to do next. How should the editors resolve the disagreement consistently across notices?",
+    "options": [
+      { "id": "reference-match", "text": "Compare the wording with a previously approved notice and favor drafts that use more of the same phrases." },
+      { "id": "reader-preference", "text": "Ask staff to rank the notices by overall helpfulness, then take the median ranking for each draft." },
+      { "id": "anchored-rubric", "text": "Define what meeting each house standard looks like and cite a passage from the notice for each rating." },
+      { "id": "reading-score", "text": "Use a readability score to resolve close calls, since the editors already agree that the facts are right." }
+    ],
+    "correct": ["anchored-rubric"],
+    "explanation": "An anchored rubric makes the standards observable and gives the editors evidence to discuss. Notices can acknowledge the reader and give a useful next step in different words; surface similarity is not the goal.",
+    "distractorNotes": {
+      "reference-match": "A notice can repeat familiar phrases without telling this particular reader what to do.",
+      "reader-preference": "A preference ranking does not reveal which house standard a draft met or missed.",
+      "reading-score": "Ease of reading addresses part of the requirement; it does not establish acknowledgment or a usable next step."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/discernment-toolkit",
+    "sourceNote": "Build tests to validate recurring work products: writing rubrics for voice, tone and format with evidence in the draft.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-007",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A dispatcher is deciding whether Claude's routing labels are good enough for a shared inbox. Reviewers have checked routine single-request messages. The desk also receives mixed requests, for which routing rules specify which team takes the lead. Which additional evidence is most useful before accepting the labels?",
+    "options": [
+      { "id": "repeat-mixed", "text": "Run the mixed requests twice and measure how often Claude chooses the same lead team both times." },
+      { "id": "check-mixed", "text": "Compare labels on representative mixed requests with the lead teams specified by the routing rules." },
+      { "id": "expand-routine", "text": "Increase the routine sample until it includes recent messages routed to each of the possible teams." },
+      { "id": "check-valid-teams", "text": "Check that each mixed request gets one label and that the label names a team in the routing directory." }
+    ],
+    "correct": ["check-mixed"],
+    "explanation": "The untested case is a message that could go to more than one team. Comparing its label with the rule-defined lead tests the decision the dispatcher needs to trust. Consistency or a valid team name could accompany a consistently wrong routing decision.",
+    "distractorNotes": {
+      "repeat-mixed": "Agreement across runs measures consistency, not agreement with the routing rules.",
+      "expand-routine": "Covering more destinations does not exercise the rule for competing destinations.",
+      "check-valid-teams": "A real team can still be the wrong lead for that combination of requests."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/develop-tests",
+    "sourceNote": "Eval design principles: mirror real cases, include edge cases and compare clear categorical outputs with known correct answers.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-008",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A store lead asks for one handover line covering this afternoon's departures, including exceptions. The dispatch sheet has three entries: crates — loaded; display stands — loaded; leaflets — held pending proof approval. Which draft is ready for the incoming shift to use?",
+    "options": [
+      { "id": "held-load", "text": "The afternoon load is being held for proof approval; crates and display stands are already on board." },
+      { "id": "pending-paperwork", "text": "Crates, display stands and leaflets are on the departure list; proof approval is still outstanding." },
+      { "id": "departed-items", "text": "Crates and display stands have departed; the remaining leaflets are waiting for proof approval." },
+      { "id": "loaded-held", "text": "Crates and display stands are loaded; leaflets are on hold pending proof approval." }
+    ],
+    "correct": ["loaded-held"],
+    "explanation": "This line preserves the recorded status of each item and ties the hold to the leaflets. Loading is not evidence of departure, and the sheet does not say that the hold affects the rest of the load.",
+    "distractorNotes": {
+      "held-load": "This applies an item-specific hold to the whole load.",
+      "pending-paperwork": "The list and the approval note are accurate in isolation, but the incoming shift still cannot tell which goods are on hold.",
+      "departed-items": "The source says the goods are loaded, not that they have left."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/discernment-toolkit",
+    "sourceNote": "Source grounding and work-product checks: verify factual claims against the source and preserve context the reader needs.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-009",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "Claude attributes a quotation in an exhibition label to a named talk in a museum's oral-history collection. The label editor finds the speaker in the catalog, but the accession number in Claude's citation belongs to a different recording. What would justify retaining the quotation and attribution?",
+    "options": [
+      { "id": "catalog-speaker", "text": "Confirm that the speaker recorded a talk on that subject, then cite the catalog entry for the speaker." },
+      { "id": "new-reference", "text": "Have Claude supply a replacement accession number and check that it opens a recording by the speaker." },
+      { "id": "verify-original", "text": "Locate the words in an identified recording or transcript and confirm who said them before citing it." },
+      { "id": "consistent-wording", "text": "Find similar wording in an authenticated talk by the speaker and cite that talk as the likely source." }
+    ],
+    "correct": ["verify-original"],
+    "explanation": "A plausible reference can attach invented words to a real person. Keeping a direct quotation requires evidence of those words and their speaker. A working link to a related recording establishes neither by itself.",
+    "distractorNotes": {
+      "catalog-speaker": "The catalog entry establishes participation, not the content of the talk.",
+      "new-reference": "This fixes the link's destination but leaves the quoted passage unchecked.",
+      "consistent-wording": "A similar sentiment could support a sourced paraphrase; it does not authenticate the quotation."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on",
+    "sourceNote": "Convincing quotations can lack factual grounding; inspect original sources rather than relying on Claude's synthesis.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-010",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A venue comparison says evening setup is included in a rental. The linked venue guide does say evening setup is included, but under a heading for multi-day bookings; the event is a single-day booking. The single-day section does not mention setup. Which edit is supported?",
+    "options": [
+      { "id": "leave-open", "text": "Mark evening setup as unconfirmed for this booking and ask the venue for the applicable terms." },
+      { "id": "budget-extra", "text": "Mark evening setup as a paid extra for this booking because inclusion is listed under multi-day rates." },
+      { "id": "include-footnote", "text": "Keep evening setup in the included column and footnote that the guide gives a multi-day example." },
+      { "id": "broader-description", "text": "Replace the inclusion claim with a statement that evening setup is available for single-day events." }
+    ],
+    "correct": ["leave-open"],
+    "explanation": "The source supports inclusion for a different booking type. It establishes neither availability nor price for this event. Reading the surrounding section changes what the quoted sentence can support.",
+    "distractorNotes": {
+      "budget-extra": "A planner might budget a contingency, but silence in a rate sheet does not establish an extra charge.",
+      "include-footnote": "The heading limits the terms; it is not merely an example of them.",
+      "broader-description": "Dropping the price claim still asserts availability for a booking type the passage does not cover."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/8525154-claude-is-providing-incorrect-or-misleading-responses-what-s-going-on",
+    "sourceNote": "Original websites may contain important context omitted from a synthesis; check the claim against the full original content.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-011",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "Two Claude summaries of the same supplier notice give different dates for when orders switch to new packaging. One date matches the notice's heading; the other appears in an example order. What should the purchasing lead check to resolve the conflict?",
+    "options": [
+      { "id": "notice-issue", "text": "Use the heading date, which is the date the supplier formally attached to the notice." },
+      { "id": "example-order", "text": "Use the example order date, which illustrates the change in an actual purchasing context." },
+      { "id": "compare-runs", "text": "Generate another summary with both dates visible and use the interpretation Claude repeats." },
+      { "id": "effective-clause", "text": "Find the passage that specifies which orders switch, and check the date and condition it gives." }
+    ],
+    "correct": ["effective-clause"],
+    "explanation": "Inconsistent summaries flag a fact to investigate; they do not settle it. The wording that defines affected orders establishes the cutoff. A document date and a date used for illustration can both be real without either being the cutoff.",
+    "distractorNotes": {
+      "notice-issue": "The date of the communication need not be the date the change takes effect.",
+      "example-order": "A single order can illustrate the rule without establishing when the rule began.",
+      "compare-runs": "Repeated outputs can reveal inconsistency, but agreement is not evidence that a date has the right meaning."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+    "sourceNote": "Best-of-N can flag inconsistencies; direct quotes and source verification ground the disputed claim.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-012",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "Claude filled out a handover form from a repair log. Where the log leaves downtime blank, the form says zero minutes. The maintenance lead wants to distinguish uninterrupted service from gaps in recordkeeping. How should the reviewer handle those entries?",
+    "options": [
+      { "id": "retain-zero", "text": "Keep zero minutes where the record shows a completed repair without a separate outage report." },
+      { "id": "mark-unrecorded", "text": "Mark downtime as not recorded unless another source establishes the actual downtime, including zero." },
+      { "id": "estimate-duration", "text": "Estimate downtime from the repair start and finish times and mark those values as approximate." },
+      { "id": "remove-records", "text": "Remove repairs with blank downtime from the handover so the retained values are documented." }
+    ],
+    "correct": ["mark-unrecorded"],
+    "explanation": "A missing value is not evidence for a measured zero. Leaving the repair in the handover and identifying the missing information preserves exactly the distinction the maintenance lead needs.",
+    "distractorNotes": {
+      "retain-zero": "Lack of a separate outage report is not confirmation that service stayed up.",
+      "estimate-duration": "Time spent repairing equipment does not establish how long service was interrupted.",
+      "remove-records": "Omitting the repairs would hide the gaps that the lead wants to see."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations",
+    "sourceNote": "Allow uncertainty where the supplied source lacks information; restrict claims to what the provided material supports.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-013",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A buying committee reads Claude's claim that independent field trials confirm a supplier's yield estimate. It cites three trade publications. Each names the supplier, but the summaries do not identify who measured yield. Which checks would test the claim of independent confirmation? Select TWO.",
+    "options": [
+      { "id": "trace-origins", "text": "Follow the articles' attributions to see whether the reported yields come from the same supplier trial." },
+      { "id": "publication-owners", "text": "Check whether the publications have separate owners and different editors responsible for the articles." },
+      { "id": "compare-publication", "text": "Compare publication dates to see whether the later articles appeared after the supplier announced its results." },
+      { "id": "independent-record", "text": "Look for a separately conducted trial and check whether its measured result supports the claimed yield." },
+      { "id": "supplier-comment", "text": "Ask the supplier to confirm that the publications accurately reproduced the yield figure it provided." }
+    ],
+    "correct": ["trace-origins", "independent-record"],
+    "explanation": "Independence attaches to the measurement, not to the publication carrying it. Tracing the citations can reveal that the articles share a single origin; a separate trial with a relevant result can supply independent evidence.",
+    "distractorNotes": {
+      "publication-owners": "Separately owned publications can all repeat the same data.",
+      "compare-publication": "Publication order is a clue to investigate, not evidence of who conducted a trial.",
+      "supplier-comment": "Confirmation by the originator can check reporting accuracy but cannot make the measurement independent."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/10684626-enable-and-use-web-search",
+    "sourceNote": "Tips for effective use: cross-reference cited sources and use authoritative sources when verifying important information.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-014",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A facilitator asks Claude to brief a workshop on keeping a centralized booking desk versus moving bookings to local teams. The brief uses neutral language but gives concrete benefits for centralization and vague objections for local booking. Which steps best test whether that imbalance reflects the evidence? Select TWO.",
+    "options": [
+      { "id": "even-length", "text": "Give the two positions equal space and check whether the resulting brief looks even-handed." },
+      { "id": "paired-treatment", "text": "Ask for each position's strongest case under the same criteria and compare the depth of the responses." },
+      { "id": "count-sources", "text": "Require the same number of citations for each position and compare the totals in the revised brief." },
+      { "id": "tone-pass", "text": "Have a colleague remove value-laden adjectives and see whether the difference in emphasis persists." },
+      { "id": "inspect-evidence", "text": "Examine the underlying material for each position to see which benefits and objections it actually supports." }
+    ],
+    "correct": ["paired-treatment", "inspect-evidence"],
+    "explanation": "A model can give one position more substantive treatment without using loaded language. Comparable requests help expose differences in treatment; checking the evidence establishes whether a difference is justified. Fair treatment need not lead to equal conclusions.",
+    "distractorNotes": {
+      "even-length": "Equal word counts can conceal large differences in the quality of the arguments.",
+      "count-sources": "Citation counts do not tell the facilitator what the sources support.",
+      "tone-pass": "The stated imbalance is in the substance of the arguments; a tone pass does not test the evidence."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/why-does-bias-exist-in-ai-models",
+    "sourceNote": "Bias can affect depth across perspectives; use paired perspectives, seek evidence and inspect the linked material yourself.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-015",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "Claude summarizes a studio survey: respondents who attended an orientation renewed more often, so the orientation persuaded them to renew. The analyst verifies the attendance and renewal figures. Respondents were not asked why they renewed, and chose for themselves whether to attend. Which wording can the analyst defend from this evidence?",
+    "options": [
+      { "id": "observed-association", "text": "Among the respondents, renewal was more common among orientation attendees than among nonattendees." },
+      { "id": "small-effect", "text": "Orientation probably contributed to higher renewal among respondents, although the size of its effect is uncertain." },
+      { "id": "prior-commitment", "text": "The higher renewal rate among attendees reflects their stronger commitment before the orientation took place." },
+      { "id": "wider-population", "text": "Studio members who attend orientation renew more often, although the reason for that difference is unknown." }
+    ],
+    "correct": ["observed-association"],
+    "explanation": "The records support a comparison within the surveyed group. They do not establish that orientation changed behavior, that prior commitment explains the difference, or that respondents represent the entire membership.",
+    "distractorNotes": {
+      "small-effect": "Hedging the size still assigns a causal role that the survey did not establish.",
+      "prior-commitment": "Self-selection makes prior commitment a possible explanation, not an observed fact.",
+      "wider-population": "This removes the causal claim but silently expands the result from respondents to all members."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/discernment-toolkit",
+    "sourceNote": "Building your discernment toolkit and Limitations: check defensibility of reasoning and do not generalize beyond a selected sample.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-016",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An internal stock note drafted with Claude has a short reorder table and several pages of trend commentary. The buyer will place nonreturnable orders from the table this afternoon. The commentary is for next month's discussion. With limited review time, what should the stock lead do first?",
+    "options": [
+      { "id": "sampling", "text": "Sample rows and paragraphs in proportion to their length so the review covers the whole note fairly." },
+      { "id": "trend-review", "text": "Check the trend explanations first, since they required more interpretation than the short reorder table." },
+      { "id": "verify-order", "text": "Reconcile the reorder quantities to the stock records and order rules before the buyer acts on them." },
+      { "id": "compare-orders", "text": "Check that the suggested orders resemble last month's purchases and investigate the unusual lines first." }
+    ],
+    "correct": ["verify-order"],
+    "explanation": "The buyer will act on the quantities today and cannot return excess stock. The current records and order rules provide a direct check before purchase; the commentary can wait until someone needs it for a decision.",
+    "distractorNotes": {
+      "sampling": "Weighting review by length would send most of the time to commentary that no one is acting on yet.",
+      "trend-review": "An interpretation can be difficult without being the most consequential thing to verify first.",
+      "compare-orders": "Historical comparisons can flag outliers but cannot establish whether a familiar-looking order is right today."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/writing-an-ai-diligence-statement",
+    "sourceNote": "Frequently asked questions: adjust scrutiny to stakes and verifiability, and check the sources behind the output.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-017",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A purchasing officer verifies that Claude copied the correct clause from a freight agreement. Its summary also says a particular loss would be covered. The officer can check the wording but has no claims expertise, and the answer determines whether the company buys additional cover. Who should review what before the purchase decision?",
+    "options": [
+      { "id": "confirm-quotation", "text": "Have a second purchasing officer verify the quotation against the signed copy and record that the text matches." },
+      { "id": "specialist-application", "text": "Have the firm's coverage specialist assess the clause against the facts of the loss scenario and its exclusions." },
+      { "id": "budget-approval", "text": "Have the budget owner review the potential cost of extra cover and sign off on Claude's interpretation." },
+      { "id": "source-definition", "text": "Have the officer check unfamiliar words in an industry glossary and compare the definitions with the summary." }
+    ],
+    "correct": ["specialist-application"],
+    "explanation": "Textual accuracy is settled; the open question is how the terms apply. An accountable decision about extra cover needs someone who can assess that inference, including relevant exclusions. A second transcription check would verify the wrong thing.",
+    "distractorNotes": {
+      "confirm-quotation": "A second reader can confirm wording without knowing whether that wording covers this loss.",
+      "budget-approval": "Authority to approve spending does not itself confer expertise in the coverage question.",
+      "source-definition": "Definitions can aid reading but do not establish how provisions and exclusions interact here."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/discernment-toolkit",
+    "sourceNote": "Expertise as a barrier to discernment; build a panel of experts and seek a secondary check in domains outside your expertise.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-018",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A team can send a partner the confirmed dates for a training series today. Claude's draft also promises weekend support. Operations has proposed weekend cover, but the service owner has not decided whether to offer it. The partner will use anything stated as a commitment. Which actions let the team send a useful reply today? Select TWO.",
+    "options": [
+      { "id": "send-confirmed", "text": "Send the confirmed dates and make clear that weekend support has not been agreed." },
+      { "id": "cite-proposal", "text": "Include weekend support in the schedule with a footnote giving the date of the operations proposal." },
+      { "id": "owner-decision", "text": "Take the proposed support commitment to the service owner for a decision before promising it." },
+      { "id": "check-capacity", "text": "Check that staff are available on weekends and use that as the basis for confirming coverage." },
+      { "id": "delete-issue", "text": "Mark weekends as unsupported in the partner schedule because the current approval covers dates alone." }
+    ],
+    "correct": ["send-confirmed", "owner-decision"],
+    "explanation": "A reviewer can separate an established fact from an undecided commitment. The confirmed dates can go out now; whether to promise support is a decision for the named owner. Neither plausible staffing nor a proposal constitutes that decision.",
+    "distractorNotes": {
+      "cite-proposal": "Citing a proposal does not convert it into an agreement the partner can rely on.",
+      "check-capacity": "Capacity bears on feasibility, not the owner's decision to offer the service.",
+      "delete-issue": "Declaring support unavailable would settle an open decision in the opposite direction."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/discernment-toolkit",
+    "sourceNote": "Source grounding and expert review: distinguish sourced facts from unchecked claims and consult the person who owns the decision.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-019",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "In the sign-off note for a Claude-assisted progress report, the project lead finds a statement that she verified individual milestone dates. She actually checked the milestones against the project plan by month; a scheduler checked individual dates for the launch milestones. What should the note say?",
+    "options": [
+      { "id": "actual-scope", "text": "Describe the lead's month-level review and the scheduler's date checks on the launch milestones." },
+      { "id": "shared-review", "text": "State that the project team verified milestone dates, without assigning the two checks to individuals." },
+      { "id": "review-by-lead", "text": "Credit the project lead with verifying the individual dates since she is responsible for the final report." },
+      { "id": "scheduler-review", "text": "State that the scheduler checked the milestone schedule, leaving the lead's less detailed review out." }
+    ],
+    "correct": ["actual-scope"],
+    "explanation": "A sign-off describes checks that actually occurred. Here the checks differed in both precision and scope. Naming them accurately lets a reader see which dates were reviewed individually without confusing responsibility for the report with performance of each check.",
+    "distractorNotes": {
+      "shared-review": "The collective wording still suggests a date-level check covering the schedule.",
+      "review-by-lead": "Owning the report does not mean the lead personally performed the scheduler's check.",
+      "scheduler-review": "This broadens the scheduler's review beyond the launch milestones and omits a check that did occur."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/writing-an-ai-diligence-statement",
+    "sourceNote": "Five elements to include; verify the diligence statement itself so its description matches the human review actually performed.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-020",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "Claude extracted quantities from handwritten count sheets, then used the resulting table to produce several depot forecasts. Last month an extraction error appeared consistently throughout the forecasts and passed the final cross-check between reports. Where should the lead add a review this month to catch the same kind of failure earliest?",
+    "options": [
+      { "id": "forecast-history", "text": "Before distribution, compare each depot's forecast with its historical range and review unusually large movements." },
+      { "id": "parallel-forecast", "text": "Run a second forecast from the same table before writing the reports and investigate disagreements." },
+      { "id": "total-reconciliation", "text": "Once forecasts are ready, reconcile their depot subtotals to the combined total in the extracted table." },
+      { "id": "verify-extraction", "text": "Before forecasting, check the extracted quantities against the count sheets and resolve ambiguous entries." }
+    ],
+    "correct": ["verify-extraction"],
+    "explanation": "The reports share an input. Agreement downstream can reproduce the same extraction error rather than detect it. Checking the transformation against the original count sheets establishes the input before it is reused.",
+    "distractorNotes": {
+      "forecast-history": "Historical ranges can flag large anomalies later, but a plausible wrong count can fall inside the range.",
+      "parallel-forecast": "A second forecast can reproduce the bad input even if it uses a different forecasting method.",
+      "total-reconciliation": "Reconciling back to the extracted table tests downstream arithmetic, not extraction from the originals."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/discernment-toolkit",
+    "sourceNote": "Checking work against an external source of truth and adding approval gates between stages instead of only at the end.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-021",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "For a small workshop, Claude suggests fictional names for a paper prototype. Participants will choose names for the exercise, erase them that afternoon, and make no branding decision. Which review is proportionate before the facilitator prints the cards?",
+    "options": [
+      { "id": "branding-search", "text": "Screen the names for suitability as permanent product names before the facilitator shows them to participants." },
+      { "id": "audience-fit", "text": "Read the cards for clarity, suitability for this group and possible confusion during the exercise." },
+      { "id": "audience-survey", "text": "Test the names with a representative sample of potential buyers before allowing the workshop to use them." },
+      { "id": "rank-by-model", "text": "Have Claude rate how memorable each name sounds and print the set with the strongest recall scores." }
+    ],
+    "correct": ["audience-fit"],
+    "explanation": "The immediate risks are that a card confuses a participant or is inappropriate for the group. A facilitator read addresses those risks. Market validation and clearance would serve a later branding decision, which is not being made here.",
+    "distractorNotes": {
+      "branding-search": "Clearance for commercial use is disproportionate to disposable workshop labels.",
+      "audience-survey": "Buyer preferences do not establish whether a label works as a temporary workshop prop.",
+      "rank-by-model": "Memorability does not check audience fit or confusion in the actual exercise."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/writing-an-ai-diligence-statement",
+    "sourceNote": "Frequently asked questions: adjust the level of scrutiny to the task, its stakes and how the output will be used.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-022",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "easy",
+    "status": "reviewed",
+    "stem": "A coordinator is revising the agenda in an existing calendar invitation. She wants Claude to suggest two phrasings for a single line so she can choose one and paste it in. The calendar invitation will remain the team's working copy. Which delivery format best fits?",
+    "options": [
+      { "id": "editable-doc", "text": "A standalone editable document with one version of the agenda line beneath the other." },
+      { "id": "revised-agenda", "text": "A downloadable copy of the full agenda with the alternatives highlighted at the point of use." },
+      { "id": "inline-reply", "text": "A short inline reply containing both phrasings, ready for the coordinator to copy from chat." },
+      { "id": "shared-review", "text": "A shared document artifact where the other attendees can comment on the alternative phrasings." }
+    ],
+    "correct": ["inline-reply"],
+    "explanation": "The coordinator needs two snippets for immediate use, not a separately maintained deliverable. An artifact earns its place when the content stands on its own and needs editing, reuse or sharing outside the conversation.",
+    "distractorNotes": {
+      "editable-doc": "A separate document adds a handoff for text that is going straight into the invitation.",
+      "revised-agenda": "A full agenda copy introduces another version when just one line is requested.",
+      "shared-review": "The coordinator is choosing the phrasing; no collaborative review was requested."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them",
+    "sourceNote": "What is an artifact? Self-contained work intended for later editing, reference or reuse outside the conversation.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-023",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "Three shift leads will rewrite different sections of a handover guide during a live meeting. They all have team access to Claude and want to edit the same guide there while the author continues using Claude for wording suggestions. How should the author hand off the draft?",
+    "options": [
+      { "id": "shared-doc", "text": "Make the guide a Claude Doc artifact and give the leads edit access to its shared page." },
+      { "id": "comment-doc", "text": "Share the guide as an artifact for comments and collect the leads' replacements in the comment threads." },
+      { "id": "section-files", "text": "Export one editable file per section and let each lead revise a copy for the author to combine." },
+      { "id": "export-draft", "text": "Export the shared draft to a team document and keep the author's original artifact open for Claude edits." }
+    ],
+    "correct": ["shared-doc"],
+    "explanation": "People with edit access to a shared doc artifact can work on the same page at the same time, and Claude can update that artifact too. This keeps the shift leads' direct edits and the author's requested changes in one guide.",
+    "distractorNotes": {
+      "comment-doc": "Comment threads collect proposals, but the leads need to change the guide itself.",
+      "section-files": "Parallel copies defer integration and prevent the leads from seeing the shared guide update live.",
+      "export-draft": "Continuing to edit the original after export creates separate places for the leads' and author's changes."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/collaborate-with-your-team-in-claude-artifacts",
+    "sourceNote": "Share, collaborate, and export: people with edit access can work on the same doc in real time alongside Claude.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-024",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "Claude has summarized proposed repairs by room. The work-order import accepts a CSV with columns for room, defect and priority; each row creates one order. Some rooms need several repairs. What should the facilities coordinator request for the handoff?",
+    "options": [
+      { "id": "room-row", "text": "A CSV with one row per room, combining that room's defects and priorities in their respective fields." },
+      { "id": "priority-row", "text": "A CSV grouped into one row per priority, with room names and repair descriptions listed in matching order." },
+      { "id": "room-block", "text": "A CSV with a heading row for each room followed by rows containing its defects and their priorities." },
+      { "id": "order-row", "text": "A CSV with one row per repair, repeating the room and supplying that repair's defect and priority." }
+    ],
+    "correct": ["order-row"],
+    "explanation": "The receiving system defines the unit of the output: one repair becomes one order. Repeating the room on each repair row preserves that relationship. A layout made for a human to scan can be valid CSV and still import incorrectly.",
+    "distractorNotes": {
+      "room-row": "Several repairs would collapse into one order when a room has more than one defect.",
+      "priority-row": "Grouping by priority creates a batch of repairs where the importer expects one order.",
+      "room-block": "The importer would read room headings as records, and the defect rows would lack their own room value."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/collaborate-with-your-team-in-claude-artifacts",
+    "sourceNote": "Share, collaborate, and export: choose the format the destination needs, including CSV for sheet data.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-025",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "Claude's narrative estimates how many unique visitors attended a festival. Each visitor used a personal pass with the same ID throughout the event. The coordinator needs an exact count from the check-in file, excluding test passes. Which steps produce and check that count? Select TWO.",
+    "options": [
+      { "id": "daily-count", "text": "Calculate unique non-test passes for each day and add the daily counts for the festival total." },
+      { "id": "run-calculation", "text": "Have Claude execute a calculation on the check-in file that filters test passes and counts distinct pass IDs." },
+      { "id": "compare-estimate", "text": "Round the calculated count to the precision of the narrative estimate and use agreement as the acceptance test." },
+      { "id": "inspect-count", "text": "Check the calculation against known results for two cases: a cross-day repeat and a test pass." },
+      { "id": "distinct-rows", "text": "Remove duplicate check-in rows from the file and count the remaining non-test rows as visitors." }
+    ],
+    "correct": ["run-calculation", "inspect-count"],
+    "explanation": "Executing the counting rule on the source records gives a computed result rather than an estimate. Applying the same calculation to known cases checks that a repeat visitor contributes once and a test pass contributes nothing. Running code helps only if it implements the intended rule.",
+    "distractorNotes": {
+      "daily-count": "A visitor attending two days would contribute to both daily counts.",
+      "compare-estimate": "Agreement with a rounded estimate can hide errors in the exact count.",
+      "distinct-rows": "Separate visits can produce different check-in rows for the same pass. Deduplicating rows is not deduplicating visitors."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude",
+    "sourceNote": "Advanced data analysis and using code execution: run scripts on uploaded data and review results against the exact requirements.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-026",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "Claude's outline for a delegate welcome pack has been fact-checked. Events staff now need an editable Word file in the current house format, including a contact block that changes with the event type. Their enabled welcome-pack Skill contains the current template and rules for that block. What should the coordinator request?",
+    "options": [
+      { "id": "prior-pack", "text": "Use the last event's approved Word pack as the template and replace its agenda text with the checked outline." },
+      { "id": "skill-file", "text": "Use the welcome-pack Skill with the checked outline and event type to produce the editable Word pack." },
+      { "id": "generic-file", "text": "Create a Word file from the outline, match the house colors, and use the team's standard contact footer." },
+      { "id": "layout-preview", "text": "Use the welcome-pack Skill to make a fixed-layout preview with the correct contact block for distribution." }
+    ],
+    "correct": ["skill-file"],
+    "explanation": "The required output combines a specific file format with an event-dependent convention. The enabled Skill supplies the current procedure and template; the checked outline and event type supply this pack's content and context.",
+    "distractorNotes": {
+      "prior-pack": "A previous pack is one instance of the format and can carry the wrong contact block for this event.",
+      "generic-file": "Correct file type and colors do not implement the event-dependent contact rule.",
+      "layout-preview": "A preview may be useful for sign-off, but the events staff need to edit the Word file."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/12512176-what-are-skills",
+    "sourceNote": "Types of skills: Word document creation and custom skills for templates, brand guidelines and repeatable company-specific formats.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-027",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A presenter has a checked trend analysis and a dense slide of prose. Supervisors watching a large screen need to see when the trend changed and which shift needs attention. The presenter also wants the calculation details on hand for questions. Which edits fit the live presentation? Select TWO.",
+    "options": [
+      { "id": "charted-turn", "text": "Show the trend on a labeled chart with the turning point and the affected shift visible to the audience." },
+      { "id": "show-derivation", "text": "Use the slide for the calculation steps and have the presenter name the turning point while speaking." },
+      { "id": "notes-for-method", "text": "Put the calculation details in speaker notes that the presenter can consult without projecting them." },
+      { "id": "latest-bars", "text": "Use a bar chart of the latest shift totals and label the shift that needs attention on that chart." },
+      { "id": "chart-in-notes", "text": "Move the time series into speaker notes and project a single statement naming the affected shift." }
+    ],
+    "correct": ["charted-turn", "notes-for-method"],
+    "explanation": "A time-series chart can show both when the change happened and which shift it affected. Notes keep the checked calculation available to the presenter without asking the audience to read the method instead of the finding.",
+    "distractorNotes": {
+      "show-derivation": "The audience needs to see the change, not reconstruct it from calculation steps or catch it in narration.",
+      "latest-bars": "A current snapshot can show differences between shifts but not when the trend changed.",
+      "chart-in-notes": "Naming the shift gives the audience one required fact but hides the timing evidence."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/using-claude-design-for-presentations-and-slide-decks",
+    "sourceNote": "Change the deck, add charts, and add notes and present: put takeaways on slides and supporting detail in presenter-only notes.",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-028",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A committee will compare catering plans in a room without network access. Claude has prepared a verified cost comparison at the expected attendance. Members use desktop Excel and want to change the headcount in the meeting to see which plan is cheaper, including each plan's fixed booking fee. Which handoff fits?",
+    "options": [
+      { "id": "static-grid", "text": "A downloaded workbook showing the expected attendance and several sample headcounts as fixed cost columns." },
+      { "id": "pdf-method", "text": "A PDF comparing the current quotes, with the booking fees and per-person rates printed below the totals." },
+      { "id": "live-dashboard", "text": "A shared Claude dashboard with a headcount control and a comparison that updates as members move the control." },
+      { "id": "formula-workbook", "text": "A downloaded workbook whose formulas use an editable headcount, the per-person rates and the fixed fees." }
+    ],
+    "correct": ["formula-workbook"],
+    "explanation": "The committee needs a working model, not another snapshot. A local Excel workbook with formulas can recalculate both plans for the headcount chosen in the room while retaining each fixed fee.",
+    "distractorNotes": {
+      "static-grid": "Sample columns are usable offline but do not calculate a headcount outside the prepared set.",
+      "pdf-method": "The PDF supplies inputs for a manual calculation, not the requested editable comparison.",
+      "live-dashboard": "The interactive control suits the task, but access to a hosted dashboard depends on a connection the room lacks."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/create-and-edit-files-with-claude-to-eliminate-hours-of-busy-work",
+    "sourceNote": "Building a dynamic financial model: downloadable Excel workbooks with formulas that recalculate when an input changes.",
+    "sourceCheckedAt": "2026-11-21"
+  }
+]

@@ -230,9 +230,9 @@
       "c": "Carrying the full raw history is the failure mode these techniques address; unbounded accumulation degrades recall long before any hard limit is reached.",
       "f": "A larger window is not a substitute for curation. Context rot and relevance decay affect windows of all sizes, so the strongest agents still manage what they carry."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+    "sourceUrl": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
     "sourceNote": "Context engineering for long-horizon tasks — compaction, structured note-taking, sub-agent architectures",
-    "sourceCheckedAt": "2026-09-17"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccdv-f-prompt-and-context-engineering-014",
@@ -271,9 +271,9 @@
       "c": "Compaction does carry a condensed history forward, but summarising is lossy and each pass summarises the previous summary, so details that matter only later are progressively dropped. Notes written outside the conversation are not subject to that.",
       "d": "Continuously growing the system prompt trades one window problem for another; persistent facts belong in an external store that is consulted on demand, not re-injected every turn."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+    "sourceUrl": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
     "sourceNote": "Context engineering — 'Structured note-taking' (external memory)",
-    "sourceCheckedAt": "2026-09-17"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccdv-f-prompt-and-context-engineering-015",
@@ -317,9 +317,9 @@
       "c": "A summary is a lossy distillation, not a guarantee. Critical facts can be dropped, which is why external persistence is recommended alongside compaction.",
       "e": "Summarisation necessarily discards content, so deciding what to preserve versus drop is the central design choice, not a non-issue."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+    "sourceUrl": "https://www.anthropic.com/research/effective-context-engineering-for-ai-agents",
     "sourceNote": "Context engineering for long-horizon tasks — 'Compaction' (the art of what to keep vs discard)",
-    "sourceCheckedAt": "2026-09-17"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccdv-f-prompt-and-context-engineering-016",

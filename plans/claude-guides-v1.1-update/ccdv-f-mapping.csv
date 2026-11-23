@@ -1,0 +1,107 @@
+id,old_domain,old_subdomain,new_domain,new_skill,disposition,reason
+ccdv-f-agents-and-workflows-001,agents-and-workflows,agent-architecture,agents-and-workflows,agent-pattern-diagnosis,rewrite,Loop-stop recall; objective now diagnoses loop termination from a trace
+ccdv-f-agents-and-workflows-003,agents-and-workflows,agent-architecture,agents-and-workflows,agent-pattern-diagnosis,retag,Misbehaving long session diagnosed as compaction/context loss
+ccdv-f-agents-and-workflows-004,agents-and-workflows,agent-patterns-and-frameworks,agents-and-workflows,architecture-and-runtime-selection,rewrite,Definitional workflow-vs-agent recall; objective now evaluates fit to requirements
+ccdv-f-agents-and-workflows-005,agents-and-workflows,agent-patterns-and-frameworks,agents-and-workflows,architecture-and-runtime-selection,rewrite,Names a pattern from its description; duplicates applications-029
+ccdv-f-agents-and-workflows-007,agents-and-workflows,agent-construction-with-claude,agents-and-workflows,agent-pattern-diagnosis,retag,Subagent re-asking diagnosed as subagent context isolation
+ccdv-f-agents-and-workflows-009,agents-and-workflows,agent-construction-with-claude,agents-and-workflows,agent-sdk-construction-and-hooks,rewrite,"""Conceptually why"" recall; objective is building/correcting definitions"
+ccdv-f-agents-and-workflows-012,agents-and-workflows,agent-patterns-and-frameworks,agents-and-workflows,architecture-and-runtime-selection,retag,Self-hosted harness execution-environment choice
+ccdv-f-agents-and-workflows-014,agents-and-workflows,agent-construction-with-claude,agents-and-workflows,agent-sdk-construction-and-hooks,keep,Correcting a subagent definition via tool restriction
+ccdv-f-agents-and-workflows-015,agents-and-workflows,agent-construction-with-claude,security-and-safety,deterministic-guardrails-and-least-privilege,retag,Least-privilege tool scoping for untrusted content; D7 fit
+ccdv-f-agents-and-workflows-017,agents-and-workflows,agent-construction-with-claude,agents-and-workflows,agent-sdk-construction-and-hooks,keep,Hook makes required action deterministic
+ccdv-f-agents-and-workflows-019,agents-and-workflows,agent-architecture,agents-and-workflows,architecture-and-runtime-selection,keep,Scenario decision on whether agentic architecture fits
+ccdv-f-agents-and-workflows-020,agents-and-workflows,agent-architecture,agents-and-workflows,architecture-and-runtime-selection,rewrite,Abstract criteria statements; needs error-tolerance/audit scenario
+ccdv-f-agents-and-workflows-022,agents-and-workflows,agent-architecture,agents-and-workflows,architecture-and-runtime-selection,rewrite,Benefit-statement recall; objective evaluates decomposition
+ccdv-f-agents-and-workflows-024,agents-and-workflows,agent-patterns-and-frameworks,agents-and-workflows,architecture-and-runtime-selection,rewrite,Pattern naming; objective selects architecture against constraints
+ccdv-f-agents-and-workflows-025,agents-and-workflows,agent-patterns-and-frameworks,agents-and-workflows,architecture-and-runtime-selection,rewrite,"Pattern naming, easy; overlaps applications-025 and prompt-010"
+ccdv-f-applications-and-integration-001,applications-and-integration,claude-api-mechanics,applications-and-integration,messages-api-mechanics,keep,Stateless message structure applied to a bug
+ccdv-f-applications-and-integration-002,applications-and-integration,claude-api-mechanics,applications-and-integration,messages-api-mechanics,keep,Message structure request interpretation
+ccdv-f-applications-and-integration-003,applications-and-integration,claude-api-mechanics,applications-and-integration,integration-resilience,retag,400 invalid_request error output plus correction
+ccdv-f-applications-and-integration-004,applications-and-integration,claude-api-mechanics,applications-and-integration,messages-api-mechanics,keep,tool_use stop reason misread
+ccdv-f-applications-and-integration-005,applications-and-integration,claude-api-mechanics,applications-and-integration,integration-resilience,rewrite,Streaming fact recall; objective analyzes mishandled stream events
+ccdv-f-applications-and-integration-008,applications-and-integration,claude-application-design,applications-and-integration,messages-api-mechanics,retag,Realtime vs batch; same fact/angle as v1.0 sample 1
+ccdv-f-applications-and-integration-009,applications-and-integration,claude-application-design,model-selection-and-optimization,cost-diagnosis-and-optimization,rewrite,Caching-benefit recall; third caching-principles item
+ccdv-f-applications-and-integration-010,applications-and-integration,claude-application-design,prompt-and-context-engineering,context-management-for-long-running-sessions,retag,Long-session recall decay; context curation
+ccdv-f-applications-and-integration-014,applications-and-integration,software-engineering-foundations,applications-and-integration,integration-resilience,retag,Error-class handling and retry logic
+ccdv-f-applications-and-integration-015,applications-and-integration,systems-life-cycle,model-selection-and-optimization,model-tier-selection-and-release-planning,rewrite,10-word definitional recall; release planning survives; overlaps 054
+ccdv-f-applications-and-integration-016,applications-and-integration,systems-life-cycle,model-selection-and-optimization,model-tier-selection-and-release-planning,retag,Release migration with regression evals
+ccdv-f-applications-and-integration-017,applications-and-integration,understanding-requirements,eval-testing-and-debugging,evaluation-design,retag,Measurable success criterion = defensible metric
+ccdv-f-applications-and-integration-018,applications-and-integration,understanding-requirements,eval-testing-and-debugging,evaluation-design,retag,Eval-suite construction practices
+ccdv-f-applications-and-integration-022,applications-and-integration,configuration-management,security-and-safety,api-key-and-credential-handling,retag,Workspaces for key/environment separation
+ccdv-f-applications-and-integration-025,applications-and-integration,claude-application-design,agents-and-workflows,architecture-and-runtime-selection,retag,Workflow (chaining) decomposition choice
+ccdv-f-applications-and-integration-026,applications-and-integration,claude-application-design,applications-and-integration,application-boundary-and-surface-behavior,retag,Schema decision at app boundary; only item left for this skill
+ccdv-f-applications-and-integration-027,applications-and-integration,claude-application-design,model-selection-and-optimization,model-tier-selection-and-release-planning,retag,Tier routing against cost/quality
+ccdv-f-applications-and-integration-029,applications-and-integration,claude-application-design,agents-and-workflows,architecture-and-runtime-selection,retag,Orchestrator decomposition; duplicates agents-005
+ccdv-f-applications-and-integration-030,applications-and-integration,claude-application-design,eval-testing-and-debugging,evaluation-design,retag,Eval and criteria before optimisation
+ccdv-f-applications-and-integration-031,applications-and-integration,claude-application-design,claude-code,claude-code-customization-and-extension,retag,Choosing CLAUDE.md vs hook for a team workflow
+ccdv-f-applications-and-integration-032,applications-and-integration,claude-application-design,security-and-safety,prompt-injection-and-jailbreak-defense,retag,Embedded directives in untrusted text = injection
+ccdv-f-applications-and-integration-033,applications-and-integration,claude-application-design,tools-and-mcps,tool-design-and-response-shaping,retag,Tool-set assembly; heavy overlap with tools-017
+ccdv-f-applications-and-integration-035,applications-and-integration,claude-api-mechanics,applications-and-integration,messages-api-mechanics,keep,Vision content blocks
+ccdv-f-applications-and-integration-037,applications-and-integration,claude-api-mechanics,applications-and-integration,messages-api-mechanics,keep,Batch processing mechanics
+ccdv-f-applications-and-integration-039,applications-and-integration,software-engineering-foundations,applications-and-integration,NONE,retire-candidate,Large-scale refactoring; Software Engineering Foundations dropped
+ccdv-f-applications-and-integration-041,applications-and-integration,software-engineering-foundations,claude-code,claude-code-operation,rewrite,Code-review angle dropped; refocus on plan permission mode
+ccdv-f-applications-and-integration-042,applications-and-integration,software-engineering-foundations,applications-and-integration,NONE,retire-candidate,Debugging own code with Claude; not a v1.1 objective
+ccdv-f-applications-and-integration-043,applications-and-integration,software-engineering-foundations,applications-and-integration,NONE,retire-candidate,Claude test-writing behaviour; SE foundations dropped
+ccdv-f-applications-and-integration-045,applications-and-integration,software-engineering-foundations,claude-code,claude-code-operation,retag,Worktree-based parallel session management
+ccdv-f-applications-and-integration-047,applications-and-integration,configuration-management,applications-and-integration,configuration-and-sdlc-integration,keep,CLAUDE.md scope from config artifacts
+ccdv-f-applications-and-integration-049,applications-and-integration,configuration-management,applications-and-integration,configuration-and-sdlc-integration,keep,Model version pinning
+ccdv-f-applications-and-integration-051,applications-and-integration,configuration-management,claude-code,claude-code-customization-and-extension,retag,Memory vs hook mechanism; third copy of this fact
+ccdv-f-applications-and-integration-052,applications-and-integration,understanding-requirements,applications-and-integration,NONE,retire-candidate,Functional vs non-functional; Understanding Requirements dropped
+ccdv-f-applications-and-integration-053,applications-and-integration,understanding-requirements,model-selection-and-optimization,model-tier-selection-and-release-planning,retag,Binding constraints for tier selection
+ccdv-f-applications-and-integration-054,applications-and-integration,systems-life-cycle,model-selection-and-optimization,model-tier-selection-and-release-planning,retag,Release planning ahead of retirement
+ccdv-f-claude-code-001,claude-code,claude-code-operation,claude-code,claude-code-operation,keep,CLAUDE.md hierarchy
+ccdv-f-claude-code-003,claude-code,claude-code-operation,claude-code,claude-code-operation,keep,Permission modes
+ccdv-f-claude-code-005,claude-code,claude-code-operation,claude-code,claude-code-operation,keep,"Headless mode; generic ""foundational features"" wording"
+ccdv-f-eval-testing-and-debugging-003,eval-testing-and-debugging,debugging-and-error-handling,eval-testing-and-debugging,failure-mode-diagnosis,rewrite,Generic debugging steps; objective analyzes trace and isolates cause
+ccdv-f-eval-testing-and-debugging-006,eval-testing-and-debugging,debugging-and-error-handling,eval-testing-and-debugging,NONE,retire-candidate,Claude Code OpenTelemetry setup in no v1.1 objective
+ccdv-f-eval-testing-and-debugging-009,eval-testing-and-debugging,debugging-and-error-handling,eval-testing-and-debugging,failure-mode-diagnosis,keep,Integration vs model-output isolation
+ccdv-f-model-selection-and-optimization-001,model-selection-and-optimization,model-selection-and-tradeoffs,model-selection-and-optimization,model-tier-selection-and-release-planning,keep,Tier selection path
+ccdv-f-model-selection-and-optimization-002,model-selection-and-optimization,model-selection-and-tradeoffs,model-selection-and-optimization,model-tier-selection-and-release-planning,keep,Eval before tier change; effort lever
+ccdv-f-model-selection-and-optimization-006,model-selection-and-optimization,technical-fundamentals,model-selection-and-optimization,cost-diagnosis-and-optimization,retag,Cache-hit billing vs window; technical-fundamentals dropped
+ccdv-f-model-selection-and-optimization-007,model-selection-and-optimization,cost-and-token-management,model-selection-and-optimization,cost-diagnosis-and-optimization,rewrite,Caching principle recall; objective analyzes usage data/breakpoints
+ccdv-f-model-selection-and-optimization-008,model-selection-and-optimization,cost-and-token-management,model-selection-and-optimization,cost-diagnosis-and-optimization,rewrite,Caching best-practice recall; redundant with 007/app-009
+ccdv-f-model-selection-and-optimization-012,model-selection-and-optimization,cost-and-token-management,model-selection-and-optimization,cost-diagnosis-and-optimization,keep,Dominant cost driver and lever
+ccdv-f-model-selection-and-optimization-013,model-selection-and-optimization,technical-fundamentals,model-selection-and-optimization,generation-mechanics-and-model-options,retag,Context-window overflow behaviour
+ccdv-f-model-selection-and-optimization-014,model-selection-and-optimization,llm-fundamentals,model-selection-and-optimization,generation-mechanics-and-model-options,rewrite,Latency statement recall; not observed-behaviour analysis
+ccdv-f-model-selection-and-optimization-015,model-selection-and-optimization,technical-fundamentals,model-selection-and-optimization,generation-mechanics-and-model-options,retag,Thinking token accounting
+ccdv-f-model-selection-and-optimization-016,model-selection-and-optimization,llm-fundamentals,model-selection-and-optimization,generation-mechanics-and-model-options,keep,Non-determinism explains observed behaviour
+ccdv-f-model-selection-and-optimization-017,model-selection-and-optimization,llm-fundamentals,model-selection-and-optimization,generation-mechanics-and-model-options,keep,Shared context budget explains truncation
+ccdv-f-model-selection-and-optimization-018,model-selection-and-optimization,llm-fundamentals,model-selection-and-optimization,generation-mechanics-and-model-options,keep,Thinking use; could refocus on effort levels
+ccdv-f-model-selection-and-optimization-020,model-selection-and-optimization,llm-fundamentals,prompt-and-context-engineering,prompt-revision,retag,Few-shot moved to D6 Prompt Revision
+ccdv-f-model-selection-and-optimization-021,model-selection-and-optimization,llm-fundamentals,model-selection-and-optimization,generation-mechanics-and-model-options,keep,Tokens
+ccdv-f-model-selection-and-optimization-024,model-selection-and-optimization,technical-fundamentals,applications-and-integration,messages-api-mechanics,retag,Streaming via SDK; websockets/tech-fundamentals dropped
+ccdv-f-model-selection-and-optimization-025,model-selection-and-optimization,technical-fundamentals,applications-and-integration,messages-api-mechanics,retag,Statelessness; duplicates applications-001
+ccdv-f-model-selection-and-optimization-026,model-selection-and-optimization,technical-fundamentals,applications-and-integration,integration-resilience,retag,429 retry-after and SDK retries
+ccdv-f-model-selection-and-optimization-029,model-selection-and-optimization,model-selection-and-tradeoffs,model-selection-and-optimization,model-tier-selection-and-release-planning,keep,Behaviour change across releases
+ccdv-f-prompt-and-context-engineering-002,prompt-and-context-engineering,prompt-engineering,prompt-and-context-engineering,grounding-and-source-citation,rewrite,Doc-tag recall; refocus on cite and not-found grounding
+ccdv-f-prompt-and-context-engineering-003,prompt-and-context-engineering,prompt-engineering,prompt-and-context-engineering,prompt-revision,keep,Multi-shot examples
+ccdv-f-prompt-and-context-engineering-005,prompt-and-context-engineering,context-engineering,prompt-and-context-engineering,context-management-for-long-running-sessions,keep,Auditing context bloat sources
+ccdv-f-prompt-and-context-engineering-010,prompt-and-context-engineering,prompt-engineering,agents-and-workflows,architecture-and-runtime-selection,retag,Chaining chosen for audit constraints
+ccdv-f-prompt-and-context-engineering-013,prompt-and-context-engineering,context-engineering,prompt-and-context-engineering,context-management-for-long-running-sessions,keep,"Compaction, notes, subagent isolation"
+ccdv-f-prompt-and-context-engineering-014,prompt-and-context-engineering,context-engineering,prompt-and-context-engineering,context-management-for-long-running-sessions,keep,Durable external memory
+ccdv-f-prompt-and-context-engineering-015,prompt-and-context-engineering,context-engineering,prompt-and-context-engineering,context-management-for-long-running-sessions,keep,Compaction tradeoff
+ccdv-f-prompt-and-context-engineering-016,prompt-and-context-engineering,prompt-engineering,prompt-and-context-engineering,prompt-revision,rewrite,Placement recall; objective revises prompt to close eval gap
+ccdv-f-prompt-and-context-engineering-017,prompt-and-context-engineering,prompt-engineering,prompt-and-context-engineering,prompt-revision,keep,Output constraints
+ccdv-f-prompt-and-context-engineering-018,prompt-and-context-engineering,output-handling,prompt-and-context-engineering,structured-output-and-defensive-parsing,keep,Structured outputs replace retry loop
+ccdv-f-prompt-and-context-engineering-019,prompt-and-context-engineering,output-handling,prompt-and-context-engineering,structured-output-and-defensive-parsing,keep,Response validation of stop reason
+ccdv-f-prompt-and-context-engineering-020,prompt-and-context-engineering,output-handling,prompt-and-context-engineering,structured-output-and-defensive-parsing,keep,Semantic validation and raw logging
+ccdv-f-security-and-safety-001,security-and-safety,identity-secrets-and-key-management,security-and-safety,api-key-and-credential-handling,keep,"Service accounts, federation"
+ccdv-f-security-and-safety-002,security-and-safety,claude-hooks,security-and-safety,deterministic-guardrails-and-least-privilege,keep,Hook deny overrides permissive mode
+ccdv-f-security-and-safety-003,security-and-safety,ai-application-security,security-and-safety,prompt-injection-and-jailbreak-defense,keep,Untrusted content placement
+ccdv-f-security-and-safety-004,security-and-safety,ai-application-security,security-and-safety,prompt-injection-and-jailbreak-defense,keep,Layered injection mitigations
+ccdv-f-security-and-safety-005,security-and-safety,guardrails-and-safe-deployment,security-and-safety,deterministic-guardrails-and-least-privilege,keep,Deny-first rule evaluation
+ccdv-f-security-and-safety-006,security-and-safety,claude-hooks,security-and-safety,deterministic-guardrails-and-least-privilege,keep,Instruction is not enforcement
+ccdv-f-security-and-safety-007,security-and-safety,guardrails-and-safe-deployment,security-and-safety,deterministic-guardrails-and-least-privilege,keep,Sandbox scope limits
+ccdv-f-security-and-safety-009,security-and-safety,identity-secrets-and-key-management,security-and-safety,api-key-and-credential-handling,keep,Credential-injecting proxy
+ccdv-f-security-and-safety-014,security-and-safety,ai-application-security,security-and-safety,prompt-injection-and-jailbreak-defense,keep,Jailbreak mitigations
+ccdv-f-tools-and-mcps-002,tools-and-mcps,tool-implementation,tools-and-mcps,tool-design-and-response-shaping,keep,Description drives invocation
+ccdv-f-tools-and-mcps-004,tools-and-mcps,tool-implementation,tools-and-mcps,tool-design-and-response-shaping,keep,Tool error handling
+ccdv-f-tools-and-mcps-006,tools-and-mcps,tool-implementation,tools-and-mcps,tool-design-and-response-shaping,keep,tool_choice and parallel control
+ccdv-f-tools-and-mcps-007,tools-and-mcps,tool-implementation,tools-and-mcps,tool-design-and-response-shaping,keep,Strict schema conformance
+ccdv-f-tools-and-mcps-008,tools-and-mcps,mcp-server-development,tools-and-mcps,mcp-server-development-and-integration,keep,Transport choice
+ccdv-f-tools-and-mcps-011,tools-and-mcps,mcp-server-development,tools-and-mcps,mcp-server-development-and-integration,keep,Resources/tools/prompts
+ccdv-f-tools-and-mcps-012,tools-and-mcps,agentic-customization,tools-and-mcps,capability-mechanism-selection,keep,MCP for shared capability; same fact/angle as v1.0 sample 3
+ccdv-f-tools-and-mcps-013,tools-and-mcps,agentic-customization,claude-code,claude-code-customization-and-extension,retag,Skill for a repeatable Claude Code workflow
+ccdv-f-tools-and-mcps-014,tools-and-mcps,agentic-customization,tools-and-mcps,capability-mechanism-selection,keep,Mechanism-to-use-case pairing
+ccdv-f-tools-and-mcps-015,tools-and-mcps,agentic-customization,tools-and-mcps,capability-mechanism-selection,keep,Custom tool justification
+ccdv-f-tools-and-mcps-017,tools-and-mcps,tool-implementation,tools-and-mcps,tool-design-and-response-shaping,keep,Tool-set assembly and response shaping

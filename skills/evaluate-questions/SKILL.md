@@ -43,18 +43,19 @@ source; decide the answer cold; only then compare against what is stored.
    client-side, `curl -sL <url>.md`. An `unsupported` disposition sourced
    from one bad fetch escalates a sound question as broken.
 3. **Audit the free-text surface and explanation against source and key.**
-   Check `explanation`, `distractorNotes`, `sourceNote`, and keyed option text
-   against the cited page per `CONTRIBUTING.md` § Question content
-   requirements: every claim, figure, or quoted span presented as documented
-   must be supported by the page. Also check the explanation against the key's
-   own text — if it argues for a fact that no option states, the right answer
-   is not on the ballot (`unsupported`).
+   Check `explanation`, `distractorNotes`, `sourceNote`, and keyed option
+   `text` and `hintText` against the cited page per `CONTRIBUTING.md`
+   § Question content requirements: every claim, figure, or quoted span
+   presented as documented must be supported by the page. Also check the
+   explanation against the key's own text — if it argues for a fact no option
+   states, the right answer is not on the ballot (`unsupported`).
 4. **Judge distractor quality** against `CONTRIBUTING.md` § Writing good
    questions, which states the mix to aim for — read it there rather than
    from memory, and read it as a shape rather than a count, since items here
    run to five and six options. Flag facepalm options nobody would pick, and
    check every `distractorNotes` entry states a real reason a competent
-   reader might believe it, not a restatement that it's false.
+   reader might believe it, not a restatement that it's false. Where the item
+   carries hints, judge the gloss set against CONTRIBUTING's three hint rules.
    This step judges each distractor in isolation for correctness. Whether the
    domain is _collectively_ too soft against the guide's sample questions —
    sound items that still solve by elimination — is a difficulty-calibration
@@ -70,10 +71,11 @@ source; decide the answer cold; only then compare against what is stored.
    believable one, is a same-change fix. Anything that changes which fact is
    tested, or needs sourcing this pass didn't do, goes back to
    `author-questions` or the user — do not draft new claims here.
-   Swapping a key or rewriting an option can push the bank out of the
-   `npm run balance -- --strict` guards. Do not trim a key to close that gap:
-   `CONTRIBUTING.md` says fidelity to the cited doc outranks cosmetic
-   balance. Pad distractors with equivalent qualifying clauses, or escalate.
+   Swapping a key or rewriting an option moves the length and position bias
+   guards `npm run check` enforces (`npm run metrics` shows them). Do not trim
+   a key to close that gap: `CONTRIBUTING.md` says fidelity to the cited doc
+   outranks cosmetic balance. Pad distractors with equivalent qualifying
+   clauses, or escalate.
    Leave `sourceCheckedAt` alone even when you re-read the page — that field
    belongs to `audit-sources`, and moving it here would launder a correctness
    pass into a citation-freshness claim this pass does not make.
@@ -85,9 +87,9 @@ source; decide the answer cold; only then compare against what is stored.
    banks predating this skill are already entirely `reviewed`, so on those
    "don't promote it" is a no-op that leaves a known-broken item wearing the
    label, with the finding buried in `review-progress.md`.
-8. **Record the pass in `review-progress.md`**: date, scope, the disposition
-   counts, and what remains unreviewed — the same discipline `audit-sources`
-   uses for citation drift, applied to correctness instead.
+8. **Record the pass in `review-progress.md`** (under `orchestrate-bank`,
+   return it to the coordinator): date, scope, disposition counts, and what
+   remains unreviewed.
 
 ## Stop and ask
 

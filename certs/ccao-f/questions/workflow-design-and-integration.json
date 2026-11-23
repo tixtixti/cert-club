@@ -1,0 +1,671 @@
+[
+  {
+    "id": "ccao-f-workflow-design-and-integration-001",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A customer service team wants Claude's help with refund disputes. Staff can correct intake records and review drafts before use. An upset customer contests a denial: the written policy does not cover what happened, and the team has discretion to make an exception. Which step should the team retain for a person?",
+    "options": [
+      {
+        "id": "deliver-sensitive-decision",
+        "text": "Conduct the resolution call, listening to the customer's circumstances and deciding how to respond to a request for an exception."
+      },
+      {
+        "id": "categorize-dispute-emails",
+        "text": "Categorize incoming disputes so the support queue shows the type of complaint each customer raised and who usually handles it."
+      },
+      {
+        "id": "synthesize-customer-timeline",
+        "text": "Put the previous exchanges in date order and summarize what the customer and each support representative said about the dispute."
+      },
+      {
+        "id": "draft-settlement-confirmation",
+        "text": "Prepare a draft confirmation from the agent's call notes, capturing the agreed terms for the agent to check before sending."
+      }
+    ],
+    "correct": [
+      "deliver-sensitive-decision"
+    ],
+    "explanation": "Claude can help with repetitive inquiries and combine support information. The contested call is where that assistance stops: the agent needs to hear the customer, exercise discretion and stand behind the decision. Preparing material for that conversation does not confer the authority to resolve it.",
+    "distractorNotes": {
+      "categorize-dispute-emails": "The proposed category helps route the request. A staff member can correct a routing error without having made a refund decision.",
+      "synthesize-customer-timeline": "A timeline combines information already in the correspondence. The agent can check it against that correspondence before the call.",
+      "draft-settlement-confirmation": "At this point the agent has agreed the terms. Producing text for review is different from deciding what to offer."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/about-claude/use-case-guides/customer-support-chat",
+    "sourceNote": "Before building with Claude: repetitive inquiries, information synthesis, complex issues and escalation to human support",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-002",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A finance partner wants a recommendation on leasing or buying packing equipment. The two quotes cover different periods, and the board has not said whether it cares more about cash needed this year or total cost over the equipment's life. Before Claude builds a comparison, what should the partner do?",
+    "options": [
+      { "id": "lowest-quote", "text": "Have Claude rank the quotes by their stated totals and ask the board to review the preferred quote's assumptions." },
+      { "id": "agree-basis", "text": "Agree on the decision criterion and review Claude's proposed periods, inputs and assumptions before it calculates costs." },
+      { "id": "ask-for-deck", "text": "Agree on the layout of the board paper, then ask Claude to fill in the cost comparison using the terms of each quote." },
+      { "id": "use-precedent", "text": "Use the time horizon from the last equipment purchase and let the board decide whether to change it after the ranking." }
+    ],
+    "correct": ["agree-basis"],
+    "explanation": "The choice of time horizon can change which quote looks better. Settling the objective and checking the planned method first makes the calculation answer the board's actual question.",
+    "distractorNotes": {
+      "lowest-quote": "The quoted totals cover different periods. Starting with a ranking makes the preferred option depend on an unresolved assumption.",
+      "ask-for-deck": "A useful layout does not establish which costs or periods the figures should represent.",
+      "use-precedent": "The previous purchase supplies a possible horizon, but not evidence that this board decision has the same objective."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/prompting-strategies-for-financial-analysis",
+    "sourceNote": "Request Analysis Plans First and Ambiguous Requests: clarify decision criteria and review inputs, calculations and assumptions",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-003",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A packaging team is deciding whether to restart a returnable-crate trial. Several depots reported refused returns in last year's pilot. Two suppliers have since announced changes to their policies. Claude can read the pilot reports through a connector and search the web. What would give the team the best basis for drafting the new trial plan?",
+    "options": [
+      { "id": "internal-brief", "text": "A timeline linking each depot's refused returns to the supplier terms in force on those dates, citing the pilot reports and policies." },
+      { "id": "supplier-list", "text": "A comparison of the old and new supplier terms, using the restrictions that suppliers removed to infer why the depots' returns failed." },
+      { "id": "cited-synthesis", "text": "A research brief linking current supplier terms to documented pilot problems, with citations for the team to inspect." },
+      { "id": "reason-through", "text": "A detailed analysis of the likely trade-offs from the planning brief, followed by a list of places the team could look for evidence." }
+    ],
+    "correct": ["cited-synthesis"],
+    "explanation": "Research can bring together information from the web and connected sources in a cited report. The team can then check each supplier term against its published source and each reported problem against the pilot where it occurred.",
+    "distractorNotes": {
+      "internal-brief": "That timeline could explain last year's incidents. It would not show which of those problems still matter under the revised policies.",
+      "supplier-list": "A removed restriction might explain a refusal. The policy change does not establish that a depot actually encountered that restriction.",
+      "reason-through": "Suggesting where to look does not provide the evidence the team needs before it drafts the plan."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research",
+    "sourceNote": "Research and Use research and extended thinking together: synthesize multiple web and connected sources in a cited report",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-004",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A depot is choosing which collection routes to reschedule. An approved CSV lists each stop's route, scheduled time and actual time. The manager needs the share of late stops per route, a chart of those shares and a short list of routes to investigate. Which workflow should the analyst use?",
+    "options": [
+      { "id": "compute-rates", "text": "Have Claude run code on the CSV to divide late stops by total stops per route, then chart the results and draft the shortlist." },
+      { "id": "rank-counts", "text": "Have Claude count late stops in code, graph the totals by route and use the highest bars to recommend which routes to reschedule first." },
+      { "id": "average-delay", "text": "Have Claude calculate average minutes late for each route, then summarize which routes look most in need of attention." },
+      { "id": "chart-delays", "text": "Have Claude plot the delay at each stop and use the routes with the largest individual delays to draft the shortlist." }
+    ],
+    "correct": ["compute-rates"],
+    "explanation": "Claude's computing environment can analyze a CSV, visualize the result and turn it into a report. The calculation needs a separate denominator for each route so that a busy route is not ranked high simply because it has more stops.",
+    "distractorNotes": {
+      "chart-delays": "The longest individual delay measures a different problem from the fraction of stops that were late.",
+      "rank-counts": "Counting late stops is a necessary intermediate step, but the routes can have different numbers of stops.",
+      "average-delay": "Average minutes measure the size of a delay, not how often a stop runs late."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude",
+    "sourceNote": "Advanced data analysis and Generate a professional report: execute code on CSV data, visualize results and create recommendations",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-005",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "Two branches report different costs per delivery. Claude is preparing a briefing on whether the gap widened over the full year. One extract has an empty quarter; the branches also use different labels for returns. Which steps should the analyst take before asking for a conclusion? Select TWO.",
+    "options": [
+      { "id": "confirm-gap", "text": "Check with the data owner whether the empty quarter represents missing records or a period with no deliveries." },
+      { "id": "average-rest", "text": "Replace the empty quarter with the branch's average quarter so both series span the requested reporting period." },
+      { "id": "keep-local", "text": "Keep the branches' local definitions and put them in an appendix so readers can interpret the difference themselves." },
+      { "id": "review-mapping", "text": "Review how Claude proposes to map returns into the cost calculation, and agree on a comparable basis for both branches." },
+      { "id": "drop-quarter", "text": "Compare the quarters with entries in both extracts and present that trend as the change over the full reporting year." }
+    ],
+    "correct": ["confirm-gap", "review-mapping"],
+    "explanation": "An empty quarter could mean there were no deliveries or that records are missing. Establish which is true before drawing a full-year conclusion. Separately, agree how returns count so that a difference between the branches reflects costs rather than different definitions.",
+    "distractorNotes": {
+      "average-rest": "An average fills the gap in the table, but it can assign a cost per delivery to a quarter in which there were no deliveries.",
+      "keep-local": "Describing two incompatible methods does not make the resulting costs comparable.",
+      "drop-quarter": "A shorter-period analysis might be useful if labeled as such. It cannot establish a trend for the full year requested here."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/prompting-strategies-for-financial-analysis",
+    "sourceNote": "Use Step-by-Step Approaches and Build Incrementally: verify availability, data accuracy and methodology before comparison",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-006",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A facilities analyst has checked Claude's comparison of two lighting retrofits. One meets the agreed payback target, provided installation finishes before winter; the other misses the target even in its best case. The budget committee wants the analyst's recommendation tomorrow. What should the analyst ask Claude to prepare next?",
+    "options": [
+      { "id": "reweight", "text": "Produce a fresh ranking that gives equal weight to installation speed and payback, then build the budget request around the winner." },
+      { "id": "best-case", "text": "Draft an approval request using the qualifying retrofit's best case and cover installation timing later in the delivery plan." },
+      { "id": "visualize", "text": "Create a dashboard of the checked figures for the meeting and leave the recommendation to readers exploring the scenarios." },
+      { "id": "conditional-brief", "text": "Draft a decision memo recommending the qualifying retrofit, showing the payback comparison and making the schedule risk explicit." }
+    ],
+    "correct": ["conditional-brief"],
+    "explanation": "The synthesis stage turns checked analysis into a recommendation and its key risks. Here the schedule determines whether the preferred option meets the target, so the budget decision needs both the recommendation and that condition.",
+    "distractorNotes": {
+      "best-case": "Deferring the installation condition makes the request sound stronger than the checked comparison supports.",
+      "visualize": "A dashboard supports exploration, but it leaves the synthesis and the proposed decision unfinished.",
+      "reweight": "A new scoring rule would change the decision criterion after the analysis rather than communicating what the analysis found."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/financial-analysis-workflows-with-claude",
+    "sourceNote": "The Three-Phase Process and Phase 3: Create: synthesize prior analysis into a decision memo with a recommendation and key risks",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-007",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "Before a joint workshop, a partnerships lead used Claude to assemble a brief with three possible next steps. During the workshop the partners agreed to one of them and added a different action with a named owner. The approved transcript is now available. How should the lead turn the planning work into a follow-up?",
+    "options": [
+      { "id": "complete-agenda", "text": "Have Claude turn the proposed steps in the brief into an action list, adding the owner named in the meeting where relevant." },
+      { "id": "transcript-actions", "text": "Have Claude draft the action list and partner recap from the transcript, using the earlier brief as background for the decisions." },
+      { "id": "combine-lists", "text": "Combine the proposed steps and transcript actions into one follow-up list so partners can remove work they did not agree to." },
+      { "id": "new-research", "text": "Update the original brief with fresh partner research and have Claude recommend which proposed actions to assign after the meeting." }
+    ],
+    "correct": ["transcript-actions"],
+    "explanation": "The brief is evidence of what the lead planned to discuss; the transcript records what the partners actually agreed. Claude can use that record to draft a checklist and follow-up, carrying the prior context forward without treating proposals as commitments.",
+    "distractorNotes": {
+      "complete-agenda": "Adding an owner does not establish that the partners agreed to the other steps in the brief.",
+      "combine-lists": "An undifferentiated list makes proposed work look assigned until someone objects.",
+      "new-research": "More background could inform a later proposal. It does not document the actions agreed in this workshop."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/using-claude-cowork-for-sales-account-research",
+    "sourceNote": "Run the debrief after the call and Make it yours: use the transcript for action items, owners and follow-up after a prepared meeting",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-008",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A theater wants to schedule part of its rehearsal preparation to run overnight. It can give Claude a copy of the non-sensitive room schedule and equipment list. Nobody will be present to supervise the run. Which steps are the best candidates to leave running until the coordinator reviews the results in the morning? Select TWO.",
+    "options": [
+      { "id": "notify", "text": "Send substitute room assignments to the groups whose rehearsal times overlap in the schedule." },
+      { "id": "flag", "text": "Compile a list of overlapping room requests, with the entries that appear to conflict." },
+      { "id": "reserve", "text": "Reserve a replacement room against the theater's account when the published rate is within budget." },
+      { "id": "inventory", "text": "Summarize which rehearsals request the same portable equipment at overlapping times." },
+      { "id": "release", "text": "Release the shorter of two conflicting bookings so the coordinator can rebook it in the morning." }
+    ],
+    "correct": ["flag", "inventory"],
+    "explanation": "An unattended task can compile information for later review without changing a booking or contacting a group. Sending notice, committing funds or releasing a reservation has consequences that reviewing a morning summary cannot reverse.",
+    "distractorNotes": {
+      "notify": "Even if a message can be corrected later, a group may already have acted on it.",
+      "reserve": "A budget limit constrains the price; it does not establish the coordinator wants that booking.",
+      "release": "Another group could take the released room before the coordinator reviews the decision."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/13364135-use-claude-cowork-safely",
+    "sourceNote": "Be cautious with scheduled tasks: start with summaries and compilation, review results, avoid messages and hard-to-undo actions",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-009",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A print studio uses Claude to prepare quotes. A museum asks for an unusual discount in exchange for the prospect of further work. The studio owner knows the relationship; the estimator has confirmed the production costs. Which division of work preserves the benefit of Claude's help?",
+    "options": [
+      { "id": "precedent-price", "text": "Have Claude choose the discount from earlier museum jobs and ask the owner to check that the proposal describes the work and payment terms clearly." },
+      { "id": "costs-as-authority", "text": "Have the estimator confirm the input costs and let Claude commit to the largest discount that still covers those costs." },
+      { "id": "owner-decides", "text": "Have Claude prepare quote alternatives from the costs; the owner chooses the concession and approves the proposal before it goes out." },
+      { "id": "manual-prep", "text": "Have the owner work up each priced alternative by hand and ask Claude to organize the accepted proposal once the museum replies." }
+    ],
+    "correct": ["owner-decides"],
+    "explanation": "Claude can prepare a priced proposal without deciding what the studio should charge. Weighing a present concession against uncertain future work is the owner's commercial judgment; producing alternatives gives that judgment useful support.",
+    "distractorNotes": {
+      "precedent-price": "Past terms inform the decision, but reviewing the clarity of a quote does not decide whether this concession is justified.",
+      "costs-as-authority": "Covering costs is one constraint. It does not resolve whether the concession makes business sense.",
+      "manual-prep": "Keeping the pricing decision does not require the owner to do the preparatory drafting as well."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/how-to-install-the-claude-for-small-business-plugin",
+    "sourceNote": "Proposal preparation and Things to note: Claude stages priced proposals; people decide what to charge and approve before sending",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-010",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "During a purchasing pilot, reviewers found that Claude consistently extracted order numbers and dates correctly. It repeatedly marked split shipments as complete, however. An incorrect completion closes the receiving team's queue entry. How should the manager change the division of work for the next cycle?",
+    "options": [
+      { "id": "spot-check", "text": "Keep Claude closing orders and have receiving spot-check a larger sample of completed orders at the end of the cycle." },
+      { "id": "extraction-check", "text": "Have a clerk approve extracted dates and order numbers, then let Claude mark shipments complete from the approved entries." },
+      { "id": "remove-assistance", "text": "Return the whole intake process to receiving staff until Claude can handle extraction and shipment closure equally well." },
+      { "id": "partial-reassign", "text": "Keep Claude extracting dates and order numbers; return split-shipment closure to receiving staff until it proves reliable." }
+    ],
+    "correct": ["partial-reassign"],
+    "explanation": "The pilot identified a specific unreliable decision. Having receiving staff decide when a split shipment is complete keeps Claude's mistake from closing the queue entry while preserving its reliable extraction work.",
+    "distractorNotes": {
+      "spot-check": "Larger retrospective samples may detect the mistake after an order has already disappeared from the queue.",
+      "extraction-check": "The pilot found a problem with interpreting split shipments, not with reading dates or order numbers.",
+      "remove-assistance": "This restores control but also discards the reliable extraction step without evidence that it caused the failure."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/scaling-workflows-with-claude-cowork-at-your-organization",
+    "sourceNote": "The scaling mindset: assign responsibility step by step; widen delegation on reliability evidence and reclaim steps where errors appear",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-011",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A venue manager asks Claude to summarize a specialist inspection for a planning meeting. A materials rating in the summary appears to conflict with a footnote. The manager can find both passages but lacks the expertise to reconcile them. Who should do what before the rating is used to set the renovation schedule?",
+    "options": [
+      { "id": "specialist", "text": "Have Claude collect the passages and ask the inspection specialist to resolve their meaning before the team relies on the rating." },
+      { "id": "vote", "text": "Have two colleagues independently read Claude's summary and use their consensus interpretation in the schedule." },
+      { "id": "confidence", "text": "Have Claude argue for each reading and use the one it judges better supported, keeping both arguments in the meeting record." },
+      { "id": "editor", "text": "Ask a technical editor to reconcile the wording in the summary and have the venue manager check it against the revised schedule." }
+    ],
+    "correct": ["specialist"],
+    "explanation": "Locating relevant evidence and deciding its specialist meaning are different jobs. Claude can assist with the former; someone qualified to judge the inspection needs to resolve the conflict before it becomes a planning assumption.",
+    "distractorNotes": {
+      "vote": "Agreement on a summary does not resolve the technical meaning of contradictory passages in the source.",
+      "confidence": "Two arguments can expose the disagreement. Having Claude pick one still leaves the specialist interpretation unverified.",
+      "editor": "Clearer wording is useful after the interpretation is settled. Editing cannot determine which rating applies."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/discernment-toolkit",
+    "sourceNote": "Build a panel of experts and Ask Claude for source grounding: locate exact passages and seek a qualified second read",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-012",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "An exhibition team uses Claude to extract loan conditions, turn them into packing instructions and draft labels. At final review, staff found the same incorrect condition in all three outputs and had to remake a whole set of labels. The registrar has time for one additional review per loan. Where would it address the cause most directly?",
+    "options": [
+      { "id": "label-review", "text": "Have the registrar compare a proof label with the generated packing instructions and sign off that they match before the other labels go to print." },
+      { "id": "source-gate", "text": "Have the registrar check the extracted conditions against the loan agreement before Claude uses them to write packing instructions." },
+      { "id": "format-gate", "text": "Have the registrar approve the label template and its required fields before Claude extracts the conditions for this loan." },
+      { "id": "consistency", "text": "Have the registrar check that the packing instructions and the labels state the same conditions before the packers receive them." }
+    ],
+    "correct": ["source-gate"],
+    "explanation": "The condition first goes wrong at extraction. Comparing that intermediate result with the agreement lets the registrar stop the error before later steps turn it into instructions and labels that agree with each other but not with the lender.",
+    "distractorNotes": {
+      "label-review": "A proof checked against the instructions will pass if both inherited the same mistaken condition.",
+      "format-gate": "Approving the presence of a field will not show whether Claude put the correct condition into it.",
+      "consistency": "Agreement between two derived outputs is an internal consistency check, not a check against the agreement."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/discernment-toolkit",
+    "sourceNote": "Checking outputs against external sources and adding approval gates within multi-step tasks after errors were caught late",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-013",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A membership service is deciding whether Claude should answer more routine renewal questions directly. Policy exceptions are meant to go to staff. Most members end the chat without asking for a person. Which findings would provide the strongest evidence that the proposed split works? Select TWO.",
+    "options": [
+      { "id": "correct-routine", "text": "Reviewers compared routine replies with the current renewal policy and found that they answered the question correctly." },
+      { "id": "shorter", "text": "The median time spent in a renewal chat fell after the pilot began, including in chats that ended without a referral." },
+      { "id": "escalation", "text": "Reviewers identified which cases needed staff judgment, then checked whether those cases actually reached staff." },
+      { "id": "overall-referrals", "text": "The share of conversations handed to staff stayed close to the service's historical referral rate for renewals." },
+      { "id": "tone", "text": "Members rated the tone of the closing message favorably in both standard renewals and cases involving exceptions." }
+    ],
+    "correct": ["correct-routine", "escalation"],
+    "explanation": "The workflow has two jobs: give accurate routine answers and recognize cases that need a person. Check answer accuracy against policy and actual handoffs against the cases that should have been escalated. A low contact rate alone measures neither.",
+    "distractorNotes": {
+      "shorter": "Time measures speed, including how quickly an incorrect answer can end a chat.",
+      "overall-referrals": "A matching total can conceal missed exceptions offset by unnecessary referrals.",
+      "tone": "A polite response may still misstate policy or fail to refer an exception."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/about-claude/use-case-guides/customer-support-chat",
+    "sourceNote": "Success criteria: distinguish response accuracy and correct escalation from deflection, sentiment and average handle time",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-014",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An orientation coordinator runs a shared Claude Project on a Team plan. Next month a colleague will maintain the handbook and change drafting instructions; facilitators will each start a chat to prepare a session. Sharing is enabled. Which handoff choices let people do their jobs without giving facilitators maintenance rights? Select TWO.",
+    "options": [
+      { "id": "equal-view", "text": "Grant everyone view access and have the new coordinator post changes to the rules in a chat at the start of each month." },
+      { "id": "shared-reference", "text": "Put the approved handbook in project knowledge and save the common drafting rules as project instructions." },
+      { "id": "handoff-chat", "text": "Keep the handbook and common rules in the outgoing coordinator's final chat, labeled for future facilitators to find." },
+      { "id": "facilitator-edits", "text": "Give both groups edit access to produce their materials, and ask facilitators to leave changes to the handbook and instructions to the coordinator." },
+      { "id": "different-roles", "text": "Give the incoming coordinator edit access and the facilitators view access so they can run chats in the shared project." }
+    ],
+    "correct": ["shared-reference", "different-roles"],
+    "explanation": "Project knowledge and instructions provide common material across project chats. Viewers can chat using that material; editors can maintain it. Both the location of the handbook and the incoming coordinator's access matter to the handoff.",
+    "distractorNotes": {
+      "equal-view": "View access does not let the coordinator update project instructions or knowledge. A message in a chat is not such an update.",
+      "handoff-chat": "Labeling a chat does not make its contents the common reference for facilitators' new chats.",
+      "facilitator-edits": "Facilitators create their own chats with view access. Asking editors to leave the handbook alone still gives them the right to change it."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects",
+    "sourceNote": "Add content to project knowledge, add project instructions and share projects: viewer versus editor capabilities",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-015",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "Each month a quality team gives Claude a fresh CSV of returned parcels. Two analysts got different results because one counted reshipments twice. They now have a tested, approved calculation script and want Claude to write commentary on the results. Which change makes the calculation repeatable across analysts?",
+    "options": [
+      { "id": "description", "text": "Describe the script's intended result in the task instructions and have Claude write a new calculation from that description for each analyst." },
+      { "id": "example", "text": "Attach last month's corrected output to the task so Claude can infer how the team handled reshipments from the published totals." },
+      { "id": "approved-script", "text": "Package the tested script in a task-specific skill and instruct Claude to run it on each new CSV before drafting the commentary." },
+      { "id": "compare-narratives", "text": "Ask the analysts to run their usual prompts independently and have Claude reconcile the results while it prepares the final commentary." }
+    ],
+    "correct": ["approved-script"],
+    "explanation": "A custom skill can include executable code as well as instructions. Calling the approved calculation on the new input preserves the agreed treatment of reshipments while leaving the narrative to Claude.",
+    "distractorNotes": {
+      "description": "Regenerating the calculation allows the treatment of reshipments to diverge again.",
+      "example": "A past total illustrates an outcome; it does not uniquely specify the rule that produced it.",
+      "compare-narratives": "Reconciling two outputs after the fact leaves the original calculation paths inconsistent."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/12512198-how-to-create-custom-skills",
+    "sourceNote": "Add scripts and Best practices: attach executable code to a skill focused on a specific repeatable task",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-016",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "Four event planners take turns preparing a venue-readiness report. An approved tracker stores the changing tasks. Each planner can read it, but they disagree about how to group overdue work. The team has agreed on grouping rules and wants to stop exporting and labeling rows by hand. How should the workflow use Claude?",
+    "options": [
+      { "id": "static-register", "text": "Package the current tracker export and grouping rules in a skill and have the planners use that package throughout the season." },
+      { "id": "connector-example", "text": "Connect Claude to the tracker and have each planner infer the grouping method from the most recent report when starting a new run." },
+      { "id": "manual-copies", "text": "Put the agreed grouping rules into a skill and ask whoever is on duty to export and paste the latest tracker rows before running it." },
+      { "id": "feed-and-process", "text": "Use the tracker connector to retrieve current tasks and a shared skill to apply the agreed grouping rules and report format." }
+    ],
+    "correct": ["feed-and-process"],
+    "explanation": "The connector supplies changing data; the skill supplies the stable procedure. Together they remove the manual export and give each planner the same instructions for organizing the result.",
+    "distractorNotes": {
+      "static-register": "The grouping rules would travel with the skill, but so would a snapshot of tasks that stops changing when the export is made.",
+      "connector-example": "A live source fixes freshness, not the variation caused by planners inferring rules from earlier output.",
+      "manual-copies": "This fixes the grouping method but retains the export step the team wants to eliminate."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/scaling-workflows-with-claude-cowork-at-your-organization",
+    "sourceNote": "Building blocks and How the components fit together: connectors retrieve data and skills direct a shared procedure",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-017",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A communications lead built a skill to turn interview notes into staff profiles. The skill produces the right result when the lead names it, but colleagues usually ask for a staff spotlight or a colleague introduction and get generic prose. What is the most useful test and adjustment before handoff?",
+    "options": [
+      { "id": "broader-body", "text": "Expand the skill's writing instructions to include introductions and spotlights, then check the prose produced when the lead names it." },
+      { "id": "add-style", "text": "Add more approved profile examples to the skill's writing instructions and test again by explicitly asking Claude to use that skill." },
+      { "id": "test-phrases", "text": "Test several of the colleagues' usual requests, check whether the skill loads, and clarify its description to cover the intended situations." },
+      { "id": "review-result", "text": "Give colleagues a profile-writing checklist and ask them to correct any generic prose Claude produces before sharing the finished profile." }
+    ],
+    "correct": ["test-phrases"],
+    "explanation": "The skill works when deliberately invoked. The unresolved question is whether Claude recognizes the work under colleagues' wording. Test that behavior directly and refine the description Claude uses to decide when the skill applies.",
+    "distractorNotes": {
+      "add-style": "More examples can improve a profile once the skill loads. Naming the skill in the test will not show whether Claude selects it when a colleague asks for a staff spotlight.",
+      "broader-body": "Testing the body under the lead's wording does not establish that the skill is being selected in colleagues' chats.",
+      "review-result": "Manual correction can improve a single profile but leaves the recurring selection problem in place."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/12512198-how-to-create-custom-skills",
+    "sourceNote": "Required metadata fields and Test your skill: test several expected prompts, verify loading and iterate on the description",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-018",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A production team reviews jobs awaiting parts each Friday. This week the lead makes two corrections to Claude's draft: deposits must be excluded from the spend column from now on, and a one-off warehouse move deserves top billing this Friday. What should the lead carry into the team's reusable reporting skill?",
+    "options": [
+      { "id": "both", "text": "Add both changes to the skill so the column and the opening section match the latest report that the lead approved." },
+      { "id": "rule-not-focus", "text": "Save the deposit exclusion in the skill and keep the warehouse move as the focus of this week's report." },
+      { "id": "confirm-rule", "text": "Keep the move in this week's prompt and have the skill ask each Friday whether deposits belong in that report's spend column." },
+      { "id": "example-only", "text": "Leave both changes out of the skill and rely on this week's completed report to convey the new calculation method." }
+    ],
+    "correct": ["rule-not-focus"],
+    "explanation": "The revised spend rule changes how the team wants future reports prepared. The warehouse move changes what matters this week. Save the procedural correction and let the lead pick the focus again next Friday.",
+    "distractorNotes": {
+      "both": "The next report would inherit a lead story even after the warehouse move stops being relevant.",
+      "confirm-rule": "A weekly question makes sense when the treatment varies. Here the lead has settled the rule for future reports, so asking again leaves the calculation open to a different answer.",
+      "example-only": "A finished report may show the corrected figure without recording which transactions future runs should exclude."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/using-claude-cowork-for-marketing-ops-review",
+    "sourceNote": "Run the weekly review and Save what you learned into the skill: choose each week's focus and persist useful process corrections",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-019",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A training team has signed off a skill for assembling facilitator packs. Its author will keep editing it between sessions. Facilitators need to run it during that work and receive each revision after the training lead signs it off. Direct sharing and the organization library are available in the Team workspace, and approval is enabled. Which distribution process fits?",
+    "options": [
+      { "id": "library", "text": "Publish the skill through the reviewed organization library and submit revisions there while users stay on the approved version." },
+      { "id": "personal", "text": "Send each revision to facilitators as a preview copy, keeping the approved copy as their default until the reviewer announces a change." },
+      { "id": "direct", "text": "Share the approved skill directly as view-only; have the author edit the original and send facilitators the link again when changes are signed off." },
+      { "id": "shared-directions", "text": "Share the working skill directly and tell facilitators to keep using yesterday's version until the review message arrives." }
+    ],
+    "correct": ["library"],
+    "explanation": "Directly shared skills pick up the author's updates at next use. For a published skill under required review, existing users remain on the approved version while the proposed update is being reviewed.",
+    "distractorNotes": {
+      "direct": "View-only prevents recipients from editing the skill. It does not freeze their copy: their next use picks up the author's changes without waiting for another link.",
+      "personal": "A separate preview protects the approved copy, but facilitators still receive an unreviewed revision. The policy governs distribution, not just which copy is the default.",
+      "shared-directions": "A message does not pin a directly shared skill to its previous revision."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/12512180-use-skills-in-claude",
+    "sourceNote": "Share a skill and Publish a skill to your organization: direct updates versus organization-managed, reviewed versions",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-020",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A director saw an analyst use Claude to search regional planning documents in a connected drive. She now expects the same request to produce a company-wide briefing for each regional manager. Managers sign in to the connector with their own accounts, and each can open only their own region's folder. What should the analyst tell her?",
+    "options": [
+      { "id": "shared-visibility", "text": "Managers will get regional briefs at first. Enabling the connector for the whole workspace will extend the search to all the regional folders." },
+      { "id": "summary-permission", "text": "Managers can get summaries from the other folders through Claude even though opening the underlying documents requires permission." },
+      { "id": "author-access", "text": "Managers will get regional briefs. For broader coverage they need access to the original folders, even with a company-wide summary approved for their use." },
+      { "id": "caller-access", "text": "Each manager's brief can draw on what that manager may read; company-wide coverage needs an authorized source covering the other regions." }
+    ],
+    "correct": ["caller-access"],
+    "explanation": "A connector using an individual's account inherits that person's access in the source system. Running the same request does not turn regional access into company-wide coverage, even if the desired output is just a summary.",
+    "distractorNotes": {
+      "shared-visibility": "Enabling a connector for a workspace makes it available to members. It does not expand a manager's access in the drive.",
+      "summary-permission": "Claude would still need to read the other documents to summarize them through this connection.",
+      "author-access": "Managers need a readable source for what goes into the brief. An approved summary they can read can supply company-wide information without access to each regional folder."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities",
+    "sourceNote": "What are connectors? and Security and privacy: individual connections inherit the person's permissions in the source service",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-021",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A cooperative is preparing a final payout based on several years of contributions and a tiered allocation formula. The treasurer asks whether Claude can help with the arithmetic or whether staff must do it all by hand. What is the most accurate answer?",
+    "options": [
+      { "id": "independent-check", "text": "Claude can calculate the shares; verify the results with the cooperative's calculation software or a manual check before payment." },
+      { "id": "written-proof", "text": "Claude can calculate the shares; a written explanation from the same calculation is sufficient confirmation for releasing payment." },
+      { "id": "presentation-only", "text": "Staff should finish the arithmetic first and limit Claude to explaining the shares, because a tiered formula requires mathematical software." },
+      { "id": "sum-check", "text": "Claude can calculate the shares; if its listed amounts sum to the payout pool, treat that as verification of the individual allocations." }
+    ],
+    "correct": ["independent-check"],
+    "explanation": "Claude can perform calculations. For complex or mission-critical ones, Anthropic recommends verification with specialized mathematical software or manual methods. Releasing the payout is a separate decision from obtaining a candidate figure.",
+    "distractorNotes": {
+      "written-proof": "A readable explanation helps someone check a calculation. It is not an independent verification of the result.",
+      "presentation-only": "Needing a check before payment does not rule out using Claude to perform the initial calculations.",
+      "sum-check": "Two incorrect shares can offset each other. A matching grand total does not verify the allocations."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/10366421-how-does-claude-handle-mathematical-equations-and-calculations",
+    "sourceNote": "Claude can perform calculations; verify complex or mission-critical results using specialized software or manual methods",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-022",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An operations director saw one fast demonstration of Claude drafting shift handovers. She wants to tell the other sites what improvement they can count on. No active site has trialed the workflow, and supervisors will still review the handovers. Which suggestions would give her a sound basis for that conversation? Select TWO.",
+    "options": [
+      { "id": "demo-time", "text": "Use the generation time from the demonstration to estimate the reduction in each site's end-to-end handover time." },
+      { "id": "baseline", "text": "Agree what a successful handover looks like and measure current completion time and omissions as a baseline for a pilot." },
+      { "id": "uptake", "text": "Use the number of handovers drafted in Claude as the main evidence that supervisors are getting better handovers." },
+      { "id": "repeat-demo", "text": "Repeat the same example for each site so local managers can apply the observed result to their own staffing plan." },
+      { "id": "pilot-outcome", "text": "Pilot with supervisors doing normal reviews, then report time through approval and what they had to correct or add." }
+    ],
+    "correct": ["baseline", "pilot-outcome"],
+    "explanation": "Agree on outcomes before the pilot, then measure those outcomes and collect user feedback in the actual workflow. A fast first draft is promising, but it does not establish how long a checked handover takes or what it leaves out.",
+    "distractorNotes": {
+      "demo-time": "Generation time excludes supervisor review and correction, which remain part of producing an approved handover.",
+      "uptake": "A draft count measures use, not whether supervisors received a complete handover sooner.",
+      "repeat-demo": "Repeating a prepared example does not show how the workflow performs with each site's inputs and review effort."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/scaling-workflows-with-claude-cowork-at-your-organization",
+    "sourceNote": "Pilot and Scale and Monitor: agree success measures upfront, collect feedback and measure business outcomes rather than activity alone",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-023",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A project sponsor gave Claude a plan for consolidating two warehouses and explained why she strongly favors it. Claude agreed. The sponsor wants to describe that agreement as independent support for the plan. What should her analyst say?",
+    "options": [
+      { "id": "independent-writer", "text": "Claude produced its own rationale, so describe it as an independent appraisal while disclosing that it read the sponsor's plan." },
+      { "id": "challenge-premise", "text": "Claude may reflect how the question was framed. Ask neutrally for objections and test the important assumptions against evidence." },
+      { "id": "expand-case", "text": "Request a longer explanation for Claude's agreement and treat it as corroboration if the extra arguments are internally consistent." },
+      { "id": "exclude", "text": "Keep Claude out of the appraisal until a decision is made; its tendency to agree makes it useful for communication rather than critique." }
+    ],
+    "correct": ["challenge-premise"],
+    "explanation": "Claude can be useful for critique, but a question framed around a preferred outcome can invite agreement. Asking for contrary evidence and checking it helps the team use Claude as a thinking partner without treating approval as proof.",
+    "distractorNotes": {
+      "independent-writer": "Writing a distinct rationale does not make it independent of the framing that elicited it.",
+      "expand-case": "More reasons in support of the same premise do not test whether the premise is sound.",
+      "exclude": "Claude can help surface objections. The limitation calls for a different question and verification, not abandoning critique."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/what-is-sycophancy-in-ai-models",
+    "sourceNote": "How framing can elicit agreement; use neutral questions, request counterarguments and cross-check trustworthy sources",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-024",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A board secretary has approved the financial analysis for a meeting. She wants Claude to turn it into editable PowerPoint slides that match an intricate board template, and asks how much time to reserve for production. Which expectation should the analyst set?",
+    "options": [
+      { "id": "outline", "text": "Plan to build the slides from scratch: Claude can outline the story, but firm-specific templates rule out generating an editable deck." },
+      { "id": "approve-layout", "text": "Approve a sample layout before generation; once the first slide matches, budget the remaining review time for the figures alone." },
+      { "id": "deck-plus-finish", "text": "Claude can build a PowerPoint deck from the analysis. Leave time to inspect and finish complex layouts against the board template." },
+      { "id": "alternative-output", "text": "Use a dashboard for the meeting instead; because formatting is complex, generating an editable presentation would add little value." }
+    ],
+    "correct": ["deck-plus-finish"],
+    "explanation": "Claude can turn comparative financial analysis into a PowerPoint presentation. Anthropic specifically notes limitations with complex formatting and firm-specific templates. A generated deck is a useful starting point even when the final layout needs manual work.",
+    "distractorNotes": {
+      "outline": "Potential formatting corrections do not mean staff have to construct the entire presentation themselves.",
+      "approve-layout": "A satisfactory sample slide does not establish that tables, charts and other layouts will fit throughout the deck.",
+      "alternative-output": "A dashboard may suit exploration, but it does not deliver the editable slides the secretary asked for."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/financial-analysis-workflows-with-claude",
+    "sourceNote": "Competitive Analysis Presentation, Phase 3: Create; note on complex PowerPoint formatting and firm-specific templates",
+    "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-workflow-design-and-integration-025",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "workflow-design-and-integration",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An association is briefing its council on how a new consultation report was produced. Claude grouped comments into themes. The policy lead compared the themes with the submissions, restored a minority view and wrote the recommendations. Which description gives council members the clearest basis for deciding what to rely on?",
+    "options": [
+      { "id": "tool-only", "text": "Claude analyzed the consultation and the report passed an internal review; the recommendations reflect the findings of the consultation." },
+      { "id": "understate", "text": "The policy lead prepared the consultation report and its recommendations, using Claude for writing assistance during production." },
+      { "id": "split-ownership", "text": "Claude is responsible for the thematic analysis, while the policy lead takes responsibility for recommendations and exceptions noted in review." },
+      { "id": "scope-and-review", "text": "Claude grouped the comments. The lead checked the groups, restored an overlooked view and owns the report and its recommendations." }
+    ],
+    "correct": ["scope-and-review"],
+    "explanation": "The council needs to know what Claude did, what a person verified and changed, and who stands behind the finished work. Naming the overlooked view shows both the value of the grouping step and the limit the human review addressed.",
+    "distractorNotes": {
+      "tool-only": "Internal review is too vague to tell whether someone checked the groupings against the original submissions or merely edited the prose.",
+      "understate": "Describing thematic grouping as writing assistance understates Claude's analytical role.",
+      "split-ownership": "The lead used and corrected the grouping. Attributing accountability for that part of the final report to Claude misstates the human role."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/writing-an-ai-diligence-statement",
+    "sourceNote": "Five elements to include: specify Claude's tasks, human verification and changes, and accountability for the final output",
+    "sourceCheckedAt": "2026-11-21"
+  }
+]

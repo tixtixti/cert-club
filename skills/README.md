@@ -4,7 +4,7 @@ Procedures for the recurring content work: recon a proposed certification,
 author a batch of questions, evaluate a batch's per-question correctness,
 harden a domain to the exam's difficulty, add option-level hints to a domain,
 orchestrate a bank across subagents, audit a bank's coverage, audit its citations
-for drift, condensing a review record, and the gate on adding a new question type.
+for drift, condense a review record, and the gate on adding a new question type.
 
 ## Install
 

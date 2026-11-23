@@ -660,9 +660,9 @@
       "c": "Plausible because more explicit instructions sometimes help, but concatenating everything keeps the hard, hard-to-inspect single call intact.",
       "d": "Plausible because tools add structure, but tools augment the model rather than remove the need to sequence reasoning steps."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Workflow: Prompt chaining",
-    "sourceCheckedAt": "2026-09-17"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccdv-f-applications-and-integration-026",
@@ -783,9 +783,9 @@
       "b": "Plausible as a shortcut, but one big call forgoes the decomposition that keeps each file's change tractable.",
       "c": "Plausible because it also uses multiple workers, but parallelisation presumes predefined sections, unlike the runtime decomposition required here."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Workflow: Orchestrator-workers",
-    "sourceCheckedAt": "2026-09-17"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccdv-f-applications-and-integration-030",

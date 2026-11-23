@@ -19,9 +19,13 @@ them.
 
    ```sh
    npm run validate
-   npm run balance -- --strict
+   npm run balance -- --2x <slug>
    npm run metrics -- <slug> --markdown
    ```
+
+   `balance -- --strict` alone prints only banks that declare `skills`, so on
+   most banks it is silent — use `--2x <slug>` for the per-domain table, and
+   add `--strict` only to gate a skills-declaring bank.
 
 2. **Judge per domain, never against totals.** `AGENTS.md` is explicit: never
    infer bank status from question count. A bank can reach the live exam's

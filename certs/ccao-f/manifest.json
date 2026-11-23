@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "cert": "ccao-f",
+  "name": "Claude Certified Associate – Foundations",
+  "vendor": "Anthropic",
+  "status": "draft",
+  "updatedAt": "2026-11-21",
+  "examUrl": "https://cc.sj-cdn.net/instructor/6nizmqk8tpzpfjvt6qmmav7rh/public/1794946609/Claude_Certified_Associate_-_Foundations_Exam_Guide_Updated_Dec_7.pdf",
+  "contentLicense": "CC-BY-SA-4.0",
+  "examQuestionCount": 70,
+  "examDurationMinutes": 120,
+  "domains": [
+    {
+      "slug": "task-definition-and-prompting",
+      "name": "Task Definition and Prompting",
+      "weight": 15
+    },
+    {
+      "slug": "output-evaluation-and-quality-control",
+      "name": "Output Evaluation and Quality Control",
+      "weight": 20
+    },
+    {
+      "slug": "capability-model-and-context-selection",
+      "name": "Capability, Model, and Context Selection",
+      "weight": 15
+    },
+    {
+      "slug": "workflow-design-and-integration",
+      "name": "Workflow Design and Integration",
+      "weight": 18
+    },
+    {
+      "slug": "configuration-and-knowledge-management",
+      "name": "Configuration and Knowledge Management",
+      "weight": 15
+    },
+    {
+      "slug": "responsible-use-data-protection-and-governance",
+      "name": "Responsible Use, Data Protection, and Governance",
+      "weight": 17
+    }
+  ]
+}

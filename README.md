@@ -98,6 +98,7 @@ is not.
 | Claude Certified Developer – Professional                            | `ccdv-p`      | draft       | [review record](./certs/ccdv-p/review-progress.md)      |
 | Claude Certified Architect – Foundations                             | `ccar-f`      | stable      | [review record](./certs/ccar-f/review-progress.md)      |
 | Claude Certified Architect – Professional                            | `ccar-p`      | stable      | [review record](./certs/ccar-p/review-progress.md)      |
+| Claude Certified Associate – Foundations                             | `ccao-f`      | draft       | [review record](./certs/ccao-f/review-progress.md)      |
 | Microsoft Certified: Azure Fundamentals                              | `az-900`      | draft       | [review record](./certs/az-900/review-progress.md)      |
 | Microsoft Certified: Security, Compliance, and Identity Fundamentals | `sc-900`      | draft       | [review record](./certs/sc-900/review-progress.md)      |
 | Microsoft Certified: Azure AI Apps and Agents Developer Associate    | `ai-103`      | draft       | [review record](./certs/ai-103/review-progress.md)      |

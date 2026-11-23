@@ -31,8 +31,9 @@ That shortcut makes the field worthless and is undetectable afterward.
 2. **Mechanical triage.** Run `npm run check-sources` (with `<cert-slug>` if
    targeted, or repo-wide for whole-host sweeps). `--json` to feed a plan,
    `--offline` when only staleness matters. Run `npm run check-claims` to flag
-   quotes, identifiers, and figures absent from cited pages on `.md`-serving
-   hosts. These are triage worklists for stage 4, never automated verdicts.
+   quotes, identifiers, and figures absent from cited pages — `.md`-serving
+   hosts only; every other host reports inconclusive, which is not a pass.
+   These are triage worklists for stage 4, never automated verdicts.
 
 3. **False-negative discipline, before any edit.** A single failed fetch is
    **never** grounds for changing a `sourceUrl`. Reconfirm by a second method
@@ -45,18 +46,20 @@ That shortcut makes the field worthless and is undetectable afterward.
    **cold** against the cited section: read the section, answer the question,
    then compare to the recorded key.
    With page open, read free-text (`explanation`, `distractorNotes`,
-   `sourceNote`, keyed options) for figure/API drift per `CONTRIBUTING.md`.
-   Adjudicate `check-claims` findings against the text.
+   `sourceNote`, keyed options' `text` and `hintText`) for figure/API drift per
+   `CONTRIBUTING.md`. Adjudicate `check-claims` findings against the text.
 
 5. **One explicit disposition per affected question:**
    - **bump** — page re-read, claim intact, update `sourceCheckedAt`.
    - **re-cite** — claim intact, moved to a different page or section.
-   - **rewrite** — doc or blueprint evolved under question; update stem/options/key.
+   - **rewrite** — doc or blueprint evolved under question; update stem/options/key,
+     and set `status: "draft"` until an independent `evaluate-questions` pass.
    - **retire** — claim no longer holds or dropped from blueprint; cannot be rescued.
 
 6. **Record the pass in `review-progress.md`**: the date, scope, blueprint
-   check result, and disposition breakdown. Adjudicate triage findings in the
-   dated section by numeric class. State what was not covered.
+   check result, and disposition breakdown. Adjudicate figure findings in the
+   dated section by the four numeric classes `certs/ccar-p/review-progress.md`
+   § Maintenance audits defines. State what was not covered.
 
 7. **Update `certs/VENDORS.md`.** Correct moved hosts, add discovered legacy or
    gated properties to the do-not-cite list, and re-date confirmed entries.

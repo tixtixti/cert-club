@@ -160,3 +160,21 @@ Implemented option-level `hintText` across the AWS Certified Developer - Associa
   - Eliminating absolute qualifiers uniquely solves 0 of 108 items (25.8% expected guessing rate).
   - Test suite: 416/416 unit tests passing; Vite production build succeeds.
 
+### Recurring source drift audit (2026-11-21)
+
+Comprehensive drift and liveness audit across all 120 unique endpoints (130 questions):
+
+- **Blueprint drift**: 0% drift. Exam guide confirmed live (HTTP 200) and current to Version 2.1 (published December 12, 2024). Domain weights (32/26/24/18) match identically.
+- **Canonical re-cites (10 items in `development-with-aws-services`)**:
+  - `011`: Re-cited to `lambda/latest/dg/lambda-functions.html` (common configuration).
+  - `013`: Re-cited to `lambda/latest/dg/configuration-vpc.html` (VPC networking).
+  - `015`: Re-cited from directory root redirect to canonical `lambda/latest/dg/invocation-async.html` (async destinations).
+  - `025`: Re-cited from directory root redirect to canonical `sns/latest/dg/sns-sqs-as-subscriber.html` (fanout architecture).
+  - `032`: Re-cited to `apigateway/latest/developerguide/how-to-set-stage-variables-aws-console.html` (stage variables).
+  - `036`: Re-cited to `apigateway/latest/developerguide/api-gateway-gatewayResponse-definition.html` (gateway responses).
+  - `037`: Re-cited from directory root redirect to canonical `appsync/latest/devguide/aws-appsync-real-time-data.html` (GraphQL subscriptions).
+  - `039`: Re-cited to `step-functions/latest/dg/choosing-workflow-type.html` (standard vs express workflows).
+  - `041`: Re-cited to `sdkref/latest/guide/feature-retry-behavior.html` (error retries and jitter backoff).
+  - `042`: Re-cited from directory root redirect to canonical `amazonq/latest/qdeveloper-ug/inline-suggestions.html` (inline code completions).
+- **Dispositions**: 10 re-cite, 120 bump. 0 retire, 0 rewrite. 100% of URLs verified live (HTTP 200).
+

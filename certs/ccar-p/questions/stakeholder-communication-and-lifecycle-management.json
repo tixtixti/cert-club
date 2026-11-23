@@ -33,9 +33,9 @@
       "b": "A single optimized call is a useful baseline, but the discovery findings distinguish a customer-investigation process from routine policy answering; adding instructions does not provide that process.",
       "d": "Parallel execution can obtain multiple perspectives, but running the investigative path for routine questions still incurs its cost and waiting for selection preserves its latency penalty."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "When (and when not) to use agents; Workflow: Routing; Combining and customizing these patterns",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-stakeholder-communication-and-lifecycle-management-002",
@@ -185,9 +185,9 @@
       "c": "An agent's model-directed process is useful for open-ended exploration, but gives it the continuation decision that operations wants to keep in the application.",
       "d": "Evaluator-optimizer addresses improving a draft through feedback, rather than dynamically assigning independent analyses and combining their results."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "What are agents?; Workflow: Parallelization; Workflow: Orchestrator-workers; Workflow: Evaluator-optimizer",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-stakeholder-communication-and-lifecycle-management-006",
@@ -489,9 +489,9 @@
       "b": "Chaining and programmatic gates suit fixed subtasks, but a format gate does not provide the substantive legal critique shown to improve these assessments.",
       "c": "Voting is a real confidence-building pattern, but the scenario's pilot found that majority selection did not correct this omission pattern."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Workflow: Evaluator-optimizer; Workflow: Parallelization; Workflow: Prompt chaining",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-stakeholder-communication-and-lifecycle-management-014",
@@ -527,9 +527,9 @@
       "b": "Discarding the unaffected historical cases removes protection for medication reconciliation and other still-required behavior.",
       "d": "A higher combined score can conceal a regression on an unchanged requirement and leaves contradictory expected answers unresolved."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+    "sourceUrl": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
     "sourceNote": "Capability vs. regression evals; Steps 2, 5, 6 and 8: task clarity, graders, transcripts and maintenance",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-stakeholder-communication-and-lifecycle-management-015",
@@ -565,9 +565,9 @@
       "c": "Grouping work may reduce coordination overhead, but it still introduces model-driven decomposition for a processing plan the application already knows.",
       "d": "Reviewing ordinary transactions adds a model call to the successful path without evidence of a review gap there; the discovery findings locate the gap in exceptions."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "When (and when not) to use agents; Combining and customizing these patterns",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-stakeholder-communication-and-lifecycle-management-016",
@@ -603,9 +603,9 @@
       "b": "A successful result somewhere among several attempts overstates readiness for a production process that performs one extraction and has no selection stage.",
       "d": "Consistent agreement can repeat the same incorrect codes; without reference grading this measures self-consistency rather than the required correctness."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+    "sourceUrl": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
     "sourceNote": "How to think about non-determinism; Steps 2, 4 and 5: reference solutions, isolated trials and graders",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccar-p-stakeholder-communication-and-lifecycle-management-017",
@@ -683,8 +683,8 @@
       "b": "Aggregate live satisfaction can hide rare policy failures, while an unchanged suite never acquires the newly verified failure cases.",
       "c": "Expert validation improves the new cases, but discarding the earlier regression suite removes protection for previously successful behavior."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+    "sourceUrl": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
     "sourceNote": "Steps 1, 2, 6 and 8; How evals fit with other methods for a holistic understanding of agents",
-    "sourceCheckedAt": "2026-09-25"
+    "sourceCheckedAt": "2026-11-21"
   }
 ]

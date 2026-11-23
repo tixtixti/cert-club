@@ -118,9 +118,9 @@
       "c": "Both categories build on a model augmented with capabilities such as tools, retrieval, and memory. Workflows call tools too; the difference is that those calls sit on a path defined by code.",
       "d": "Human oversight is a separate design choice. Agents commonly return to a human for judgement at checkpoints or when blocked, and workflows can run start to finish without approval steps."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Sections 'What are agents?' and 'When (and when not) to use agents'",
-    "sourceCheckedAt": "2026-09-17"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccdv-f-agents-and-workflows-005",
@@ -159,9 +159,9 @@
       "b": "Evaluator-optimizer pairs a generator with a critic that reviews its output and feeds back suggestions in a loop. It suits work with clear evaluation criteria that benefits from iterative refinement, not work that must fan out across an unknown number of files.",
       "c": "Prompt chaining decomposes a task into a fixed sequence of steps in which each call processes the previous call's output, optionally with programmatic gates between steps. It depends on the decomposition being clean and known in advance."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Section 'Building blocks, workflows, and agents', subsection 'Workflow: Orchestrator-workers'",
-    "sourceCheckedAt": "2026-09-17"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccdv-f-agents-and-workflows-007",
@@ -451,9 +451,9 @@
       "c": "A workflow is still added complexity; the point is to avoid an agentic system entirely when a single call suffices.",
       "d": "Adding dormant complexity still carries the abstraction and maintenance cost without delivering any benefit."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "When (and when not) to use agents",
-    "sourceCheckedAt": "2026-09-17"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccdv-f-agents-and-workflows-020",
@@ -497,9 +497,9 @@
       "d": "Workflows are not chosen on cost; it is agent autonomy that typically raises cost, not workflows.",
       "e": "The guidance says you must have some level of trust in an agent's decision-making, so trust does factor into the choice."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "When (and when not) to use agents; When to use agents",
-    "sourceCheckedAt": "2026-09-17"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccdv-f-agents-and-workflows-022",
@@ -584,9 +584,9 @@
       "b": "Voting runs the same task in parallel and aggregates outputs; it does not refine a single draft with feedback.",
       "d": "Prompt chaining is a fixed forward sequence of steps, not a generate-and-critique loop."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Workflow: Evaluator-optimizer",
-    "sourceCheckedAt": "2026-09-17"
+    "sourceCheckedAt": "2026-11-21"
   },
   {
     "id": "ccdv-f-agents-and-workflows-025",
@@ -625,8 +625,8 @@
       "b": "There is no classification into categories; it is one linear pipeline applied to every input.",
       "c": "The check is a single programmatic gate, not an iterative critic refining a draft in a loop."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
+    "sourceUrl": "https://www.anthropic.com/research/building-effective-agents",
     "sourceNote": "Workflow: Prompt chaining",
-    "sourceCheckedAt": "2026-09-17"
+    "sourceCheckedAt": "2026-11-21"
   }
 ]
