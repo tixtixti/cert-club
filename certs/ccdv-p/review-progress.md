@@ -7,11 +7,11 @@ this file holds the reasons.
 Scaffolded on 2026-11-18 via `scripts/scaffold-cert.mjs` during an `assess-new-cert`
 recon based on the Claude Certified Developer – Professional Exam Guide v1.0
 (Effective November 2026, Exam code: CCDV-P). Bank authored, adversarially
-evaluated, difficulty-hardened, and grounded across November 18–19, 2026.
+evaluated, difficulty-hardened, and grounded across November 18–23, 2026.
 
 ## Bank status: `draft`
 
-`manifest.status` is `draft`. The bank contains 140 questions (all 140 `status: "reviewed"`, 0 `draft`), achieving exactly 2× the 70-question exam baseline proportionally distributed across all eight domains with zero delta. All 140 questions have undergone adversarial correctness evaluation (`evaluate-questions`), difficulty calibration (`harden-domain-questions`), and source re-grounding. All quality, balance, and anti-bias guards pass cleanly. Promotion to `stable` is human-gated (per `certs/ADDING-A-CERT.md` § Bank status) and awaits explicit maintainer confirmation.
+`manifest.status` is `draft`. The bank contains 140 questions (all 140 `status: "reviewed"`, 0 `draft`), achieving exactly 2× the 70-question exam baseline proportionally distributed across all eight domains with zero delta. All 140 questions have undergone adversarial correctness evaluation (`evaluate-questions`) and difficulty calibration (`harden-domain-questions`). All quality, balance, and anti-bias guards pass cleanly. Promotion to `stable` is human-gated (per `certs/ADDING-A-CERT.md` § Bank status) and awaits explicit maintainer confirmation.
 
 ## Recon verdict: `GO-WITH-CONSTRAINTS`
 
@@ -46,29 +46,31 @@ Exam facts: 70 items (60 scored, 10 unscored), 120 minutes, scaled pass 720 on 1
 
 ## Composition and coverage audit
 
-Audited against the 140-question bank (post-hardening and evaluation):
+Re-audited 2026-11-23 after the skill-level gap-fill batch (140 questions):
 
 - **Distribution**: Proportional across all 8 domains (24 / 28 / 17 / 14 / 17 / 11 / 15 / 14), with zero delta against 2× blueprint targets.
-- **Item formats**: 116 single-select, 24 multi-select (17.1% multi-response; all select-TWO, avoiding leading runs).
+- **Item formats**: 112 single-select, 28 multi-select (20.0% multi-response; all select-TWO, avoiding leading runs).
 - **Status breakdown**: 140 reviewed, 0 draft (100% adversarial cold evaluation verified).
-- **Sourcing**: 44 distinct vendor documentation pages cited and verified across Anthropic platforms (`platform.claude.com`, `code.claude.com`, `anthropic.com/engineering`), MCP specifications (`modelcontextprotocol.io`), OWASP, and NIST.
-- **Single-select position distribution**: 29 A / 30 B / 30 C / 27 D (max 25.9%, ceiling 50%).
-- **Option length delta**: Mean correct-option length minus distractor length is +1.77 characters (median +2.00 characters, within [-10, 10]).
-- **Longest option as key share**: 33 of 116 single-select items (28.4%), well below the 45% ceiling.
+- **Sourcing**: 64 distinct vendor documentation pages across Anthropic platforms (`platform.claude.com`, `code.claude.com`, `anthropic.com/research`), MCP specifications (`modelcontextprotocol.io`, pinned revision), OWASP, and NIST. Concentration: `code.claude.com/docs/en/monitoring-usage` backs 7 items (6 in D3).
+- **Single-select position distribution**: 26 A / 31 B / 30 C / 25 D (max 27.7%, ceiling 50%).
+- **Option length delta**: Mean correct-option length minus distractor length is +1.98 characters (median +2.00 characters, within [-10, 10]).
+- **Longest option as key share**: 34 of 112 single-select items (30.4%), well below the 45% ceiling.
 - **Heuristic baselines**: 0 items uniquely guessable by eliminating absolute qualifiers.
 - **Distractor notes coverage**: 100% (all 140 items carry detailed rationale for every distractor).
 - **Bias guards**: All pass cleanly (`positionBias`, `lengthBiasMeanDelta`, `longestOptionIsKey`).
 
 ### Known coverage limits and deliberate boundaries
 
-- _Domain 1 (Advanced Agent Architecture and Orchestration)_: Covers canonical Anthropic workflow patterns (prompt chaining, routing, parallel sectioning, orchestrator-workers, evaluator-optimizer), durable checkpointing (`SessionStore`, file checkpointing `rewindFiles()`), and subagent context isolation. Excludes third-party multi-agent frameworks (LangGraph, AutoGen, CrewAI).
-- _Domain 2 (Production Integration, Reliability, and Knowledge Grounding)_: Focuses on Messages API error semantics (HTTP 529 exponential backoff with full jitter, mid-stream SSE errors), ramp limits vs throughput limits, Streamable HTTP vs stdio MCP transports (legacy HTTP+SSE deprecated), MCP tool search deferral (`alwaysLoad`), Citations API, Voyage AI embeddings (Anthropic does not offer proprietary embeddings), and Contextual Retrieval. Excludes WebSocket MCP transports and cloud-provider IAM wrappers.
-- _Domain 3 (Observability and Production Monitoring)_: Focuses on OpenTelemetry instrumentation, Agent SDK stdout IPC isolation, GenAI semantic conventions, HTTP 200 refusal monitoring, token deduplication across SDK client and API spans, Prometheus metric cardinality controls, and distributed trace propagation (`CLAUDE_CODE_PROPAGATE_TRACEPARENT`, `TRACEPARENT`).
-- _Domain 4 (Advanced Debugging and Incident Response)_: Focuses on `stop_reason` diagnostics (`refusal` as HTTP 200, `max_tokens` incomplete JSON recovery, `pause_turn` iteration protocol), empty `end_turn` responses from trailing user text blocks, client-side tool execution timeouts vs HTTP 504 `timeout_error`, and transient 429 vs spend cap 429 (`retry-after` header presence).
-- _Domain 5 (Evaluation Engineering and Quality Assurance)_: Focuses on deterministic code-based grading vs LLM-as-judge, synthetic evaluation suite blind spots, `pass@k` multi-step stochastic evaluation, test contamination hygiene, pairwise position bias mitigation (bidirectional swapping), verbosity bias mitigation, Cohen's kappa on imbalanced datasets, and shadow evaluation. Excludes third-party evaluation libraries (Ragas, TruLens).
-- _Domain 6 (Cost and Latency Optimization at Scale)_: Focuses on prompt caching prefix hierarchy (`tools` > `system` > `messages`), Message Batches API 50% discount and 1-hour cache stacking, SSE streaming TTFT reduction, and cache lookback window mechanics (20-block window).
-- _Domain 7 (Runtime Guardrails and Production Security)_: Focuses on `PreToolUse` hook precedence (`deny` > `defer` > `ask` > `allow`), argument rewriting via `updatedInput`, OS-level Bash sandbox boundaries, indirect prompt injection defense via `tool_result` encapsulation, OWASP LLM06 Excessive Agency controls, subprocess environment credential scrubbing (`CLAUDE_CODE_SUBPROCESS_ENV_SCRUB=1`), and enterprise managed settings locking.
-- _Domain 8 (Agent Fleet Operations for Software Delivery)_: Focuses on `.worktreeinclude` for ignored files in isolated worktrees, GitHub Code Review service (`REVIEW.md` branch protection preconditions and path exclusions) vs local `/code-review`, headless CI execution (`claude -p` with `--allowedTools` and `--permission-prompts none`), `--max-budget-usd` spend ceilings, Channels MCP plugins for event-driven workflows, and settings precedence hierarchy.
+Coverage is judged per named blueprint skill. The guide weights domains only, so authors balance items against the guide's § 5 skill sentences:
+
+- _Domain 1 (Advanced Agent Architecture and Orchestration)_: Covers Anthropic workflow patterns (chaining, routing, sectioning, orchestrator-workers, evaluator-optimizer), subagent context isolation, durable execution (`SessionStore`, `rewindFiles()`, client-side memory tool with multisession progress log), Managed Agents human approval (`always_ask` override vs `auto`), context editing/compaction, and tool search. **Thin**: architecture-selection items lean on `building-effective-agents`; cache-safe mid-conversation instruction changes tested indirectly. Deliberately excludes third-party multi-agent frameworks.
+- _Domain 2 (Production Integration, Reliability, and Knowledge Grounding)_: Covers error semantics, retry/backoff, throughput limits, workspace isolation, batch processing, MCP transports and tool search, cross-platform feature parity (Bedrock unsupported features), model-ID pinning with prompt/model co-versioning and staged rollback, agentic search vs RAG, hybrid search/reranking, contextual retrieval, citations, and uncertainty declaration. **Thin**: remote MCP auth in production, gateway/routing architectures, and stage-by-stage retrieval failure diagnosis.
+- _Domain 3 (Observability and Production Monitoring)_: Covers Claude Code and Claude API OpenTelemetry, SDK stdout IPC, token deduplication across spans, metric cardinality, trace propagation, SLIs counting refusals and `max_tokens` stops as failures, drift on a pinned model ID, cohort analysis of sampled spans, and cache diagnostics under ZDR. **Thin**: sampling strategy selection (cohort item assumes a sample); dashboard layout untested.
+- _Domain 4 (Advanced Debugging and Incident Response)_: Covers `stop_reason` diagnostics, empty `end_turn`, tool timeouts vs 504, transient vs spend-cap 429, overload thundering herd, multi-agent hand-off loss, and post-incident learning loops (failures become regression tests, monitoring replaces complaints). **Thin**: incident communication; `-012` and `-016` intentionally share the "failures become test cases" theme from distinct angles (monitoring vs suite blindness).
+- _Domain 5 (Evaluation Engineering and Quality Assurance)_: Covers code vs model grading, synthetic-suite blind spots, `pass@k`, contamination, position/verbosity bias, kappa on imbalanced data, reasoning-before-verdict graders, shadow evaluation, judge re-calibration on model swaps, and capability-suite saturation. **Thin**: retrieval precision/groundedness metrics and A/B test design. Deliberately excludes third-party eval libraries.
+- _Domain 6 (Cost and Latency Optimization at Scale)_: Covers prompt prefix hierarchy, batch discount stacking with caching, streaming TTFT, lookback window, tier routing, parallel tool execution for total latency, and per-conversation model routing to avoid `model_changed` cache misses. **Thin**: per-tenant budget enforcement and cost forecasting.
+- _Domain 7 (Runtime Guardrails and Production Security)_: Covers hook precedence and `updatedInput`, sandbox boundaries, indirect injection defense, OWASP LLM06, subprocess env scrubbing, NIST AI RMF mapping, workload identity federation migration (residual API keys outrank federation), memory-store poisoning (`read_only` attach, write-back rollback), and MCP scope minimization with privilege escalation audits. **Thin**: PII redaction and guardrail tuning curves.
+- _Domain 8 (Agent Fleet Operations for Software Delivery)_: Covers `.worktreeinclude`, subagent worktree isolation, Code Review customization/verification, gating merges on Code Review severity from CI after a comment-only calibration period, headless CI flags, `--max-budget-usd`, Channels, managed MCP allowlists (`allowManagedMcpServersOnly`), managed permission locks, and scheduled-task alerting. **Thin**: merge/conflict resolution for parallel fan-out; fleet-level telemetry triage; shared Skills governance.
 
 ## Source classification
 
@@ -109,16 +111,20 @@ Guide § 7 provides three sample questions with answer keys and rationales, serv
 
 ## Architectural and sourcing adjudications
 
-Standing technical rulings and non-obvious groundings that future authors must not rediscover:
+Standing technical rulings and non-obvious groundings:
 
-- **D1 Sourcing re-grounding**: Items `008`–`011` were re-grounded from high-level engineering prose to authoritative first-party SDK and hooks documentation:
-  - `008`: Custom MCP tool error handling via `isError: true` (`code.claude.com/docs/en/agent-sdk/custom-tools`).
-  - `009`: Durable session persistence across ephemeral container restarts via `SessionStore` `append`/`load` (`code.claude.com/docs/en/agent-sdk/session-storage`).
+- **D1 Sourcing and API grounding**:
+  - `008`: Custom MCP tool error reporting requires `isError: true` (`code.claude.com/docs/en/agent-sdk/custom-tools`).
+  - `009`: Durable session persistence across ephemeral restarts via `SessionStore` `append`/`load` (`code.claude.com/docs/en/agent-sdk/session-storage`).
   - `010`: Multi-turn state rollback via file checkpointing `rewindFiles()` with context preservation (`code.claude.com/docs/en/agent-sdk/file-checkpointing`).
   - `011`: Unbounded human-in-the-loop approvals via `PreToolUse` hook `defer` decision (`code.claude.com/docs/en/hooks`).
-  - `003` & `012`: Refined to align strictly with documented definitions in `building-effective-agents` (orchestrator-workers dynamic decomposition and synthesis; workflows vs agents predefined code paths).
+  - `003` & `012`: Aligned strictly with documented definitions in `building-effective-agents` (orchestrator-workers dynamic decomposition and synthesis; workflows vs agents predefined code paths).
 - **D4 Continuation & stop reasons**: Item `006` tests the documented Messages API `pause_turn` stop reason and resumption protocol (`handling-stop-reasons`), replacing an ungrounded claim regarding automatic tool loop detection in `troubleshooting`.
 - **D2 Retrieval & RAG grounding**: Item `027` citation pinned to authoritative Anthropic engineering post (`anthropic.com/engineering/contextual-retrieval`).
+- **Model stability claims**: `model-ids-and-versions` is the sole source for model-stability claims. Keep exactly one item keyed on infrastructure drift (`019` in D3); D2 `030` uses the "evergreen pointer" myth only as a distractor. Version-specific facts appear in explanations and notes, not stems.
+- **Near-duplicate adjudications**:
+  - Hook exit code 1 non-blocking tested in D7 `004` (retired D4 `008`).
+  - Managed OTel endpoint header stripping tested in D3 `002` (retired D7 `015`).
 - **Difficulty hardening & distractor repairs**:
   - `cost-and-latency-optimization-at-scale-009`: Replaced fabricated SSE event names with authentic `text_delta` near-miss inside `content_block_delta` and padded distractors.
   - `agent-fleet-operations-for-software-delivery-005`: Replaced synthetic third-party scanner distractor with authentic operational near-miss (`Code Review suspends automated check runs on unprotected branches`).
@@ -128,24 +134,34 @@ Standing technical rulings and non-obvious groundings that future authors must n
   - `production-integration-reliability-and-knowledge-grounding-025`: Replaced naive alphanumeric stripping distractor with HyDE near-miss.
   - `production-integration-reliability-and-knowledge-grounding-027`: Replaced facepalm hallucination tell with section header metadata filtering near-miss.
   - `production-integration-reliability-and-knowledge-grounding-028`: Replaced anti-grounding tells with persona prompting, fine-tuning, and external web search near-misses.
-  - `advanced-agent-architecture-and-orchestration-014`: Replaced crude definition errors with architectural near-misses on dynamic replanning, multi-model deployment, and programmatic validation.
-  - `advanced-agent-architecture-and-orchestration-019`: Replaced implausible platform claims with validation tool capability, evaluator-optimizer, and cache utilization near-misses.
-  - `advanced-agent-architecture-and-orchestration-024`: Replaced facepalm subagent swarm and punctuation stripping with sectioning summarization and parametric fine-tuning near-misses.
 
 ## Maintenance audits
 
-### Bank authoring, calibration, and cold evaluation (2026-11-18)
+### Initial authoring, calibration, and cold evaluation (2026-11-18)
 
-Initial pipeline authoring across all 8 domains to reach 2× baseline (140 questions):
-
-- **Adversarial cold evaluation**: 140 / 140 answer sets independently cold-derived against live vendor documentation; 139 confirmed intact, 1 unsourced claim (`advanced-debugging-and-incident-response-006`) rewritten and verified. All 140 items promoted to `status: "reviewed"`.
+- **Scope**: Initial 140 questions (2× baseline of 70) authored across all 8 domains.
+- **Adversarial cold evaluation**: 140/140 answer sets independently cold-derived against live vendor documentation; 139 confirmed intact, 1 unsourced claim (`advanced-debugging-and-incident-response-006`) rewritten and verified. All 140 items promoted to `status: "reviewed"`.
 - **Difficulty calibration (`harden-domain-questions`)**: 129 items confirmed calibrated at or above guide sample difficulty without change; 11 items hardened across D1 (3), D2 (5), D4 (1), D6 (1), and D8 (1) by replacing weak distractors with technical near-misses.
-- **Stage D Reconciliation**: Zero blueprint delta; all bias guards pass cleanly (position distribution max 25.9%, key length delta +1.77, longest option key 28.4%, 0 absolute qualifier tells, 100% distractor notes).
+- **Balance and bias reconciliation**: Zero blueprint delta; all bias guards pass cleanly (position distribution max 25.9%, key length delta +1.77, longest option key 28.4%, 0 absolute qualifier tells, 100% distractor notes).
 
 ### Code review validation and grounding fixes (2026-11-19)
 
-Validated external review findings on `feat/ccdv-p-cert` and applied grounding fixes:
-
 - **Domain 1 grounding**: Items `008`–`011` re-sourced to first-party Agent SDK and hooks documentation; `003` and `012` aligned with `building-effective-agents`.
-- **Vendor profiles**: Updated `certs/VENDORS.md` to document CCDV-P exam guide CDN host (`cc.sj-cdn.net`), add `nvlpubs.nist.gov` to NIST citable sources, and document citation traps.
+- **Vendor profiles**: Updated `certs/VENDORS.md` to document CCDV-P exam guide CDN host (`cc.sj-cdn.net`), added `nvlpubs.nist.gov` to NIST citable sources, and documented citation traps.
 - **Manifest date sync**: Synced `manifest.updatedAt` to `2026-11-19`. Full validation suite (`npm run check`) green.
+
+### Skill-level gap-fill batch and calibration (2026-11-23)
+
+- **Scope**: Net-zero replacement batch targeting unweighted named blueprint skills and resolving duplicate pairs. Bank maintained at 140/140 reviewed items.
+- **Retired items (23)**: Retired duplicates, flag/string-recall items, and definitional stems (D1 `014`, `019`, `024`; D2 `005`, `006`, `011`, `024`; D3 `005`, `012`, `015`, `016`; D4 `008`, `014`; D5 `009`, `016`; D6 `002`, `005`; D7 `012`, `013`, `015`; D8 `002`, `006`, `012`). IDs permanently retired.
+- **Authored items (23)**: Added coverage for unrepresented blueprint skills (D1 `025`–`027`, D2 `029`–`032`, D3 `018`–`021`, D4 `015`–`016`, D5 `018`–`019`, D6 `012`–`013`, D7 `016`–`018`, D8 `015`–`017`) across new documentation (Managed Agents, Workload Identity Federation, Cache Diagnostics, model IDs, OTel spans, and MCP security).
+- **Difficulty calibration**: 15 items confirmed calibrated without change; 8 items hardened by replacing weak distractors or removing stem leaks:
+  - D2 `030`: Replaced transparent 400s option with single-switch rollout near-miss.
+  - D2 `031`: Replaced dead-ends over-claim with stale-index contextual embeddings near-miss.
+  - D3 `018`: Replaced transparent `end_turn` distractor with `pause_turn` failure near-miss.
+  - D3 `020`: Removed `no error.type` stem leak.
+  - D4 `015`: Replaced refuted distractor with lead-agent memory hand-off near-miss.
+  - D4 `016`: Replaced manual review distractor with continuous regression suite near-miss.
+  - D5 `018`: Replaced sample echo with two-judge consensus near-miss; reworded key away from sample echo.
+  - D7 `018`: Replaced catalog consent restatement with connect-time fine-grained scopes near-miss.
+- **Adversarial cold evaluation**: All 23 items (including hardened variants) independently cold-evaluated against vendor documentation; 23 confirmed, 0 miskeys. 100% of the 140 bank items remain `status: "reviewed"`.
