@@ -198,32 +198,6 @@
     "sourceCheckedAt": "2026-11-21"
   },
   {
-    "id": "ccao-f-responsible-use-data-protection-and-governance-008",
-    "cert": "ccao-f",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "responsible-use-data-protection-and-governance",
-    "difficulty": "medium",
-    "status": "reviewed",
-    "stem": "A purchasing team licenses a price index for staff to read. It wants Claude, under Anthropic's Commercial Terms, to compare the index with internal forecasts. The team has not established whether its license permits submitting the index to a processing service. Which fact should determine whether to proceed with that input?",
-    "options": [
-      { "id": "output-ownership", "text": "Whether the company owns the forecast commentary Claude would generate from the index." },
-      { "id": "limited-audience", "text": "Whether the resulting comparison will circulate only among staff licensed to read the index." },
-      { "id": "no-training", "text": "Whether the team's commercial agreement prevents Anthropic from training on customer content." },
-      { "id": "submission-rights", "text": "Whether the company has the rights and permissions needed to submit the licensed index to Claude." }
-    ],
-    "correct": ["submission-rights"],
-    "explanation": "The Commercial Terms require the customer to have the rights and permissions needed to submit its inputs. Rights to use an output and Anthropic's restriction on training do not establish what the price-index license permits.",
-    "distractorNotes": {
-      "output-ownership": "Output ownership between the customer and Anthropic does not settle rights to a third party's input.",
-      "limited-audience": "Internal distribution restricts who reads the comparison, not where the index may be processed.",
-      "no-training": "Processing the index for a response and training a model on it are different uses."
-    },
-    "sourceUrl": "https://www.anthropic.com/legal/commercial-terms",
-    "sourceNote": "L.1 Warranties: rights and permissions to submit inputs; B. Customer Content",
-    "sourceCheckedAt": "2026-11-21"
-  },
-  {
     "id": "ccao-f-responsible-use-data-protection-and-governance-009",
     "cert": "ccao-f",
     "schemaVersion": 1,
@@ -277,32 +251,6 @@
     "sourceCheckedAt": "2026-11-21"
   },
   {
-    "id": "ccao-f-responsible-use-data-protection-and-governance-011",
-    "cert": "ccao-f",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "responsible-use-data-protection-and-governance",
-    "difficulty": "medium",
-    "status": "reviewed",
-    "stem": "A cost analyst has permission to use Claude's code execution on an internal CSV, provided the computing environment cannot send data to internet destinations. The calculation works with preinstalled packages, and no connectors are enabled. Which configuration allows the analysis on those terms?",
-    "options": [
-      { "id": "package-managers", "text": "Keep code execution on and restrict internet access to approved package managers for this analysis." },
-      { "id": "monitor-calls", "text": "Keep code execution on with internet access and have the analyst monitor requests while the calculation runs." },
-      { "id": "egress-off", "text": "Keep code execution on with network egress disabled and calculate the results using the uploaded CSV." },
-      { "id": "approved-domain", "text": "Keep code execution on and limit outbound requests to the company's approved reporting service." }
-    ],
-    "correct": ["egress-off"],
-    "explanation": "Disabling network egress keeps preinstalled packages available while preventing the code-execution environment from communicating with internet destinations. This task needs local computation on an approved file, not a network connection.",
-    "distractorNotes": {
-      "package-managers": "Approved package sites are still internet destinations, and the analyst does not need additional packages.",
-      "monitor-calls": "Monitoring can reveal an unexpected action; it does not make an outbound request impossible.",
-      "approved-domain": "An allowlisted endpoint remains reachable, whereas the permission here requires no internet destination to be reachable."
-    },
-    "sourceUrl": "https://support.claude.com/en/articles/12111783-create-and-edit-files-with-claude",
-    "sourceNote": "Configuring network access and how disabling network access affects code execution and file creation",
-    "sourceCheckedAt": "2026-11-21"
-  },
-  {
     "id": "ccao-f-responsible-use-data-protection-and-governance-012",
     "cert": "ccao-f",
     "schemaVersion": 1,
@@ -353,32 +301,6 @@
     },
     "sourceUrl": "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context",
     "sourceNote": "Current memory experience: Data retention and privacy; View and manage your memory; Pause versus reset",
-    "sourceCheckedAt": "2026-11-21"
-  },
-  {
-    "id": "ccao-f-responsible-use-data-protection-and-governance-014",
-    "cert": "ccao-f",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "responsible-use-data-protection-and-governance",
-    "difficulty": "hard",
-    "status": "reviewed",
-    "stem": "Two clinics use separate Claude Enterprise organizations. One clinic accepted Anthropic's Business Associate Agreement (BAA) and activated HIPAA compliance for its organization. The other wants to process protected health information in its own chat under the same agreement. What should the second clinic establish before submitting records?",
-    "options": [
-      { "id": "same-configuration", "text": "That its owner has matched the first clinic's retention and sharing settings for the proposed chats." },
-      { "id": "staff-access", "text": "That its staff doing the work also hold authorized seats in the clinic that accepted the agreement." },
-      { "id": "listed-feature", "text": "That chat is listed as an eligible Enterprise feature and is enabled in both clinics' organizations." },
-      { "id": "own-coverage", "text": "That its own HIPAA-ready organization has activated compliance and accepted a BAA covering the intended use." }
-    ],
-    "correct": ["own-coverage"],
-    "explanation": "A BAA covers the organization that accepted it. An eligible feature or an Enterprise plan alone does not provide coverage. For Enterprise chat, the Primary Owner activates HIPAA compliance in the HIPAA-ready organization and accepts the agreement.",
-    "distractorNotes": {
-      "same-configuration": "Matching operational settings is not acceptance of an agreement for the second organization.",
-      "staff-access": "A seat at another clinic does not transfer that clinic's BAA to a separate organization.",
-      "listed-feature": "Feature eligibility matters once the organization has coverage; availability does not create that coverage."
-    },
-    "sourceUrl": "https://support.claude.com/en/articles/8114513-business-associate-agreements-baa-for-commercial-customers",
-    "sourceNote": "BAA activation for HIPAA-ready Enterprise, scope of the accepting organization, and eligible chat features",
     "sourceCheckedAt": "2026-11-21"
   },
   {
@@ -522,21 +444,35 @@
     "status": "reviewed",
     "stem": "A customer-care team uses Claude to suggest whether a complaint needs an urgent callback. Policy bases urgency on loss of service. In matched examples describing the same outage, complaints written in regional dialect repeatedly get a lower priority than those written in standard English. What response addresses the risk before staff rely on the suggestions?",
     "options": [
-      { "id": "overall-average", "text": "Raise the overall urgency threshold until the total number of callbacks matches the historical service average." },
-      { "id": "remove-identities", "text": "Remove customer names and locations, then accept the priority suggestions if the resulting records are anonymous." },
-      { "id": "correct-and-retest", "text": "Hold the affected suggestions, apply the loss-of-service criterion and retest matched complaints across dialects." },
-      { "id": "change-explanation", "text": "Require the callback note to describe the outage in neutral language while retaining the suggested priority." }
+      {
+        "id": "overall-average",
+        "text": "Raise the overall urgency threshold until the total number of callbacks matches the historical service average."
+      },
+      {
+        "id": "remove-identities",
+        "text": "Remove customer names and locations, then accept the priority suggestions if the resulting records are anonymous."
+      },
+      {
+        "id": "correct-and-retest",
+        "text": "Hold the affected suggestions, apply the loss-of-service criterion and retest matched complaints across dialects."
+      },
+      {
+        "id": "change-explanation",
+        "text": "Require the callback note to describe the outage in neutral language while retaining the suggested priority."
+      }
     ],
-    "correct": ["correct-and-retest"],
+    "correct": [
+      "correct-and-retest"
+    ],
     "explanation": "The complaints differ in wording, not in the factor the policy authorizes. The disparity affects service timing, so correcting the written note or concealing identity does not correct the decision. Reassessing the suggestions and testing equivalent complaints checks whether the policy is now applied consistently.",
     "distractorNotes": {
       "overall-average": "A team-wide average can look right even when equivalent complaints receive different treatment.",
       "remove-identities": "The observed difference follows the wording, which remains after names and locations are removed.",
       "change-explanation": "Neutral language in a note leaves the difference in callback priority untouched."
     },
-    "sourceUrl": "https://cc.sj-cdn.net/instructor/6nizmqk8tpzpfjvt6qmmav7rh/public/1794946609/Claude_Certified_Associate_-_Foundations_Exam_Guide_Updated_Dec_7.pdf",
-    "sourceNote": "Section 5, Domain 6: Policy, Ethics, and Diligence — identify bias against policy and choose corrective action",
-    "sourceCheckedAt": "2026-11-21"
+    "sourceUrl": "https://academy.claude.com/tutorials/why-does-bias-exist-in-ai-models",
+    "sourceNote": "Bias can show as differing quality across languages; test with paired prompts and compare depth and treatment",
+    "sourceCheckedAt": "2026-11-23"
   },
   {
     "id": "ccao-f-responsible-use-data-protection-and-governance-021",
@@ -562,32 +498,6 @@
     },
     "sourceUrl": "https://academy.claude.com/tutorials/the-ai-fluency-index",
     "sourceNote": "Measuring AI fluency and Limitations: disclosure and responsible sharing are not directly observable in chats",
-    "sourceCheckedAt": "2026-11-21"
-  },
-  {
-    "id": "ccao-f-responsible-use-data-protection-and-governance-022",
-    "cert": "ccao-f",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "responsible-use-data-protection-and-governance",
-    "difficulty": "medium",
-    "status": "reviewed",
-    "stem": "A firm is rolling out a handbook assistant under Anthropic's Commercial Terms. During onboarding, users are told the answers are AI-generated, and the firm tests common questions before launch. Employees will use factual answers when planning business travel. What instruction about relying on answers is still needed?",
-    "options": [
-      { "id": "report-conflicts", "text": "Rely on an answer unless it conflicts with prior experience, in which case send it to the handbook editor." },
-      { "id": "consistent-answer", "text": "Ask the assistant to answer in a fresh chat and rely on the advice when the two responses agree." },
-      { "id": "tested-subjects", "text": "Rely on answers about subjects covered in launch testing and request independent review for unfamiliar subjects." },
-      { "id": "check-source", "text": "Check factual claims independently against the current handbook or its owner before relying on them." }
-    ],
-    "correct": ["check-source"],
-    "explanation": "The Commercial Terms require customers to notify users that factual assertions should not be relied on without independently checking their accuracy. A notice that AI generated the answer identifies its origin; it does not tell the employee how to handle a claim that may be incomplete or outdated.",
-    "distractorNotes": {
-      "report-conflicts": "An incorrect or obsolete answer may sound familiar and never trigger this check.",
-      "consistent-answer": "Two answers from the same assistant can repeat the same error; agreement is not independent evidence.",
-      "tested-subjects": "Testing a subject at launch does not establish the accuracy of the particular answer the employee received."
-    },
-    "sourceUrl": "https://www.anthropic.com/legal/commercial-terms",
-    "sourceNote": "D.3 Limitations of Outputs; Notice to Users — independent accuracy checks before reliance",
     "sourceCheckedAt": "2026-11-21"
   },
   {
@@ -642,5 +552,165 @@
     "sourceUrl": "https://www.anthropic.com/legal/aup",
     "sourceNote": "Additional Use Case Guidelines: disclosure for consumer-facing chatbots that communicate directly with external users",
     "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-025",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A payroll team wants Claude to calculate each worker's overtime pay from approved timesheets as hours over 40 multiplied by the contractual rate and 1.5, with no discretionary adjustments. Payroll's normal reconciliation still runs before payment. How should the team classify this use under Anthropic's Usage Policy?",
+    "options": [
+      {
+        "id": "with-safeguards",
+        "text": "Appropriate with safeguards: pay is a high-risk employment area, so qualified review and worker disclosure apply."
+      },
+      {
+        "id": "inappropriate",
+        "text": "Inappropriate: the policy does not permit AI to calculate amounts that determine an individual worker's pay."
+      },
+      {
+        "id": "appropriate",
+        "text": "Appropriate: applying a fixed formula without judgment about the individual is outside the high-risk requirements."
+      },
+      {
+        "id": "consent",
+        "text": "Appropriate only with consent: each worker must agree before Claude processes their own timesheet data."
+      }
+    ],
+    "correct": [
+      "appropriate"
+    ],
+    "explanation": "The high-risk requirements apply to recommendations, such as setting or changing pay. The policy excludes applying a fixed rule, formula or algorithm where the model exercises no judgment about the individual, so ordinary payroll controls are enough here.",
+    "distractorNotes": {
+      "with-safeguards": "Pay is a high-risk area for recommendations, but the policy's exclusion covers mechanical application of a fixed formula.",
+      "inappropriate": "Nothing in the policy forbids calculation; the concern is AI judgment about individuals, which this workflow does not involve.",
+      "consent": "The policy's consent provisions address sharing personal information, tracking people and trustworthiness scoring; none makes a mechanical payroll calculation conditional on each worker's agreement."
+    },
+    "sourceUrl": "https://www.anthropic.com/legal/aup",
+    "sourceNote": "High-risk requirements; Exclusions: applying a fixed rule, formula or algorithm with no judgment about the individual",
+    "sourceCheckedAt": "2026-11-23"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-026",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A community manager proposes using Claude to rate each member's trustworthiness from their forum posts and use the ratings to decide who may join a volunteer programme. Members would not be told about the ratings. A moderator would review each rating before it is used. How should the proposal be classified?",
+    "options": [
+      {
+        "id": "with-review",
+        "text": "Appropriate with safeguards: the moderator's review of each rating supplies the required human oversight."
+      },
+      {
+        "id": "public-posts",
+        "text": "Appropriate: the posts are already visible to other members, so rating them adds no new policy concern."
+      },
+      {
+        "id": "internal-only",
+        "text": "Appropriate with safeguards: keeping the ratings inside the moderation team limits the risk to members."
+      },
+      {
+        "id": "inappropriate",
+        "text": "Inappropriate as proposed: rating trustworthiness from behavior without notice or consent is prohibited."
+      }
+    ],
+    "correct": [
+      "inappropriate"
+    ],
+    "explanation": "The Usage Policy prohibits using models to assign scores or ratings to individuals based on their trustworthiness or social behavior without notification or consent. Review by a moderator does not supply the notice or consent the policy requires.",
+    "distractorNotes": {
+      "with-review": "Human review is the safeguard for high-risk recommendations; it does not cure a use that the policy prohibits without notice or consent.",
+      "public-posts": "The prohibition concerns scoring people on their behavior, regardless of whether the underlying posts are visible.",
+      "internal-only": "Restricting who sees the ratings does not provide the notification or consent the policy requires."
+    },
+    "sourceUrl": "https://www.anthropic.com/legal/aup",
+    "sourceNote": "Universal Usage Standards: no scores or ratings of individuals on trustworthiness or social behavior without notice or consent",
+    "sourceCheckedAt": "2026-11-23"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-027",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "On a Team plan, an employee is discussing a confidential acquisition with Claude. Policy says the discussion must not be added to Claude's memory, but it must remain in her chat history so she can return to it. Which control fits?",
+    "options": [
+      {
+        "id": "incognito",
+        "text": "Start an incognito chat, which uses no memory and keeps the conversation out of her saved chats."
+      },
+      {
+        "id": "reset",
+        "text": "Reset memory just before the discussion so nothing about the acquisition is retained in memory afterwards."
+      },
+      {
+        "id": "memory-off",
+        "text": "Turn off memory for that chat before the first message, so the chat stays in history but skips memory."
+      },
+      {
+        "id": "delete-later",
+        "text": "Use a regular chat, then delete any memory topics about the acquisition at the end of each week."
+      }
+    ],
+    "correct": [
+      "memory-off"
+    ],
+    "explanation": "Turning off memory for a single chat before the first message means Claude neither uses nor adds to memory there, while the chat stays in history. An incognito chat also skips memory, but it is not saved to chat history, which the policy requires.",
+    "distractorNotes": {
+      "incognito": "Incognito chats are not saved to chat history, so she could not return to the discussion as policy requires.",
+      "reset": "Reset deletes existing memories; with memory still on, the acquisition discussion would then be added to the fresh memory.",
+      "delete-later": "The discussion would be added to memory first and removed only later, which the policy does not allow."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/12260368-use-incognito-chats",
+    "sourceNote": "Difference between an incognito chat and a chat with memory turned off: memory-off chats stay in chat history but don't use or add to memory",
+    "sourceCheckedAt": "2026-11-23"
+  },
+  {
+    "id": "ccao-f-responsible-use-data-protection-and-governance-028",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "responsible-use-data-protection-and-governance",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An office manager wants Claude in the desktop app to tidy and rename expense receipts. The receipts sit in her Documents folder alongside payroll exports and scanned passports. Policy limits Claude's access to the files a task needs. How should she set up the task?",
+    "options": [
+      {
+        "id": "instruct",
+        "text": "Grant access to Documents and instruct Claude not to open the payroll exports or the passport scans."
+      },
+      {
+        "id": "dedicated-folder",
+        "text": "Move the receipts into a dedicated working folder and grant Claude access to that folder alone."
+      },
+      {
+        "id": "manual-approve",
+        "text": "Grant access to Documents and use manual approval so she can decline any step that touches payroll."
+      },
+      {
+        "id": "incognito",
+        "text": "Run the task in an incognito chat so sensitive file contents are not saved to her chat history."
+      }
+    ],
+    "correct": [
+      "dedicated-folder"
+    ],
+    "explanation": "Claude can read, write and delete files in folders it is given. A dedicated working folder holding only the receipts limits access to what the task needs, instead of relying on instructions or approvals to keep sensitive files untouched.",
+    "distractorNotes": {
+      "instruct": "An instruction asks Claude to avoid files it can still reach; the policy is about access, not intent.",
+      "manual-approve": "Approval gates actions as they come up, but the sensitive files remain within Claude's access throughout the task.",
+      "incognito": "Incognito governs chat history and memory, not which local files Claude can open."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/13364135-use-claude-cowork-safely",
+    "sourceNote": "You control which local files Claude can access; consider creating a dedicated working folder rather than granting broad access",
+    "sourceCheckedAt": "2026-11-23"
   }
 ]

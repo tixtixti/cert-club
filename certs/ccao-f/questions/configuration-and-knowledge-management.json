@@ -1,45 +1,5 @@
 [
   {
-    "id": "ccao-f-configuration-and-knowledge-management-001",
-    "cert": "ccao-f",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "configuration-and-knowledge-management",
-    "difficulty": "medium",
-    "status": "reviewed",
-    "stem": "A content marketing team configures a Claude Project to produce promotional articles across several product lines. The team requires Claude to consistently maintain an informal, engaging tone under 300 words, while drawing upon detailed technical product specifications that update bi-weekly. What is the most effective Project configuration strategy?",
-    "options": [
-      {
-        "id": "instructions-style-knowledge-specs",
-        "text": "Specify the tone and length constraints in Project instructions, and upload technical specifications into Project knowledge."
-      },
-      {
-        "id": "embed-both-in-project-instructions",
-        "text": "Embed both the tone rules and full technical specifications together directly inside the Project instructions text box."
-      },
-      {
-        "id": "upload-all-to-project-knowledge",
-        "text": "Combine the tone rules and technical specifications into a single document and upload it into Project knowledge."
-      },
-      {
-        "id": "require-per-prompt-style-definitions",
-        "text": "Keep the Project unconfigured and require team members to paste both tone rules and specifications into each prompt."
-      }
-    ],
-    "correct": [
-      "instructions-style-knowledge-specs"
-    ],
-    "explanation": "Project instructions tell Claude how to respond in every chat in this project. The product specifications are reference material: uploading them to project knowledge makes them available across those chats, and the team can replace a specification without editing its writing rules.",
-    "distractorNotes": {
-      "embed-both-in-project-instructions": "Putting everything in the instructions gives writers a single setup, but even a routine specification update then requires editing the standing directives.",
-      "upload-all-to-project-knowledge": "A single reference file is convenient to distribute, but it leaves the tone and length rules in supporting material rather than setting them as instructions for each project chat.",
-      "require-per-prompt-style-definitions": "Pasting both inputs lets a writer specify them for one article, but makes consistency depend on each writer supplying the same rules again."
-    },
-    "sourceUrl": "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects",
-    "sourceNote": "Add content to project knowledge: uploading reference documents and setting instructions that apply to all chats in the project.",
-    "sourceCheckedAt": "2026-11-21"
-  },
-  {
     "id": "ccao-f-configuration-and-knowledge-management-002",
     "cert": "ccao-f",
     "schemaVersion": 1,
@@ -115,33 +75,6 @@
     },
     "sourceUrl": "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects",
     "sourceNote": "How to create a project; Add content to project knowledge: description visibility and references used across project chats.",
-    "sourceCheckedAt": "2026-11-21"
-  },
-  {
-    "id": "ccao-f-configuration-and-knowledge-management-005",
-    "cert": "ccao-f",
-    "schemaVersion": 1,
-    "type": "multi",
-    "domain": "configuration-and-knowledge-management",
-    "difficulty": "medium",
-    "status": "reviewed",
-    "stem": "In a shared Team Project, branch managers need to run their own planning chats against a common handbook. A deputy takes over maintaining the handbook and project instructions during holidays. Which access assignments let everyone do their job and keep edits to the shared configuration with its maintainers? Select TWO.",
-    "options": [
-      { "id": "manager-view", "text": "Give branch managers view access so they can use the project knowledge in their own chats." },
-      { "id": "deputy-view", "text": "Give the deputy view access and have them upload revisions in a chat inside the project." },
-      { "id": "manager-edit", "text": "Give branch managers edit access so they can change the planning assumptions in their own chats." },
-      { "id": "deputy-edit", "text": "Give the deputy edit access so they can maintain the shared files and project instructions." },
-      { "id": "send-chat", "text": "Send branch managers a finished planning chat instead of giving them access to the project." }
-    ],
-    "correct": ["manager-view", "deputy-edit"],
-    "explanation": "A project viewer can consult project contents and chat in the project. The deputy needs edit access because replacing shared knowledge and changing project instructions are configuration changes, not chat activities.",
-    "distractorNotes": {
-      "deputy-view": "An attachment supplied for a chat is not an edit to the shared handbook. The deputy still lacks the permission needed for maintenance.",
-      "manager-edit": "Managers can supply local assumptions in their chats as viewers. Edit permission would also let them change the shared configuration.",
-      "send-chat": "One finished analysis is not the project workspace in which managers need to run their own planning requests."
-    },
-    "sourceUrl": "https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects",
-    "sourceNote": "Share projects: what members with Can view and Can edit can do with chats, instructions, and knowledge.",
     "sourceCheckedAt": "2026-11-21"
   },
   {
@@ -408,32 +341,6 @@
     "sourceCheckedAt": "2026-11-21"
   },
   {
-    "id": "ccao-f-configuration-and-knowledge-management-016",
-    "cert": "ccao-f",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "configuration-and-knowledge-management",
-    "difficulty": "hard",
-    "status": "reviewed",
-    "stem": "At a release review, an author demonstrates a submitted change to the ticket-closing Skill using her own copy. A colleague runs the organization’s library Skill on the same ticket and gets the previous checklist. Staff need the revision through the library entry they already use. What should the team do?",
-    "options": [
-      { "id": "reinstall", "text": "Have staff reinstall the Skill from the organization library to pick up the author’s saved changes." },
-      { "id": "approve-release", "text": "Have the reviewer assess the submitted update, then retest the library Skill after approval." },
-      { "id": "fix-loader", "text": "Revise the Skill description to trigger on a broader set of tickets, then repeat the staff test." },
-      { "id": "share-revision", "text": "Have the author share her revised copy directly with staff, then retest their installed library Skill." }
-    ],
-    "correct": ["approve-release"],
-    "explanation": "A published Skill is managed by the organization. Where review is required, users of the published Skill stay on the approved version while a new version is pending, even though the author can use her edited copy.",
-    "distractorNotes": {
-      "reinstall": "Reinstalling from the library still gives staff the approved release, not an update awaiting review.",
-      "fix-loader": "Staff are already receiving the old checklist from the Skill. That points to the version in use rather than a failure to recognize the task.",
-      "share-revision": "Direct sharing would give staff access to the author’s copy. It would not replace the approved version served by their existing library entry."
-    },
-    "sourceUrl": "https://support.claude.com/en/articles/12512180-use-skills-in-claude",
-    "sourceNote": "Publish a skill to your organization: author copies, update review, and continued use of the approved version.",
-    "sourceCheckedAt": "2026-11-21"
-  },
-  {
     "id": "ccao-f-configuration-and-knowledge-management-017",
     "cert": "ccao-f",
     "schemaVersion": 1,
@@ -457,32 +364,6 @@
     },
     "sourceUrl": "https://support.claude.com/en/articles/11473015-retrieval-augmented-generation-rag-for-projects",
     "sourceNote": "How RAG works; Using projects with RAG: search retrieves relevant information from uploaded documents, and content can be added or removed.",
-    "sourceCheckedAt": "2026-11-21"
-  },
-  {
-    "id": "ccao-f-configuration-and-knowledge-management-018",
-    "cert": "ccao-f",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "configuration-and-knowledge-management",
-    "difficulty": "hard",
-    "status": "reviewed",
-    "stem": "A planner’s new chats keep directing delivery notices to a depot that closed. The planner deleted the chat where the depot came up, but the old routing detail is still visible as a topic in Manage memory. Other saved details remain accurate. Which action corrects future chats while keeping those useful memories?",
-    "options": [
-      { "id": "correct-topic", "text": "Edit the saved routing topic to replace the closed depot with the approved destination." },
-      { "id": "pause-memory", "text": "Pause memory for a correction chat, describe the new route there, and resume memory afterward." },
-      { "id": "delete-search", "text": "Turn off past-chat search so the deleted depot conversation cannot supply its old routing details." },
-      { "id": "reset-account", "text": "Reset memory and continue from the existing chat history so useful routing context can be rebuilt." }
-    ],
-    "correct": ["correct-topic"],
-    "explanation": "In the memory experience that lists individual topics, deleting a conversation does not remove the memory entry it generated. Editing the identified topic corrects the fact for future conversations and preserves unrelated memories.",
-    "distractorNotes": {
-      "pause-memory": "A conversation while memory is paused does not update the saved entry. The obsolete route would still be there on resumption.",
-      "delete-search": "The old route is present as a memory topic, independent of whether Claude retrieves the original conversation through search.",
-      "reset-account": "Resetting discards the useful entries as well as the bad one; rebuilding them is unnecessary when the affected topic is known."
-    },
-    "sourceUrl": "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context",
-    "sourceNote": "Data retention and privacy; View and manage your memory: deleting chats versus updating individual memory topics.",
     "sourceCheckedAt": "2026-11-21"
   },
   {
@@ -563,5 +444,165 @@
     "sourceUrl": "https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context",
     "sourceNote": "Turn off memory for a single chat; Chats with memory turned off: project and account memory and past-chat search.",
     "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-022",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A planner's private pricing Project uses a rates Google Doc added from Drive. Overnight, the quoted rates changed in every new chat. No one edited the Project's instructions or files in Claude. Finance has begun drafting next year's rates directly in that Doc. What explains the change, and what fixes it?",
+    "options": [
+      {
+        "id": "memory",
+        "text": "Project memory absorbed rates from recent chats; reset memory so Claude drops the figures it has saved."
+      },
+      {
+        "id": "live-sync",
+        "text": "The Doc syncs its latest version into the Project; reference a separate approved-rates source instead."
+      },
+      {
+        "id": "rag",
+        "text": "The Project switched to retrieval as it grew; remove older files so Claude returns to in-context processing."
+      },
+      {
+        "id": "model",
+        "text": "A model update changed how Claude reads tables; switch models and regenerate this week's quotes to compare."
+      }
+    ],
+    "correct": [
+      "live-sync"
+    ],
+    "explanation": "Google Docs added to a Project sync directly from Drive, so Claude always works from the Doc's latest version. Draft rates typed into that Doc therefore reach every chat. The Project needs a source that holds only approved rates, with drafting done elsewhere.",
+    "distractorNotes": {
+      "memory": "Reset permanently deletes all memories, including useful project memory, and memory does not explain new figures appearing in the source.",
+      "rag": "Retrieval activates automatically as knowledge grows and is designed to keep answer quality consistent; it does not invent new rates.",
+      "model": "The changed figures match finance's edits to the source document, which points to the knowledge layer rather than the model."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/10166901-use-google-workspace-connectors",
+    "sourceNote": "Google Docs added to chats and projects sync directly from Google Drive, so you're always working with the latest version",
+    "sourceCheckedAt": "2026-11-23"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-023",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A bid team's Project has three requirements: every reply must use British spelling; Claude should consult a 40-page service catalogue when a bid mentions a service; and a multi-step procedure for building the formatted pricing workbook is also needed in two other Projects. Which configuration fits?",
+    "options": [
+      {
+        "id": "copy-procedure",
+        "text": "Spelling in Project instructions; catalogue in Project knowledge; procedure copied into each Project's instructions."
+      },
+      {
+        "id": "all-instructions",
+        "text": "Spelling and procedure in Project instructions; catalogue uploaded into the knowledge of each of the Projects."
+      },
+      {
+        "id": "spelling-skill",
+        "text": "Spelling as a Skill; catalogue in Project knowledge; procedure in Project instructions so it loads in every chat."
+      },
+      {
+        "id": "skill-procedure",
+        "text": "Spelling in Project instructions; catalogue in Project knowledge; procedure as a Skill usable across Projects."
+      }
+    ],
+    "correct": [
+      "skill-procedure"
+    ],
+    "explanation": "Project instructions and knowledge provide background that applies to every chat in that Project, which suits a universal spelling rule and a reference catalogue. Skills are procedures that load when the task calls for them and work across Claude, so the shared workbook procedure belongs in one Skill.",
+    "distractorNotes": {
+      "copy-procedure": "Copies of the procedure in three Projects drift apart as soon as one is edited, and load into chats that do not need them.",
+      "all-instructions": "The procedure would load into every chat of this Project only, and still be missing from the two other Projects.",
+      "spelling-skill": "A Skill loads only when relevant, whereas the spelling rule must apply to every reply in the Project."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/12512176-what-are-skills",
+    "sourceNote": "Skills vs. projects: projects give always-loaded background knowledge; skills give procedures that load when needed, everywhere",
+    "sourceCheckedAt": "2026-11-23"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-024",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A consultant keeps two clients' files in one Claude Project to avoid setting it up twice. Answers about the first client sometimes cite the second client's documents. The clients' work must stay separate. What change addresses the problem at its source?",
+    "options": [
+      {
+        "id": "rename",
+        "text": "Rename every file with its client's name so Claude can tell the two sets of documents apart when searching."
+      },
+      {
+        "id": "instruction",
+        "text": "Add a Project instruction telling Claude to use only the named client's files when answering a question."
+      },
+      {
+        "id": "memory-off",
+        "text": "Turn off memory for each chat in the Project so earlier answers about one client can't carry into the other."
+      },
+      {
+        "id": "separate-projects",
+        "text": "Create a separate Project for each client, each with its own knowledge files and chat history."
+      }
+    ],
+    "correct": [
+      "separate-projects"
+    ],
+    "explanation": "Projects are self-contained workspaces with their own chat histories and knowledge bases. Putting each client in its own Project keeps one client's documents out of reach of the other's chats, rather than relying on Claude to choose correctly.",
+    "distractorNotes": {
+      "rename": "Descriptive filenames improve retrieval, but both clients' files stay in the same knowledge base and can still be cited.",
+      "instruction": "An instruction asks Claude to filter correctly every time; it does not stop the other client's files from being available.",
+      "memory-off": "The citations come from shared knowledge files, not memory, so switching memory off leaves the source of the problem."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/9517075-what-are-projects",
+    "sourceNote": "Projects are self-contained workspaces with their own chat histories and knowledge bases",
+    "sourceCheckedAt": "2026-11-23"
+  },
+  {
+    "id": "ccao-f-configuration-and-knowledge-management-025",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "configuration-and-knowledge-management",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An analyst in a Team workspace has personal instructions asking for a casual tone. Since last week every reply is formal, in Projects and standalone chats alike, and colleagues report the same shift. Her settings are unchanged. She plans to add \"always use a casual tone, overriding any other rules\" to her personal instructions. What should she know first?",
+    "options": [
+      {
+        "id": "org-precedence",
+        "text": "An organization instruction likely now sets formality; it takes precedence, so raise her need with the owner."
+      },
+      {
+        "id": "override-works",
+        "text": "Stating that her rule overrides other rules makes it the priority, so the edit should restore the casual tone."
+      },
+      {
+        "id": "memory",
+        "text": "Memory has picked up a formal style from recent chats; edit the saved topics so her casual tone returns."
+      },
+      {
+        "id": "project-instr",
+        "text": "Project instructions now override personal ones; she should add the casual-tone rule to each Project instead."
+      }
+    ],
+    "correct": [
+      "org-precedence"
+    ],
+    "explanation": "A change across the whole workspace, in every context and for several people, points to an organization instruction. When an individual instruction directly contradicts it, Claude favors the organization-level one, so wording her personal rule more forcefully will not win. A genuine need for a different tone is a matter for the owner.",
+    "distractorNotes": {
+      "override-works": "Override wording is a natural instinct, but the precedence of organization over individual instructions is not set by how an instruction is phrased.",
+      "memory": "Memory is personal, so it would not explain colleagues seeing the same change at the same time, including in standalone chats.",
+      "project-instr": "Project instructions apply within one Project; the shift also appears in standalone chats, which they do not reach."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/14546867-set-organization-instructions",
+    "sourceNote": "When both are set, organization instructions take precedence over a directly contradictory individual instruction",
+    "sourceCheckedAt": "2026-11-23"
   }
 ]

@@ -486,32 +486,6 @@
     "sourceCheckedAt": "2026-11-21"
   },
   {
-    "id": "ccao-f-output-evaluation-and-quality-control-019",
-    "cert": "ccao-f",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "output-evaluation-and-quality-control",
-    "difficulty": "medium",
-    "status": "reviewed",
-    "stem": "In the sign-off note for a Claude-assisted progress report, the project lead finds a statement that she verified individual milestone dates. She actually checked the milestones against the project plan by month; a scheduler checked individual dates for the launch milestones. What should the note say?",
-    "options": [
-      { "id": "actual-scope", "text": "Describe the lead's month-level review and the scheduler's date checks on the launch milestones." },
-      { "id": "shared-review", "text": "State that the project team verified milestone dates, without assigning the two checks to individuals." },
-      { "id": "review-by-lead", "text": "Credit the project lead with verifying the individual dates since she is responsible for the final report." },
-      { "id": "scheduler-review", "text": "State that the scheduler checked the milestone schedule, leaving the lead's less detailed review out." }
-    ],
-    "correct": ["actual-scope"],
-    "explanation": "A sign-off describes checks that actually occurred. Here the checks differed in both precision and scope. Naming them accurately lets a reader see which dates were reviewed individually without confusing responsibility for the report with performance of each check.",
-    "distractorNotes": {
-      "shared-review": "The collective wording still suggests a date-level check covering the schedule.",
-      "review-by-lead": "Owning the report does not mean the lead personally performed the scheduler's check.",
-      "scheduler-review": "This broadens the scheduler's review beyond the launch milestones and omits a check that did occur."
-    },
-    "sourceUrl": "https://academy.claude.com/tutorials/writing-an-ai-diligence-statement",
-    "sourceNote": "Five elements to include; verify the diligence statement itself so its description matches the human review actually performed.",
-    "sourceCheckedAt": "2026-11-21"
-  },
-  {
     "id": "ccao-f-output-evaluation-and-quality-control-020",
     "cert": "ccao-f",
     "schemaVersion": 1,
@@ -561,32 +535,6 @@
     },
     "sourceUrl": "https://academy.claude.com/tutorials/writing-an-ai-diligence-statement",
     "sourceNote": "Frequently asked questions: adjust the level of scrutiny to the task, its stakes and how the output will be used.",
-    "sourceCheckedAt": "2026-11-21"
-  },
-  {
-    "id": "ccao-f-output-evaluation-and-quality-control-022",
-    "cert": "ccao-f",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "output-evaluation-and-quality-control",
-    "difficulty": "easy",
-    "status": "reviewed",
-    "stem": "A coordinator is revising the agenda in an existing calendar invitation. She wants Claude to suggest two phrasings for a single line so she can choose one and paste it in. The calendar invitation will remain the team's working copy. Which delivery format best fits?",
-    "options": [
-      { "id": "editable-doc", "text": "A standalone editable document with one version of the agenda line beneath the other." },
-      { "id": "revised-agenda", "text": "A downloadable copy of the full agenda with the alternatives highlighted at the point of use." },
-      { "id": "inline-reply", "text": "A short inline reply containing both phrasings, ready for the coordinator to copy from chat." },
-      { "id": "shared-review", "text": "A shared document artifact where the other attendees can comment on the alternative phrasings." }
-    ],
-    "correct": ["inline-reply"],
-    "explanation": "The coordinator needs two snippets for immediate use, not a separately maintained deliverable. An artifact earns its place when the content stands on its own and needs editing, reuse or sharing outside the conversation.",
-    "distractorNotes": {
-      "editable-doc": "A separate document adds a handoff for text that is going straight into the invitation.",
-      "revised-agenda": "A full agenda copy introduces another version when just one line is requested.",
-      "shared-review": "The coordinator is choosing the phrasing; no collaborative review was requested."
-    },
-    "sourceUrl": "https://support.claude.com/en/articles/17153992-what-are-artifacts-and-how-do-i-use-them",
-    "sourceNote": "What is an artifact? Self-contained work intended for later editing, reference or reuse outside the conversation.",
     "sourceCheckedAt": "2026-11-21"
   },
   {
@@ -746,5 +694,85 @@
     "sourceUrl": "https://academy.claude.com/tutorials/create-and-edit-files-with-claude-to-eliminate-hours-of-busy-work",
     "sourceNote": "Building a dynamic financial model: downloadable Excel workbooks with formulas that recalculate when an input changes.",
     "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-029",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A coordinator asks Claude to draft a rescheduling note to a venue. Claude's reply ends: \"I've sent this to the venue's bookings address and they should confirm shortly.\" No email connector or other email integration is enabled for the coordinator. What should the coordinator conclude?",
+    "options": [
+      {
+        "id": "ask-confirm",
+        "text": "Ask Claude to state when it sent the message and keep that reply as the record that the note was delivered."
+      },
+      {
+        "id": "unsent",
+        "text": "Treat the note as unsent: Claude has no email integration here, so the coordinator must send it herself."
+      },
+      {
+        "id": "await-reply",
+        "text": "Wait a working day for the venue's confirmation before following up, since Claude reported sending it."
+      },
+      {
+        "id": "resend-request",
+        "text": "Ask Claude to send the note again with a read receipt so that she can verify the message arrived."
+      }
+    ],
+    "correct": [
+      "unsent"
+    ],
+    "explanation": "Claude can hallucinate its own capabilities. Without an explicitly integrated email tool it cannot send messages, whatever its reply says, so the claim is a confident invented specific rather than evidence that anything happened.",
+    "distractorNotes": {
+      "ask-confirm": "A further statement from Claude is not independent confirmation; it can repeat the same invented claim with more detail.",
+      "await-reply": "Waiting assumes the note went out; the venue will never reply to a message that was not sent.",
+      "resend-request": "Asking again presumes a sending capability that is not integrated, so a read receipt cannot be produced either."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/8241188-claude-is-producing-links-that-don-t-work-and-falsely-claiming-that-it-has-sent-emails-or-produced-external-documents-what-s-going-on",
+    "sourceNote": "Claude can hallucinate its capabilities; it has no access to tools that are not explicitly integrated, including email",
+    "sourceCheckedAt": "2026-11-23"
+  },
+  {
+    "id": "ccao-f-output-evaluation-and-quality-control-030",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "output-evaluation-and-quality-control",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "An operations lead asks Claude to pull this week's ticket counts from a connected service desk into a one-page Claude Doc for a standing Monday review. Managers open the shared page on Thursday and quote its numbers as current. What should the lead change so the shared view stays current between reviews?",
+    "options": [
+      {
+        "id": "edit-access",
+        "text": "Give the managers edit access to the doc so that they can correct any figures that changed since Monday."
+      },
+      {
+        "id": "export-sheet",
+        "text": "Export the doc's table to Excel each Monday and circulate that file as the authoritative weekly figure."
+      },
+      {
+        "id": "dashboard",
+        "text": "Ask for a dashboard artifact that reads from the connected service desk instead of a doc of pulled figures."
+      },
+      {
+        "id": "date-note",
+        "text": "Add a note below the table saying the figures must be checked against the service desk before use."
+      }
+    ],
+    "correct": [
+      "dashboard"
+    ],
+    "explanation": "A doc shows numbers as they were when Claude pulled them. For figures that stay current, the artifact should be a dashboard or custom artifact that reads from the connected tool, so the shared page reflects the source when managers open it.",
+    "distractorNotes": {
+      "edit-access": "Hand-correcting a snapshot depends on each manager noticing what changed; the doc still does not read from the source.",
+      "export-sheet": "An exported workbook is another fixed snapshot, so by Thursday it is as stale as the doc.",
+      "date-note": "A caveat warns readers but leaves the page showing Monday's figures; it does not keep the view current."
+    },
+    "sourceUrl": "https://academy.claude.com/tutorials/collaborate-with-your-team-in-claude-artifacts",
+    "sourceNote": "A doc shows numbers as of when Claude pulled them; for current numbers, ask for a dashboard reading from connected tools",
+    "sourceCheckedAt": "2026-11-23"
   }
 ]

@@ -435,32 +435,6 @@
     "sourceCheckedAt": "2026-11-21"
   },
   {
-    "id": "ccao-f-capability-model-and-context-selection-017",
-    "cert": "ccao-f",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "capability-model-and-context-selection",
-    "difficulty": "medium",
-    "status": "reviewed",
-    "stem": "A team translating a handbook agrees on a glossary with several deliberately unusual translations. Team members work in separate chats inside one shared Claude Project and need to consult the exact entries for the next chapter. Where should the editor put the approved glossary so colleagues can refer to the same wording?",
-    "options": [
-      { "id": "knowledge", "text": "Add the approved glossary file to the shared Project's knowledge for use in its chapter chats." },
-      { "id": "chat", "text": "Attach the approved file to the editor's chapter chat and give the other translators the title of that chat." },
-      { "id": "memory", "text": "Ask Claude to remember the glossary in the editor's account for future chapters worked on by the team." },
-      { "id": "examples", "text": "Add selected examples to the Project instructions and direct Claude to infer the remaining translations." }
-    ],
-    "correct": ["knowledge"],
-    "explanation": "Project knowledge provides documents as reference material for chats within the Project. Putting the approved glossary there makes its exact entries available to members working on separate chapters.",
-    "distractorNotes": {
-      "chat": "Attaching a file to one conversation is not the same as putting it in the Project's shared reference material.",
-      "memory": "The editor's personal memory is not a shared glossary that other members can consult.",
-      "examples": "Examples can convey a style, but the remaining unusual translations cannot reliably be inferred from them."
-    },
-    "sourceUrl": "https://support.claude.com/en/articles/9517075-what-are-projects",
-    "sourceNote": "Project knowledge; Collaboration and sharing: members can use shared project knowledge in their chats",
-    "sourceCheckedAt": "2026-11-21"
-  },
-  {
     "id": "ccao-f-capability-model-and-context-selection-018",
     "cert": "ccao-f",
     "schemaVersion": 1,
@@ -564,5 +538,45 @@
     "sourceUrl": "https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work",
     "sourceNote": "What are length limits?; Key differences: usage over time versus the context of a single conversation",
     "sourceCheckedAt": "2026-11-21"
+  },
+  {
+    "id": "ccao-f-capability-model-and-context-selection-022",
+    "cert": "ccao-f",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "capability-model-and-context-selection",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A procurement analyst has pasted three complete supplier scorecards and the firm's weighting rules into a chat. She needs Claude to work carefully through how the weights interact before recommending a supplier; no outside information is needed. A colleague suggests turning on Research for a more thorough answer. What should the analyst do?",
+    "options": [
+      {
+        "id": "research",
+        "text": "Turn on Research so Claude runs a series of searches and returns a longer, citation-rich report on the suppliers."
+      },
+      {
+        "id": "thinking",
+        "text": "Use extended thinking on the supplied material so Claude reasons through the trade-offs before it answers."
+      },
+      {
+        "id": "web-search",
+        "text": "Enable web search so Claude can check each supplier's public profile before applying the weighting rules."
+      },
+      {
+        "id": "project",
+        "text": "Move the scorecards into a Project so that Claude can retrieve them when it evaluates the weighting rules."
+      }
+    ],
+    "correct": [
+      "thinking"
+    ],
+    "explanation": "The task is complex reasoning over material already in the chat. Extended thinking suits reasoning that does not need recent information from the web; Research is built for gathering information across many sources, which this task does not require.",
+    "distractorNotes": {
+      "research": "Research is for comprehensive information gathering across the web and integrations; a longer report is not deeper reasoning on the supplied scorecards.",
+      "web-search": "Web search suits factual lookups that need current information, and the analyst has said no outside information is needed.",
+      "project": "A Project persists the files for later chats, but the material is already present; storage does not change how carefully Claude reasons."
+    },
+    "sourceUrl": "https://support.claude.com/en/articles/11095361-when-should-i-use-web-search-extended-thinking-and-research",
+    "sourceNote": "Extended thinking suits complex reasoning not needing recent web info; research suits multi-source information gathering",
+    "sourceCheckedAt": "2026-11-23"
   }
 ]
