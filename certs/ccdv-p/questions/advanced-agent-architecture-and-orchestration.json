@@ -530,46 +530,6 @@
     "sourceCheckedAt": "2026-11-18"
   },
   {
-    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-014",
-    "cert": "ccdv-p",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "advanced-agent-architecture-and-orchestration",
-    "difficulty": "medium",
-    "status": "reviewed",
-    "stem": "An insurance claim intake service extracts structured incident details from scanned crash reports, validates the extracted policy number against a customer database, and generates an acknowledgment letter. Extraction requires multimodal parsing, policy lookup is a deterministic SQL query, and letter generation is template-based text synthesis. The team is deciding between an autonomous agent with SQL tools and a prompt chain. Why is prompt chaining the superior architectural choice?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Because prompt chaining allows the model to dynamically replan extraction steps whenever multimodal parsing confidence is low."
-      },
-      {
-        "id": "b",
-        "text": "Because autonomous agents require deploying separate dedicated models per tool, whereas prompt chaining shares a single model."
-      },
-      {
-        "id": "c",
-        "text": "Because prompt chaining eliminates programmatic validation gates, delegating intermediate schema verification to model reasoning."
-      },
-      {
-        "id": "d",
-        "text": "The workflow follows a fixed sequential path with programmatic gates, providing predictable latency, lower cost, and hard validation."
-      }
-    ],
-    "correct": [
-      "d"
-    ],
-    "explanation": "Prompt chaining is ideal for tasks that decompose into fixed, sequential steps with deterministic programmatic checks in between. Here, policy validation is deterministic SQL that should be enforced by application code rather than an autonomous agent deciding what to query. Chaining with programmatic gates provides lower latency, lower token cost, and predictable execution compared to an open-ended agent loop that risks tool-calling errors or unneeded exploration.",
-    "distractorNotes": {
-      "a": "Plausible because dynamic replanning is a desirable feature, but dynamic replanning is a hallmark of autonomous agent loops, not prompt chaining; prompt chains follow predetermined paths.",
-      "b": "Autonomous agents execute multiple tools using a single model session; there is no requirement to deploy separate dedicated models for each tool.",
-      "c": "Prompt chaining explicitly incorporates programmatic code gates between LLM steps to enforce schema validation and data integrity rather than relying on model reasoning alone."
-    },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
-    "sourceNote": "Prompt chaining decomposes sequential tasks with programmatic checks between steps, avoiding agent loop overhead",
-    "sourceCheckedAt": "2026-11-18"
-  },
-  {
     "id": "ccdv-p-advanced-agent-architecture-and-orchestration-015",
     "cert": "ccdv-p",
     "schemaVersion": 1,
@@ -732,46 +692,6 @@
     },
     "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
     "sourceNote": "Agent loops compound latency and cost over deep turn counts; use parallel sectioning to collapse round-trips",
-    "sourceCheckedAt": "2026-11-18"
-  },
-  {
-    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-019",
-    "cert": "ccdv-p",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "advanced-agent-architecture-and-orchestration",
-    "difficulty": "medium",
-    "status": "reviewed",
-    "stem": "A logistics company processes 250,000 standardized bill-of-lading documents per day. The document schema is strictly defined, exceptions occur in fewer than 1% of shipments, and audit regulations require 100% deterministic traceability for compliance reports. An engineering team proposes replacing the legacy ingestion parser with an autonomous multi-agent swarm that dynamically plans parsing steps. Why should the architecture review board reject this proposal?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Because autonomous agent loops cannot invoke programmatic schema validation tools to verify structured field extractions."
-      },
-      {
-        "id": "b",
-        "text": "Because compliance auditing requires replacing the parser with an Evaluator-Optimizer loop rather than an open-ended agent swarm."
-      },
-      {
-        "id": "c",
-        "text": "Because prompt caching cannot be utilized on autonomous agent sessions, whereas deterministic workflows guarantee 100% cache hits."
-      },
-      {
-        "id": "d",
-        "text": "Because autonomous swarms introduce non-deterministic execution paths, higher costs, and failure modes on a standardized task."
-      }
-    ],
-    "correct": [
-      "d"
-    ],
-    "explanation": "Anthropic's architectural guidance recommends using the simplest pattern that solves the problem. Autonomous agents provide value for open-ended, unpredictable problems, but for standardized, high-volume tasks with strict compliance and deterministic traceability requirements, autonomous swarms introduce non-deterministic execution paths, higher latency, unpredictable token cost spikes, and compounding failure modes without any operational benefit over structured code workflows.",
-    "distractorNotes": {
-      "a": "Autonomous agents are fully capable of invoking schema validation tools; the proposal should be rejected because autonomous planning adds non-deterministic execution and unnecessary cost to a standardized task.",
-      "b": "An Evaluator-Optimizer loop still introduces iterative LLM calls and latency; a standardized, high-volume document task should be handled by predictable code workflows rather than iterative model loops.",
-      "c": "Prompt caching operates on any session with a stable prompt prefix, including agent sessions; the rejection is based on predictability and cost, not caching incompatibility."
-    },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
-    "sourceNote": "Start with the simplest solution: prefer predictable workflows over autonomous agent swarms for standardized tasks",
     "sourceCheckedAt": "2026-11-18"
   },
   {
@@ -940,43 +860,128 @@
     "sourceCheckedAt": "2026-11-18"
   },
   {
-    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-024",
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-025",
     "cert": "ccdv-p",
     "schemaVersion": 1,
     "type": "single",
     "domain": "advanced-agent-architecture-and-orchestration",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "status": "reviewed",
-    "stem": "An enterprise legal research agent assists compliance teams by querying a repository of 8,000 corporate vendor agreements. An engineer proposes injecting the entire contract corpus directly into the agent's context window on every turn because Claude's context window is large enough to hold several million tokens. In benchmark testing, this design results in $18 per query in input costs, 35-second response latency, and degraded recall on niche clauses. Which architectural refactoring best resolves these problems?",
+    "stem": "An internal operations agent on the Messages API aggregates tools from seven internal services and now exposes about 240 tools. The definitions alone consume roughly 60,000 input tokens per request before any work begins. Traces show Claude increasingly calling a near-duplicate tool from the wrong service, and the catalog keeps growing as teams onboard. Four tools appear in most sessions; the rest are used rarely. The agent depends on prompt caching of its tool and system prefix to keep long sessions affordable. Which change best addresses both the token overhead and the selection errors?",
     "options": [
       {
         "id": "a",
-        "text": "Retain the full corpus in context while running an Evaluator-Optimizer loop on every query to cross-verify clause citations."
+        "text": "Have the application embed each user turn, pick the 15 closest tool definitions by similarity, and send just that subset in the tools array on each request."
       },
       {
         "id": "b",
-        "text": "Deploy parallel reader subagents using static sectioning to summarize contract clusters into the prompt context before querying."
+        "text": "Enable server-side compaction with a low trigger so the tool definitions are summarized together with older turns as the context nears its limit."
       },
       {
         "id": "c",
-        "text": "Fine-tune Claude on the 8,000 contracts so the agreement text is embedded into model parameters, eliminating context retrieval."
+        "text": "Mark every tool, including the four common ones and the search tool, with defer_loading so the starting context holds no tool definitions at all."
       },
       {
         "id": "d",
-        "text": "Implement an external retrieval index that fetches only top-k relevant contract sections into the active working context."
+        "text": "Add the tool search tool, defer loading of the rarely used tools while keeping the four common ones loaded, and still send the full catalog each request."
       }
     ],
     "correct": [
       "d"
     ],
-    "explanation": "Sound context and memory architecture separates working memory (the prompt context holding current query state and reasoning) from external storage (an indexed retrieval system such as vector search or hybrid BM25 and semantic retrieval). Brute-force context stuffing across thousands of documents incurs massive token costs, high latency, and needle-in-a-haystack recall degradation. Using targeted retrieval to inject only the relevant top-k clauses into working context optimizes accuracy, cost, and speed.",
+    "explanation": "The tool search tool lets Claude discover and load tools on demand instead of holding every definition in context. Tool search typically cuts definition overhead by over 85 percent and keeps selection accuracy high, which otherwise degrades past 30–50 loaded tools. The API excludes deferred tools from the system-prompt prefix and appends each discovered tool inline as a tool_reference block, leaving the cached prefix intact. The documented practice is to keep the 3–5 most-used tools non-deferred, and every definition is still sent in the tools array because the API searches and expands them server-side.",
     "distractorNotes": {
-      "a": "Running an Evaluator-Optimizer loop over the full corpus doubles token consumption and latency without solving the underlying needle-in-a-haystack retrieval dilution.",
-      "b": "Summarizing clusters of 8,000 contracts on every query still incurs prohibitive token costs and wall-clock latency, and summaries discard the precise clause phrasing needed for legal analysis.",
-      "c": "Fine-tuning adapts model style, tone, and formatting; it does not reliably memorize thousands of dense contracts for exact factual retrieval, and it cannot be dynamically updated as contracts change."
+      "a": "Plausible because it does shrink context, but the documented way to retrieve tools by embeddings is a custom search tool returning tool_reference blocks against a full deferred catalog. Swapping the tools array per turn changes the tool definitions at the front of the cached prefix whenever the subset changes.",
+      "b": "Compaction summarizes older conversation context; it does not reduce the number of tool definitions offered on each request, which drives both the per-request overhead and the documented drop in selection accuracy.",
+      "c": "At least one tool, normally the search tool itself, has to stay non-deferred, and a request with all tools deferred is rejected; the docs also recommend keeping the most frequently used tools loaded so Claude can call them without searching first."
     },
-    "sourceUrl": "https://www.anthropic.com/engineering/building-effective-agents",
-    "sourceNote": "Augmented LLM: use external retrieval memory to fetch relevant context rather than stuffing massive document corpora",
-    "sourceCheckedAt": "2026-11-18"
+    "sourceUrl": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool",
+    "sourceNote": "Tool search: defer rarely used tools, keep 3–5 frequent ones loaded, send full catalog; tool_reference keeps the prefix cache",
+    "sourceCheckedAt": "2026-11-23"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-026",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A software-migration agent on the Messages API works on one repository across dozens of separate sessions over several weeks, and the team will move it to a newer Claude model partway through. Compaction keeps each session inside its context window, but each new session begins by re-exploring the codebase, and twice it re-implemented a feature an earlier session had abandoned after failed tests. The team wants every session to resume from where the previous one stopped. Which TWO design choices best achieve this? (Select TWO)",
+    "options": [
+      {
+        "id": "a",
+        "text": "Enable the memory tool and rely on Anthropic to persist the /memories directory server-side between sessions, so no storage handler is needed in the app."
+      },
+      {
+        "id": "b",
+        "text": "Prepend the previous session's full transcript to the first message of each new session so Claude sees every earlier decision and test result directly."
+      },
+      {
+        "id": "c",
+        "text": "Add the memory tool with a handler that maps /memories onto a durable per-repository store, validates paths, and serves that store to later sessions."
+      },
+      {
+        "id": "d",
+        "text": "Let Claude write memory notes ad hoc as it works and mark a feature done in its progress log once the code is written, keeping session overhead low."
+      },
+      {
+        "id": "e",
+        "text": "Have an initializer session create a progress log and feature checklist, then open each session by reading them and close it by recording what was verified."
+      }
+    ],
+    "correct": [
+      "c",
+      "e"
+    ],
+    "explanation": "The memory tool lets Claude create, read and update files that persist between sessions, so it can record what it learns and read it back on demand rather than re-exploring. It is client-side: your handler maps the /memories prefix onto storage you control and must reject paths outside it. Because memory lives entirely in the application, a later conversation continues from it whenever it sends the same tools entry and the handler serves the same store. That continuity depends on the tools entry and the store rather than on the model, so it survives a model change. The documented multisession pattern adds structure: an initializer session sets up a progress log and feature checklist, each session reads them first and updates them before ending, and a feature is marked complete only after end-to-end verification. Compaction and memory are complementary: compaction keeps the active context small, and memory preserves what must survive summarization.",
+    "distractorNotes": {
+      "a": "The memory tool operates client-side: Claude only requests file operations, and your application runs each one against storage it controls. Nothing persists between sessions unless your handler stores it.",
+      "b": "Reloading whole transcripts loads everything up front, the opposite of the just-in-time retrieval memory supports, and long transcripts would overwhelm the context window that compaction is protecting.",
+      "d": "The documented pattern sets memory files up deliberately rather than ad hoc and marks a feature complete only after end-to-end verification, not when code is written; marking on write is how an abandoned feature gets recorded as done."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool",
+    "sourceNote": "Memory tool: client-side store you control; multisession pattern with progress log and verified completion; pairs with compaction",
+    "sourceCheckedAt": "2026-11-23"
+  },
+  {
+    "id": "ccdv-p-advanced-agent-architecture-and-orchestration-027",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "advanced-agent-architecture-and-orchestration",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A release supervisor built on Claude Managed Agents delegates to two predefined subagents: a researcher with read-only GitHub MCP tools and a deployer whose MCP toolset includes a production deploy tool. To cut approval noise, the team set that toolset's permission policy to auto. Change-management policy requires a person to approve each production deploy. A post-incident review finds a deploy ran unreviewed after a support engineer's chat request, relayed into a user.message, asked for it. Which change best restores the required approval flow?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Keep auto on the deploy tool, since the server treats every deploy call as high-risk or indeterminate, and audit evaluated_permission on each event afterward."
+      },
+      {
+        "id": "b",
+        "text": "Override the deploy tool's policy to always_ask, update the agent, start new sessions, and answer each paused deploy call with a user.tool_confirmation."
+      },
+      {
+        "id": "c",
+        "text": "Reimplement deploy as a custom tool with an always_ask permission policy, so the approval request is raised by the application instead of the server."
+      },
+      {
+        "id": "d",
+        "text": "Add a supervisor system prompt rule to confirm with a human before delegating any deployment, leaving the deployer's toolset policy as it is today."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Under auto, the server evaluates each call and runs it when it judges it safe, so auto is not a human checkpoint; the docs direct you to configure always_ask on any tool whose calls a person must review. A per-tool configs override sets always_ask on the deploy tool alone, and each deploy call then pauses the session until the client sends a user.tool_confirmation with allow or deny. Running sessions keep the toolset configuration they were created with, so the update applies only to sessions created afterward.",
+    "distractorNotes": {
+      "a": "Auto can allow a deploy outright, and relayed end-user text in user.message counts as intent that can get a call allowed. Auditing evaluated_permission afterward detects an unreviewed deploy rather than preventing it.",
+      "c": "Permission policies do not apply to custom tools; the application receives an agent.custom_tool_use event and decides for itself whether to run it, so an always_ask setting on a custom tool governs nothing.",
+      "d": "A prompt instruction is not an enforced checkpoint, and the deployer's own tool calls are still evaluated under auto; messages the supervisor sends a subagent do not change how those calls are permitted."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/managed-agents/permission-policies",
+    "sourceNote": "Permission policies: auto is not a human checkpoint; per-tool always_ask; custom tools exempt; running sessions keep config",
+    "sourceCheckedAt": "2026-11-23"
   }
 ]

@@ -285,46 +285,6 @@
     "sourceCheckedAt": "2026-11-18"
   },
   {
-    "id": "ccdv-p-advanced-debugging-and-incident-response-008",
-    "cert": "ccdv-p",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "advanced-debugging-and-incident-response",
-    "difficulty": "hard",
-    "status": "reviewed",
-    "stem": "A security team deploys a PreToolUse hook script in Claude Code to intercept shell commands and block access to production database credentials. Due to an unhandled null pointer in the validation script, the hook terminates unexpectedly with exit code 1. How does Claude Code handle this tool call, and what exit code must the hook return to explicitly block unauthorized execution?",
-    "options": [
-      {
-        "id": "a",
-        "text": "The tool call is automatically blocked because any non-zero exit code cancels execution; the hook should return exit code 1 to indicate a generic denial."
-      },
-      {
-        "id": "b",
-        "text": "The tool call is suspended until a user manually approves it in the terminal; the hook should return exit code 0 with an empty JSON object to block it."
-      },
-      {
-        "id": "c",
-        "text": "The tool call proceeds as a non-blocking error because only exit code 2 blocks execution; the hook must return exit code 2 with the reason on stderr."
-      },
-      {
-        "id": "d",
-        "text": "The tool call causes the active session to abort immediately; the hook should return exit code 127 to notify the runtime of a policy violation."
-      }
-    ],
-    "correct": [
-      "c"
-    ],
-    "explanation": "In Claude Code command hooks, exit code 0 indicates success. Exit code 2 is specifically designated as a blocking error; for events that can block (such as PreToolUse), exit code 2 halts the tool call and displays the hook's stderr as the blocking reason. Any other non-zero exit code (such as exit code 1) is treated as a non-blocking error, meaning Claude Code logs a hook error notice but allows the tool execution to proceed normally unless configured to block on failure.",
-    "distractorNotes": {
-      "a": "Non-zero exit codes other than 2 are non-blocking errors by default; exit code 1 does not block the tool call from running.",
-      "b": "Exit code 0 with empty output signifies no decision, allowing the tool call to proceed without blocking or prompting for user approval.",
-      "d": "Command hook failures do not crash or abort the Claude Code session process, and exit code 127 is not the documented blocking signal."
-    },
-    "sourceUrl": "https://code.claude.com/docs/en/hooks",
-    "sourceNote": "PreToolUse hooks use exit code 2 for blocking errors with stderr as reason; other non-zero exit codes are non-blocking errors",
-    "sourceCheckedAt": "2026-11-18"
-  },
-  {
     "id": "ccdv-p-advanced-debugging-and-incident-response-009",
     "cert": "ccdv-p",
     "schemaVersion": 1,
@@ -530,43 +490,88 @@
     "sourceCheckedAt": "2026-11-18"
   },
   {
-    "id": "ccdv-p-advanced-debugging-and-incident-response-014",
+    "id": "ccdv-p-advanced-debugging-and-incident-response-015",
     "cert": "ccdv-p",
     "schemaVersion": 1,
     "type": "single",
     "domain": "advanced-debugging-and-incident-response",
-    "difficulty": "medium",
+    "difficulty": "hard",
     "status": "reviewed",
-    "stem": "Several developers report that after launching Claude Code inside the integrated terminals of VS Code and Cursor, the command output renders corrupted characters, showing smeared glyphs, misplaced text blocks, and box symbols. The underlying process is responsive, and executing shell commands outside the integrated terminal displays normal text. Which initial action resolves this display corruption?",
+    "stem": "A research product runs a lead agent that spawns parallel subagents to search, then synthesizes their findings into a report. Users report that final reports omit specific figures they expected, and rerunning the same query with identical prompts does not reliably reproduce the omission. Full production traces of failing sessions show that every subagent's search calls succeeded and that each subagent's final output lists the missing figures verbatim; the lead agent's report, built from those outputs passed back through its conversation history, does not. Where does the failure originate, and which change best addresses it?",
     "options": [
       {
         "id": "a",
-        "text": "Run the compact command inside the session to clear ANSI escape sequences from the active conversational message context."
+        "text": "The search tool returned truncated pages under load; add retry logic and checkpoints around the search tool so subagents receive full documents before summarizing."
       },
       {
         "id": "b",
-        "text": "Reinstall the Claude Code command line interface using npm with the force flag to recompile native terminal PTY bindings."
+        "text": "The lead agent's context fills as findings accumulate; have it summarize completed phases into memory and spawn a fresh lead agent with a clean context to write the report."
       },
       {
         "id": "c",
-        "text": "Restart the host operating system with UTF-8 locale variables set to C to bypass terminal font ligature rendering bugs."
+        "text": "The loss happens in the hand-off to the lead agent; have subagents store their work in an external artifact store and pass lightweight references back."
       },
       {
         "id": "d",
-        "text": "Run terminal-setup inside Claude Code or set terminal.integrated.gpuAcceleration to off in the editor configuration settings."
+        "text": "Output varies between runs, so rerun failing sessions with identical prompts until the omission reproduces locally, then debug the lead agent's prompt from there."
       }
     ],
     "correct": [
-      "d"
+      "c"
     ],
-    "explanation": "In editor integrated terminals (such as VS Code or Cursor), terminal GPU acceleration can corrupt ANSI/VTE escape sequences, rendering garbled text, misplaced characters, and box glyphs. Claude Code documents running /terminal-setup or setting terminal.integrated.gpuAcceleration to \"off\" in the editor settings as the solution to disable the GPU renderer and restore clean text output.",
+    "explanation": "The traces isolate the stage: tools succeeded and the subagents' outputs contain the figures, so neither the tools nor the subagents' source selection lost them. The loss occurs when results are relayed through the lead agent's conversation history and condensed during synthesis, the 'game of telephone' Anthropic describes for multi-agent systems. Its documented mitigation is an artifact system: subagents call tools to store their work in external systems and pass lightweight references back to the coordinator, which prevents information loss during multi-stage processing and reduces the token overhead of copying large outputs through conversation history.",
     "distractorNotes": {
-      "a": "Running /compact summarizes conversation history; it does not alter terminal display rendering or integrated terminal GPU settings.",
-      "b": "Reinstalling the package does not fix editor-level rendering defects caused by the terminal emulator's GPU acceleration layer.",
-      "c": "Setting locale to C disables Unicode support and causes further character encoding issues rather than fixing GPU rendering artifacts."
+      "a": "Retry logic and checkpoints are real safeguards for failing tools, but the traces show the search calls succeeded and the subagent outputs already contain the figures, so the tool layer is not the origin.",
+      "b": "Summarizing completed phases into external memory and spawning fresh agents with clean contexts is Anthropic's pattern for long-horizon context limits, but it adds another condensing hand-off; the traces place the loss where outputs are relayed through the coordinator, which the artifact pattern bypasses.",
+      "d": "Agents are non-deterministic between runs even with identical prompts, which is why Anthropic relies on full production tracing to diagnose failures; the traces already locate the loss, so chasing a local reproduction delays the fix."
     },
-    "sourceUrl": "https://code.claude.com/docs/en/troubleshooting",
-    "sourceNote": "Terminal rendering corruption in VS Code/Cursor is fixed by /terminal-setup or setting gpuAcceleration to off",
-    "sourceCheckedAt": "2026-11-18"
+    "sourceUrl": "https://www.anthropic.com/research/multi-agent-research-system",
+    "sourceNote": "Debugging benefits from new approaches (full production tracing); Appendix: subagent output to a filesystem, lightweight references",
+    "sourceCheckedAt": "2026-11-23"
+  },
+  {
+    "id": "ccdv-p-advanced-debugging-and-incident-response-016",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "advanced-debugging-and-incident-response",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A contract-summarization service shipped a prompt revision that had passed its offline eval suite. Within two days, faithfulness complaints spiked; the on-call engineer rolled the prompt back and complaint volume returned to baseline. The postmortem names two gaps: the suite contained no cases resembling the contracts that failed, and user complaints were the team’s only post-launch signal of the regression. Which TWO follow-up actions most directly close these gaps? (Select TWO.)",
+    "options": [
+      {
+        "id": "a",
+        "text": "Raise the pass threshold the offline suite applies to prompt releases, so that a stricter bar on its existing tasks rejects revisions like the one that failed."
+      },
+      {
+        "id": "b",
+        "text": "Make thumbs-down volume the primary release-health alert, since user feedback arrives with real examples and tends to correlate with product goals."
+      },
+      {
+        "id": "c",
+        "text": "Turn the complaint conversations into test cases in the suite that gates prompt changes, prioritized by user impact so the suite reflects actual usage."
+      },
+      {
+        "id": "d",
+        "text": "Graduate the suite's high-pass-rate tasks into a regression suite that runs continuously after launch, so drift on those tasks is caught before users notice it."
+      },
+      {
+        "id": "e",
+        "text": "Add production monitoring of live traffic, so post-launch drift and unanticipated failures surface without relying on sparse, self-selected complaints."
+      }
+    ],
+    "correct": [
+      "c",
+      "e"
+    ],
+    "explanation": "The two gaps call for two different methods. The suite passed the revision because it had no cases like the failing contracts, which is a coverage gap: Anthropic recommends converting user-reported failures into test cases so the suite reflects actual usage, prioritizing by user impact. The detection gap is post-launch: production monitoring kicks in after launch to detect distribution drift and unanticipated real-world failures, whereas user feedback is sparse, self-selected and skews toward severe issues, and relying primarily on users to catch issues can have negative user impact.",
+    "distractorNotes": {
+      "a": "The suite already passed the revision because none of its tasks exercised the failure; a stricter threshold on the same tasks measures the same behavior, so it does not close a coverage gap.",
+      "b": "User feedback does come with real examples, but it is sparse, self-selected and skews toward severe issues, and relying primarily on users to catch problems has negative user impact.",
+      "d": "Graduating high-pass-rate capability tasks into a continuously run regression suite is a real practice for catching drift, but it reruns the same tasks that already missed the failing contracts and never observes live traffic, so it closes neither gap."
+    },
+    "sourceUrl": "https://www.anthropic.com/research/demystifying-evals-for-ai-agents",
+    "sourceNote": "Step 1: convert user-reported failures into test cases; overview table: production monitoring, user feedback, transcript review",
+    "sourceCheckedAt": "2026-11-23"
   }
 ]

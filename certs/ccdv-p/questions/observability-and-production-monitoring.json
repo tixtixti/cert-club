@@ -165,46 +165,6 @@
     "sourceCheckedAt": "2026-11-18"
   },
   {
-    "id": "ccdv-p-observability-and-production-monitoring-005",
-    "cert": "ccdv-p",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "observability-and-production-monitoring",
-    "difficulty": "medium",
-    "status": "reviewed",
-    "stem": "A team instruments an internal deployment CLI with OpenTelemetry using standard environment variables (OTEL_EXPORTER_OTLP_ENDPOINT and OTEL_EXPORTER_OTLP_HEADERS). A developer runs Claude Code with full telemetry enabled and asks it to execute the deployment CLI via the Bash tool. The developer expects the CLI's internal spans to stream to the same OpenTelemetry collector. Why do no spans from the deployment CLI arrive at the collector?",
-    "options": [
-      {
-        "id": "a",
-        "text": "The Bash tool executes commands within an isolated network sandbox that blocks outbound traffic on standard OpenTelemetry gRPC and HTTP ports."
-      },
-      {
-        "id": "b",
-        "text": "Subprocesses launched by Claude Code automatically redirect OpenTelemetry exporter output to local debug files rather than network sockets."
-      },
-      {
-        "id": "c",
-        "text": "Claude Code requires the command to be invoked with an explicit tracing flag before child process network interfaces are initialized."
-      },
-      {
-        "id": "d",
-        "text": "Claude Code does not pass OTEL_* environment variables to spawned subprocesses, requiring the command to set its own exporter configuration."
-      }
-    ],
-    "correct": [
-      "d"
-    ],
-    "explanation": "Claude Code explicitly avoids passing OTEL_* environment variables to the subprocesses it spawns, including commands executed through the Bash tool, hooks, MCP servers, and language servers. Consequently, an instrumented CLI run via Bash does not inherit Claude Code's collector endpoint or authentication headers; those variables must be provided directly within the command invocation or environment.",
-    "distractorNotes": {
-      "a": "The Bash tool does not impose network port filters that specifically block OpenTelemetry ports; the CLI simply lacks the environment variables needed to locate the collector.",
-      "b": "Subprocesses do not redirect telemetry to debug files; they fail to export because they do not inherit the collector endpoint configuration from Claude Code.",
-      "c": "No special CLI invocation flag is required to initialize child process networking; exporter environment variables must be supplied to the subprocess."
-    },
-    "sourceUrl": "https://code.claude.com/docs/en/monitoring-usage",
-    "sourceNote": "Subprocess isolation: Claude Code does not pass OTEL_* environment variables to spawned subprocesses",
-    "sourceCheckedAt": "2026-11-18"
-  },
-  {
     "id": "ccdv-p-observability-and-production-monitoring-006",
     "cert": "ccdv-p",
     "schemaVersion": 1,
@@ -450,46 +410,6 @@
     "sourceCheckedAt": "2026-11-18"
   },
   {
-    "id": "ccdv-p-observability-and-production-monitoring-012",
-    "cert": "ccdv-p",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "observability-and-production-monitoring",
-    "difficulty": "medium",
-    "status": "reviewed",
-    "stem": "A platform engineer investigating latency degradation in Claude Code sessions examines OpenTelemetry distributed traces. Several traces exhibit claude_code.tool spans taking upwards of 45 seconds to complete. The engineer must determine whether the latency stems from a slow MCP database tool execution or from a developer taking time to approve a tool permission prompt. Which child spans should the engineer inspect to isolate these delays?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Compare the duration of claude_code.tool.blocked_on_user against claude_code.tool.execution under the parent tool span."
-      },
-      {
-        "id": "b",
-        "text": "Measure the time delta between claude_code.hook execution spans and the subsequent claude_code.llm_request span."
-      },
-      {
-        "id": "c",
-        "text": "Calculate the mathematical difference between interaction.duration_ms and total tool result_tokens on the enclosing parent interaction span."
-      },
-      {
-        "id": "d",
-        "text": "Inspect the ttft_ms and first_content_ms latency attributes on the enclosing claude_code.interaction root span."
-      }
-    ],
-    "correct": [
-      "a"
-    ],
-    "explanation": "In Claude Code's trace hierarchy, every claude_code.tool span creates two distinct child spans: claude_code.tool.blocked_on_user (recording the time spent waiting for the user to make a permission decision) and claude_code.tool.execution (recording the active execution time of the tool itself). Comparing their durations immediately distinguishes human approval latency from tool execution bottlenecks.",
-    "distractorNotes": {
-      "b": "Hook spans measure pre- or post-tool execution scripts, not the interactive permission prompt delay or MCP execution runtime.",
-      "c": "Subtracting token counts from millisecond durations is dimensionally invalid and does not separate permission waiting from execution runtime.",
-      "d": "Time to first token (ttft_ms) and first_content_ms measure model response generation latency on llm_request spans, not tool execution or user permission delays."
-    },
-    "sourceUrl": "https://code.claude.com/docs/en/monitoring-usage",
-    "sourceNote": "Span hierarchy: claude_code.tool has child spans blocked_on_user and execution",
-    "sourceCheckedAt": "2026-11-18"
-  },
-  {
     "id": "ccdv-p-observability-and-production-monitoring-013",
     "cert": "ccdv-p",
     "schemaVersion": 1,
@@ -570,91 +490,6 @@
     "sourceCheckedAt": "2026-11-18"
   },
   {
-    "id": "ccdv-p-observability-and-production-monitoring-015",
-    "cert": "ccdv-p",
-    "schemaVersion": 1,
-    "type": "multi",
-    "domain": "observability-and-production-monitoring",
-    "difficulty": "medium",
-    "status": "reviewed",
-    "stem": "A corporate security team requires full audit logging of all Model Context Protocol (MCP) server interactions initiated by Claude Code across engineering workstations. Specifically, the SIEM must capture unredacted MCP server names, tool names, and exact parameter arguments for every allowed or denied tool call. Which TWO configurations must administrators enforce to ensure these audit details are exported in OpenTelemetry events?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Set OTEL_LOGS_EXPORTER to otlp to export structured log events to the SIEM or OpenTelemetry collector."
-      },
-      {
-        "id": "b",
-        "text": "Set OTEL_TRACES_EXPORTER to otlp with CLAUDE_CODE_ENHANCED_TELEMETRY_BETA enabled to record tool argument payloads."
-      },
-      {
-        "id": "c",
-        "text": "Set OTEL_LOG_TOOL_DETAILS to 1 so tool_result and tool_decision events retain server names, tool names, and call arguments."
-      },
-      {
-        "id": "d",
-        "text": "Set CLAUDE_CODE_OTEL_CONTENT_MAX_LENGTH to 0 to prevent JSON payload truncation on outbound SIEM events."
-      },
-      {
-        "id": "e",
-        "text": "Configure OTEL_LOG_USER_PROMPTS to 1 to allow tool parameter blocks to be reflected in user interaction spans."
-      }
-    ],
-    "correct": [
-      "a",
-      "c"
-    ],
-    "explanation": "To capture MCP activity in a SIEM, the logs exporter must be enabled (OTEL_LOGS_EXPORTER=otlp) because security audit events (mcp_server_connection, tool_result, and tool_decision) are delivered as OpenTelemetry log records. Furthermore, OTEL_LOG_TOOL_DETAILS=1 is required because without it, Claude Code redacts tool names to the literal 'mcp_tool', omits call arguments, and drops server names on connection events.",
-    "distractorNotes": {
-      "b": "Trace spans record span hierarchy and timing, but audit events and call detail payloads are exported via the logs/events exporter.",
-      "d": "Setting content max length to 0 would truncate payloads entirely rather than disabling truncation; default truncation is 60 KB.",
-      "e": "OTEL_LOG_USER_PROMPTS logs user prompt text, not MCP tool parameters or tool decision audit events."
-    },
-    "sourceUrl": "https://code.claude.com/docs/en/monitoring-usage",
-    "sourceNote": "Audit MCP activity: requires OTEL_LOGS_EXPORTER and OTEL_LOG_TOOL_DETAILS=1 for unredacted server names, tool names, and inputs",
-    "sourceCheckedAt": "2026-11-18"
-  },
-  {
-    "id": "ccdv-p-observability-and-production-monitoring-016",
-    "cert": "ccdv-p",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "observability-and-production-monitoring",
-    "difficulty": "medium",
-    "status": "reviewed",
-    "stem": "A data pipeline executes automated code verification tasks using the Claude Agent SDK inside short-lived, ephemeral Kubernetes pods that terminate within 15 to 20 seconds. Engineers observe that while tasks finish successfully, session counters and token usage metrics for these jobs are missing from the metrics backend in over 80 percent of executions. What is causing this loss of metric telemetry?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Ephemeral container network namespaces tear down DNS resolution before the Agent SDK can complete its initial TLS handshake."
-      },
-      {
-        "id": "b",
-        "text": "The default metric export interval of 60 seconds leaves pending metric batches in memory when the ephemeral process terminates."
-      },
-      {
-        "id": "c",
-        "text": "Kubernetes pod termination signals automatically trigger an asynchronous SIGKILL that invalidates the local SQLite session cache."
-      },
-      {
-        "id": "d",
-        "text": "Claude Code requires an interactive terminal TTY session to flush metric counters to the configured OTLP endpoint."
-      }
-    ],
-    "correct": [
-      "b"
-    ],
-    "explanation": "Claude Code batches metrics in memory and exports them on an interval that defaults to 60,000 ms (60 seconds), whereas traces and logs default to 5,000 ms (5 seconds). In short-lived processes (such as 15-second ephemeral batch jobs), the process frequently exits before the first 60-second metric interval elapses. Lowering OTEL_METRIC_EXPORT_INTERVAL (e.g., to 1,000 ms) ensures metric batches are flushed while the short-lived task is still active.",
-    "distractorNotes": {
-      "a": "Container DNS and networking remain operational until pod termination; the issue is that the 60-second batch timer has not elapsed before exit.",
-      "c": "Metric batching occurs in memory rather than in an SQLite session cache, and process termination without a timer flush drops the in-memory buffer.",
-      "d": "Claude Code does not require an interactive TTY to flush metrics; non-interactive and Agent SDK sessions export telemetry normally over OTLP."
-    },
-    "sourceUrl": "https://code.claude.com/docs/en/agent-sdk/observability",
-    "sourceNote": "Short-lived calls: metrics default export interval is 60s; lower OTEL_METRIC_EXPORT_INTERVAL to flush before process exit",
-    "sourceCheckedAt": "2026-11-18"
-  },
-  {
     "id": "ccdv-p-observability-and-production-monitoring-017",
     "cert": "ccdv-p",
     "schemaVersion": 1,
@@ -693,5 +528,170 @@
     "sourceUrl": "https://platform.claude.com/docs/en/manage-claude/opentelemetry",
     "sourceNote": "Compaction tokens: gen_ai.usage.* attributes exclude compaction tokens; add anthropic.usage.compaction.* attributes",
     "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-018",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A document-summarization service calls the Messages API and reports an availability SLO of 99.5%, computed as responses without a 4xx or 5xx status over all requests. The SLO has been green for a quarter, yet support tickets about summaries that stop mid-sentence and about requests Claude declined to answer have tripled. The SRE lead wants a quality SLI whose good-event definition catches these failures without penalizing the service's multi-step tool loop, which includes server tools such as web fetch. Which definition fits?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Keep the HTTP-based availability SLI as the only SLO and chart refusals and truncations on a separate non-alerting dashboard, since both reflect user input rather than service health."
+      },
+      {
+        "id": "b",
+        "text": "Count every response as good unless its stop_reason is refusal, max_tokens, or pause_turn, so each step of the loop is scored and truncated or stalled steps are caught."
+      },
+      {
+        "id": "c",
+        "text": "Count a response as good when its output_tokens exceed a minimum length floor, so empty refusals and blank answers fail while substantive multi-paragraph summaries still pass."
+      },
+      {
+        "id": "d",
+        "text": "Count a final response as good when it returns 2xx with a natural stop such as end_turn; refusal and max_tokens stops count as bad, and tool_use steps are not judged alone."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "stop_reason is part of every successful Messages API response and says why generation stopped; errors are the 4xx/5xx failures. Safety classifiers return a refusal as a normal HTTP 200 response, and a max_tokens stop means the response reached the request's max_tokens limit (model_context_window_exceeded is likewise treated as truncated). A status-code SLI therefore scores both failure classes as successes. Keying the good event on the terminal stop_reason catches them, while tool_use and pause_turn are documented as signals to continue — run the tool and return the result, or send the assistant content back — so they are intermediate loop steps, not failures.",
+    "distractorNotes": {
+      "a": "The documentation separates stop reasons, which arrive in successful responses, from errors, which carry 4xx/5xx codes; an HTTP-only SLO is precisely what hides refusals and truncations, so keeping them off the SLO leaves the reported failures invisible to alerting.",
+      "b": "pause_turn means a server-tool loop reached its iteration limit and the assistant content should be sent back to continue; it is a normal continuation signal, not a stall, so counting it as bad would charge the healthy server-tool loop as failures.",
+      "c": "A max_tokens stop happens when the response reaches the max_tokens limit, so truncated summaries are typically long; a length floor passes exactly the mid-sentence cutoffs that users are reporting."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons",
+    "sourceNote": "Stop reasons vs errors: refusal returns HTTP 200; max_tokens means truncation; tool_use and pause_turn are continuation signals",
+    "sourceCheckedAt": "2026-11-23"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-019",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A claims-triage service pins a current-generation dateless model ID. An online grader scores a 2% random sample of production responses against a fixed rubric and compares the daily mean with a baseline captured at launch. This week the score fell outside its control band, while the deploy log shows no prompt, tool, retrieval, or request-parameter change and API error rates are flat. An engineer argues that Anthropic must have updated the model behind the ID. Which assessment matches Anthropic's model versioning documentation?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The dateless ID is an evergreen pointer that tracks the latest snapshot of its model family, so the team should switch to a dated snapshot ID to freeze behavior."
+      },
+      {
+        "id": "b",
+        "text": "The ID's weights are fixed, but serving infrastructure such as safety classifiers and sampling logic can change, so a shift on an unchanged ID is plausible and worth tracking."
+      },
+      {
+        "id": "c",
+        "text": "Anthropic ships improved weights under an existing ID only after notice on the deprecations page, so checking that page will confirm whether a weight update caused the drop."
+      },
+      {
+        "id": "d",
+        "text": "Behavior under a fixed model ID is deterministic, so a score shift with no client-side change points to grader noise, and the team should recalibrate the grader first."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "Every Claude model ID is a pinned snapshot: from the 4.6 generation on, the dateless ID is the canonical ID for a release and maps to a single fixed snapshot, and Anthropic does not update the weights or configuration of an existing ID — an updated version ships under a new ID. The serving infrastructure around the model (request router, safety classifiers, sampling logic) can still change, and the documentation names an infrastructure update as the most likely cause of unexpected behavioral differences on a previously stable ID. That is why a sampled grader compared against a baseline remains necessary even with a pinned ID.",
+    "distractorNotes": {
+      "a": "This is the misconception the documentation explicitly corrects: dateless IDs from the 4.6 generation on are not evergreen pointers but pinned snapshots, and dated IDs exist only for models before the 4.6 generation.",
+      "c": "Anthropic does not update the weights of an existing model ID at all; an updated version ships under a new model ID, so no weight change under the same ID exists to be announced.",
+      "d": "Fixed weights do not make observed behavior immutable; infrastructure components including safety classifiers and sampling logic can change and produce behavioral differences on an unchanged ID."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/about-claude/models/model-ids-and-versions",
+    "sourceNote": "Dateless IDs are pinned snapshots; weights fixed per ID; serving infrastructure updates can shift behavior on a stable ID",
+    "sourceCheckedAt": "2026-11-23"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-020",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A legal-drafting service on the Messages API exports SDK and API spans, head-sampling 5% of traces uniformly in the application's sampler. After a configuration release, complaints about unusable drafts doubled for one enterprise tenant, yet every trace the team opens shows HTTP 200. The team wants to surface and quantify a systemic cause across the sampled population rather than by reading traces one at a time. Which TWO analyses fit? (Select TWO.)",
+    "options": [
+      {
+        "id": "a",
+        "text": "Build the failure cohort from spans that carry error.type, since that attribute records each response that failed to give the user a usable answer."
+      },
+      {
+        "id": "b",
+        "text": "Turn off the sampled flag in traceparent for healthy tenants, so the API keeps emitting their span metadata while content capture focuses on the affected tenant."
+      },
+      {
+        "id": "c",
+        "text": "Group the tenant's anthropic.messages.create spans by anthropic.message.stop_reason and compare the share of each value with other tenants in the same sample."
+      },
+      {
+        "id": "d",
+        "text": "Treat token sums from the sampled spans, scaled by the sampling rate, as the tenant's billed usage, since API spans carry the tokens the organization is billed for."
+      },
+      {
+        "id": "e",
+        "text": "Segment the tenant's spans by gen_ai.response.model against gen_ai.request.model to find requests another model served, then compare outcomes by serving model."
+      }
+    ],
+    "correct": [
+      "c",
+      "e"
+    ],
+    "explanation": "The anthropic.messages.create span carries anthropic.message.stop_reason, so grouping a cohort by stop reason and comparing shares against other tenants in the same uniform sample exposes a shift, such as more refusal or max_tokens stops, that no single HTTP 200 trace reveals. The span also records gen_ai.response.model, which differs from gen_ai.request.model when the request uses a model alias or a fallback model served it; the API still emits one span per request in that case, so segmenting by serving model is how a routing-driven quality drop becomes visible in aggregate.",
+    "distractorNotes": {
+      "a": "error.type holds a failed request's error type, for example rate_limit_error; a refusal or truncation is a stop_reason on a successful response, so an error.type cohort misses exactly the HTTP 200 failures behind the complaints.",
+      "b": "When the sampled flag in the traceparent header is off, the API emits no span for the request or anything under it, so this removes healthy tenants from the comparison baseline instead of trimming their content.",
+      "d": "API spans do carry billed token counts, but exported spans are not a complete record: delivery is best effort and unsampled requests emit no API spans. Authoritative per-key usage comes from the Usage and Cost Analytics API."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/api/opentelemetry/spans",
+    "sourceNote": "messages.create span: stop_reason attribute; gen_ai.response.model differs on alias or fallback; error.type only on failed requests",
+    "sourceCheckedAt": "2026-11-23"
+  },
+  {
+    "id": "ccdv-p-observability-and-production-monitoring-021",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "observability-and-production-monitoring",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A support agent on the Messages API runs multi-turn conversations with prompt caching, under an organization-wide zero data retention arrangement. After a release, usage.cache_read_input_tokens sits near zero on most later turns. To limit what is stored, an engineer attaches the diagnostics object only to a turn whose predecessor came back with low cache reads, passing that predecessor's response id. Every diagnosed turn returns a cache_miss_reason of previous_message_not_found. All workers share one workspace, and turns are seconds apart. What does this indicate?",
+    "options": [
+      {
+        "id": "a",
+        "text": "The predecessor turns carried no diagnostics object, so no fingerprint was stored to compare against; this is not evidence of a change, and diagnostics belongs on every turn."
+      },
+      {
+        "id": "b",
+        "text": "The release altered the start of the prompt so deeply that no stored fingerprint matches any longer, which places the divergence in the system prompt or tool definitions."
+      },
+      {
+        "id": "c",
+        "text": "The zero data retention arrangement blocks fingerprint storage, so lookups by previous_message_id cannot resolve and only the usage fields can be relied on for diagnosis."
+      },
+      {
+        "id": "d",
+        "text": "The comparison was still running when each response was serialized, so every result is inconclusive and the engineer should simply read the diagnostics on the next turn."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "The API stores a fingerprint only for requests that include the diagnostics object, keyed by the response id; the object itself is the opt-in. previous_message_not_found means no stored fingerprint exists for the supplied id and is explicitly not evidence that the request changed — typically the previous request lacked the diagnostics object, came from another workspace, or is too old. With one workspace and closely spaced turns, the opt-in pattern is the cause: include diagnostics on every turn, passing a null previous_message_id on the first.",
+    "distractorNotes": {
+      "b": "A divergence in the system prompt or tools is reported as system_changed or tools_changed against a stored fingerprint; previous_message_not_found means there was nothing to compare against.",
+      "c": "Cache diagnostics is ZDR eligible (qualified): fingerprints hold only cryptographic hashes and token-count estimates, never raw prompt content, so zero data retention does not prevent the comparison.",
+      "d": "A comparison still running at serialization time returns cache_miss_reason as null, not previous_message_not_found, so waiting for the next turn would reproduce the same result."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics",
+    "sourceNote": "Fingerprint stored only when diagnostics is sent; previous_message_not_found is not evidence of change; ZDR eligible (qualified)",
+    "sourceCheckedAt": "2026-11-23"
   }
 ]

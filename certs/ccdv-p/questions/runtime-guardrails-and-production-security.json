@@ -440,86 +440,6 @@
     "sourceCheckedAt": "2026-11-18"
   },
   {
-    "id": "ccdv-p-runtime-guardrails-and-production-security-012",
-    "cert": "ccdv-p",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "runtime-guardrails-and-production-security",
-    "difficulty": "hard",
-    "status": "reviewed",
-    "stem": "A compliance officer reviews OpenTelemetry logs emitted by Claude Code instances across an engineering department. The officer observes that claude_code.tool_result events record tool names and execution durations, but specific command arguments and tool inputs are omitted from the telemetry stream. How can administrators configure Claude Code to capture tool arguments for security auditing?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Set OTEL_LOG_TOOL_DETAILS=1 in managed settings to export bounded tool_parameters and tool_input attributes within tool_result events."
-      },
-      {
-        "id": "b",
-        "text": "Configure OTEL_METRICS_EXPORTER=otlp with high-frequency collection intervals to force detailed parameter payloads into metric time series records."
-      },
-      {
-        "id": "c",
-        "text": "Enable CLAUDE_CODE_ENABLE_TELEMETRY=2 to trigger verbose debug tracing across child subprocess standard input streams."
-      },
-      {
-        "id": "d",
-        "text": "Register a PostToolUse hook that captures and echoes raw tool input arguments directly to the local terminal's standard error stream for ingestion."
-      }
-    ],
-    "correct": [
-      "a"
-    ],
-    "explanation": "By default, Claude Code omits tool arguments and parameters from claude_code.tool_result events to protect user privacy. Setting OTEL_LOG_TOOL_DETAILS=1 enables the export of tool_parameters and tool_input attributes (with parameter strings bounded and individual fields over 512 characters truncated) as well as full error messages, providing security and compliance auditors with complete visibility into agent tool executions.",
-    "distractorNotes": {
-      "b": "OpenTelemetry metrics export numerical counters and gauges, whereas detailed command parameters are exported via the logs and events protocol.",
-      "c": "CLAUDE_CODE_ENABLE_TELEMETRY is a binary toggle (0 or 1), not a multi-tier verbosity flag.",
-      "d": "Echoing tool arguments to stderr creates unmanaged terminal noise rather than populating structured OpenTelemetry event attributes."
-    },
-    "sourceUrl": "https://code.claude.com/docs/en/monitoring-usage",
-    "sourceNote": "OTEL_LOG_TOOL_DETAILS enables logging of tool parameters and tool input for audits",
-    "sourceCheckedAt": "2026-11-18"
-  },
-  {
-    "id": "ccdv-p-runtime-guardrails-and-production-security-013",
-    "cert": "ccdv-p",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "runtime-guardrails-and-production-security",
-    "difficulty": "medium",
-    "status": "reviewed",
-    "stem": "An observability engineer constructs an audit pipeline to reconstruct multi-step agent actions. When processing OpenTelemetry logs, the pipeline needs to correlate an initial user query with the subsequent API calls, tool decision events, and tool execution results that Claude Code executed while answering that query. Which telemetry attribute reliably links these related events together across the turn?",
-    "options": [
-      {
-        "id": "a",
-        "text": "The session.id string, which changes dynamically on each tool call to differentiate between parallel tool execution threads."
-      },
-      {
-        "id": "b",
-        "text": "The prompt.id attribute, which assigns a common UUID v4 identifier linking all events generated while processing that prompt."
-      },
-      {
-        "id": "c",
-        "text": "The event.sequence counter, which provides a globally monotonic integer sequence that guarantees strict turn ordering across resumes."
-      },
-      {
-        "id": "d",
-        "text": "The message.uuid value, which remains identical across API requests and tool invocations spanning the entire conversation lifecycle."
-      }
-    ],
-    "correct": [
-      "b"
-    ],
-    "explanation": "In Claude Code's OpenTelemetry log schema, prompt.id is a UUID v4 attribute attached to every event generated during the processing of a single user prompt, including user_prompt, api_request, tool_decision, and tool_result events. Filtering or grouping by prompt.id enables full reconstruction of the actions triggered by that turn. In contrast, event.sequence is tracked per process and can reset or repeat across resumed sessions, making it insufficient for turn correlation.",
-    "distractorNotes": {
-      "a": "The session.id remains constant across a session rather than changing per tool call, making it too broad to isolate events from a specific prompt turn.",
-      "c": "The event.sequence counter is tracked per process and can repeat or reset when sessions are resumed across processes, making it unsuitable as a primary correlation key.",
-      "d": "The message.uuid identifies specific message transcript entries rather than serving as the overarching correlation identifier for all turn events."
-    },
-    "sourceUrl": "https://code.claude.com/docs/en/monitoring-usage",
-    "sourceNote": "Event correlation uses prompt.id to link all events generated from a single user prompt",
-    "sourceCheckedAt": "2026-11-18"
-  },
-  {
     "id": "ccdv-p-runtime-guardrails-and-production-security-014",
     "cert": "ccdv-p",
     "schemaVersion": 1,
@@ -565,43 +485,128 @@
     "sourceCheckedAt": "2026-11-18"
   },
   {
-    "id": "ccdv-p-runtime-guardrails-and-production-security-015",
+    "id": "ccdv-p-runtime-guardrails-and-production-security-016",
     "cert": "ccdv-p",
     "schemaVersion": 1,
     "type": "single",
     "domain": "runtime-guardrails-and-production-security",
     "difficulty": "medium",
     "status": "reviewed",
-    "stem": "An enterprise administrator configures Claude Code managed settings to enforce corporate audit compliance by streaming OpenTelemetry logs and tool execution events to a centralized SIEM collector. A developer attempts to redirect telemetry locally by adding export OTEL_EXPORTER_OTLP_LOGS_ENDPOINT=http://localhost:4318 to their shell profile. What happens when Claude Code launches?",
+    "stem": "A platform team migrates a Kubernetes-hosted summarization service from a static workspace API key to Workload Identity Federation. The Connect workload wizard verified the issuer, service account, and federation rule end to end, and the pods now mount a projected identity token and receive the federation environment variables. A week later, usage attribution still shows the service's traffic under the old workspace key rather than the new service account, and a security review wants the static secret retired. What should the team do next?",
     "options": [
       {
         "id": "a",
-        "text": "The developer's shell setting overrides the managed policy because local process environment variables take precedence over configuration files."
+        "text": "Delete the workspace API key in the Console now; once the key is rejected, the SDK falls back to the federation variables on its next request."
       },
       {
         "id": "b",
-        "text": "Claude Code duplicates telemetry events, dispatching identical audit records concurrently to both the centralized SIEM and the local collector."
+        "text": "Unset ANTHROPIC_API_KEY wherever it is injected, confirm with ant auth status that federation now wins, and then delete the key."
       },
       {
         "id": "c",
-        "text": "Claude Code strips the developer's per-signal endpoint variable at startup and enforces the centralized collector endpoint defined in managed settings."
+        "text": "Add a CEL condition to the federation rule matching the pod's namespace, because a rule without one leaves the SDK on the static key."
       },
       {
         "id": "d",
-        "text": "Claude Code halts initialization and refuses to start until the developer removes the conflicting environment variable from their local shell profile."
+        "text": "Keep the API key mounted as the bootstrap credential that the SDK presents to the token endpoint when it exchanges the identity token."
       }
     ],
     "correct": [
-      "c"
+      "b"
     ],
-    "explanation": "When an administrator sets OTEL_EXPORTER_OTLP_ENDPOINT in enterprise managed settings, Claude Code locks the destination collector. At startup, Claude Code automatically removes developer-set per-signal endpoint variables (such as OTEL_EXPORTER_OTLP_LOGS_ENDPOINT) and logs a warning in the debug log. This prevents developers from diverting audit telemetry away from the mandated corporate collector.",
+    "explanation": "The SDK resolves credentials in a fixed order, and ANTHROPIC_API_KEY sits above the federation environment variables, so a leftover key in the environment silently overrides federation even when the federation rule matches. The documented migration configures federation in parallel, checks which credential wins, unsets ANTHROPIC_API_KEY everywhere it is injected (CI secrets, container environment, shell profiles), confirms with ant auth status that the federation source now wins, and only then deletes the key. That order retires the static secret without downtime and moves traffic onto the short-lived token bound to the service account.",
     "distractorNotes": {
-      "a": "Managed settings enforce administrative precedence over developer environment variables for locked telemetry endpoints.",
-      "b": "Claude Code does not bifurcate telemetry streams; conflicting endpoint variables are removed rather than merged.",
-      "d": "Claude Code logs a warning in the debug log and strips the conflicting developer variable rather than terminating the launch process."
+      "a": "Precedence goes to the first source that yields a credential, not to the first one the API accepts. The documented order unsets the variable before deleting the key, so deleting first risks breaking the service instead of switching it over.",
+      "c": "A rule needs at least one of subject_prefix, claims, or condition, and a CEL condition is optional. The wizard already verified that the rule matches, so the symptom points to credential precedence, not to rule matching.",
+      "d": "The SDK exchanges the identity provider's signed JWT for an Anthropic token using the jwt-bearer grant. Federation is designed to leave no static secret to mint, store in CI, rotate, or leak."
     },
-    "sourceUrl": "https://code.claude.com/docs/en/monitoring-usage",
-    "sourceNote": "Managed settings lock OTLP exporter endpoints by removing conflicting developer settings",
-    "sourceCheckedAt": "2026-11-18"
+    "sourceUrl": "https://platform.claude.com/docs/en/manage-claude/workload-identity-federation",
+    "sourceNote": "ANTHROPIC_API_KEY outranks federation; unset it, confirm with ant auth status, then delete the key",
+    "sourceCheckedAt": "2026-11-23"
+  },
+  {
+    "id": "ccdv-p-runtime-guardrails-and-production-security-017",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "runtime-guardrails-and-production-security",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A procurement agent on Claude Managed Agents triages inbound supplier emails. Every session attaches one memory store holding the team's approval conventions, using the default access mode. In a red-team exercise, an email with hidden text tells the agent to record that invoices paid to a new bank account are pre-approved. The agent writes that line into the store, and later sessions on unrelated tickets follow it as established policy. Which TWO actions should the team take to clean up the poisoning and harden the design against a repeat? (Select TWO.)",
+    "options": [
+      {
+        "id": "a",
+        "text": "Add a system prompt instruction telling the agent to treat memory entries as untrusted suggestions and to ignore any approval rules found there."
+      },
+      {
+        "id": "b",
+        "text": "Delete the poisoned memory, which also purges its version history so the planted rule cannot be recovered into later sessions."
+      },
+      {
+        "id": "c",
+        "text": "Attach the conventions store as read_only, and give sessions that must record new facts a separate, narrowly scoped read_write store."
+      },
+      {
+        "id": "d",
+        "text": "Rely on the 30-day version retention window, after which the planted version ages out of the store without any manual intervention."
+      },
+      {
+        "id": "e",
+        "text": "Use the store's memory versions to find writes attributed to the red-team session, then write the prior content back to the memory."
+      }
+    ],
+    "correct": [
+      "c",
+      "e"
+    ],
+    "explanation": "Memory stores attach with read_write access by default, and the documentation warns that when an agent processes untrusted input, a successful prompt injection can write malicious content into the store that later sessions read as trusted memory. Access is enforced at the filesystem level, so attaching shared reference material as read_only removes the write path regardless of what an email says, while a separate read_write store keeps learning possible where it is needed. For cleanup, every mutation creates an immutable memory version attributed to the session that made it; there is no dedicated restore endpoint, so the team retrieves the earlier version and writes its content back.",
+    "distractorNotes": {
+      "a": "A prompt instruction is not an enforced boundary, and it would also tell the agent to disregard the legitimate conventions the store exists to supply. The read_only access mode is enforced by the filesystem.",
+      "b": "Versions belong to the store and are not deleted when the memory is deleted, which is what keeps the audit trail intact. Deleting the memory would also discard the legitimate conventions instead of restoring them.",
+      "d": "Retention applies to past versions. The live memory always returns the latest version, so the planted rule stays in force until someone writes corrected content back."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/managed-agents/memory",
+    "sourceNote": "Default read_write lets injections persist; read_only is filesystem-enforced; versions audit and roll back",
+    "sourceCheckedAt": "2026-11-23"
+  },
+  {
+    "id": "ccdv-p-runtime-guardrails-and-production-security-018",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "runtime-guardrails-and-production-security",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A team runs a remote MCP server in front of its internal ticketing API. To avoid repeated consent prompts, the server lists every scope it supports, including admin and export scopes, in scopes_supported, and the client requests them all when it connects. An incident review finds that an access token leaked through a debug log was used to call the bulk-export tool, and the authorization logs show only the single omnibus grant, so investigators cannot tell which operations the user ever intended. Which redesign best addresses both problems?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Forward the user's ticketing token through the MCP server unchanged so the ticketing API applies its own per-user permissions and audit logging instead."
+      },
+      {
+        "id": "b",
+        "text": "Split the catalog into fine-grained per-tool scopes, still requested together at connect time, and log the granted scope set for each session."
+      },
+      {
+        "id": "c",
+        "text": "Shorten the token lifetime to a few minutes while keeping the omnibus scope, since the leak window rather than the scope set enabled the export."
+      },
+      {
+        "id": "d",
+        "text": "Start clients on a minimal read-only scope, step up through targeted WWW-Authenticate scope challenges, and log each elevation with a correlation ID."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "The MCP security best practices describe this exact pattern: broad scopes granted up front because the server exposed everything in scopes_supported expand the blast radius of a stolen token, enable privilege chaining, and add audit noise because a single omnibus scope masks per-operation intent. The recommended mitigation is a progressive, least-privilege scope model: a minimal initial scope for low-risk discovery and read operations, incremental elevation through targeted WWW-Authenticate scope challenges when privileged operations are first attempted, and logging of elevation events with correlation IDs, which restores the audit trail.",
+    "distractorNotes": {
+      "a": "This is token passthrough, which the authorization specification explicitly forbids. MCP servers must not accept tokens that were not issued for them, and forwarding them also muddies the downstream audit trail.",
+      "b": "Finer granularity alone does not shrink the grant: requesting every scope up front still puts every privilege, export included, on one token, and one logged grant per session still masks which operations the user intended. The documented mitigation is a minimal initial scope with step-up challenges on first privileged use.",
+      "c": "A shorter lifetime narrows the window, but a stolen token still carries every bundled privilege while it is valid, and the omnibus grant still masks user intent in the logs."
+    },
+    "sourceUrl": "https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices",
+    "sourceNote": "Scope Minimization: minimal scopes, WWW-Authenticate step-up, logged elevations; no token passthrough",
+    "sourceCheckedAt": "2026-11-23"
   }
 ]

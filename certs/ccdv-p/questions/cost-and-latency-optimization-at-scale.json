@@ -40,46 +40,6 @@
     "sourceCheckedAt": "2026-11-18"
   },
   {
-    "id": "ccdv-p-cost-and-latency-optimization-at-scale-002",
-    "cert": "ccdv-p",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "cost-and-latency-optimization-at-scale",
-    "difficulty": "medium",
-    "status": "reviewed",
-    "stem": "An enterprise customer-service assistant attaches a dynamic 15-token user session header containing timestamps and authentication tokens at the beginning of its system prompt, followed by 8,000 tokens of static product policies and tool definitions. A developer marks the end of the tool definitions with a cache breakpoint. Operational dashboards report 0% cache hits and high invocation costs across turns. How should the request structure be reorganized to achieve prompt cache hits?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Move the dynamic session header into the user message turn or after the static content, keeping tool definitions and policies as an unchanging prefix."
-      },
-      {
-        "id": "b",
-        "text": "Increase the cache TTL to one hour so that cache entries survive the interval between consecutive user session messages without timing out."
-      },
-      {
-        "id": "c",
-        "text": "Split the static policies across three explicit cache breakpoints placed every two thousand tokens to trigger automatic intermediate prefix lookback writes."
-      },
-      {
-        "id": "d",
-        "text": "Configure automatic caching at the request root so that the system strips dynamic header values before computing prefix cryptographic hashes."
-      }
-    ],
-    "correct": [
-      "a"
-    ],
-    "explanation": "Cache prefixes are evaluated hierarchically across tools, system, and messages, with hashes computed cumulatively from the start of the prompt up to each breakpoint. Because the hash incorporates everything prior to the breakpoint, prepending dynamic content such as timestamps or session tokens alters the prefix hash on every call, causing complete cache misses. Moving dynamic parameters to a user message or after the static block leaves an invariant prefix that consistently matches cached entries.",
-    "distractorNotes": {
-      "b": "Extending cache lifetime does not address prefix divergence, because each request generates an entirely novel prefix hash that fails to match prior entries regardless of TTL.",
-      "c": "Cache writes occur solely at explicit breakpoints rather than intermediate blocks, and multiple breakpoints cannot recover cache hits if the initial prefix has already diverged.",
-      "d": "Automatic caching marks the final cacheable content block rather than filtering or sanitizing dynamic header fields out of the computed cryptographic hash."
-    },
-    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
-    "sourceNote": "Cache prefixes are created in order: tools, system, then messages; changing content at or before breakpoint causes cache misses",
-    "sourceCheckedAt": "2026-11-18"
-  },
-  {
     "id": "ccdv-p-cost-and-latency-optimization-at-scale-003",
     "cert": "ccdv-p",
     "schemaVersion": 1,
@@ -162,46 +122,6 @@
     },
     "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/batch-processing",
     "sourceNote": "Batches API discounts stack with prompt caching; 1-hour cache duration is recommended because batches can take longer than 5 minutes",
-    "sourceCheckedAt": "2026-11-18"
-  },
-  {
-    "id": "ccdv-p-cost-and-latency-optimization-at-scale-005",
-    "cert": "ccdv-p",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "cost-and-latency-optimization-at-scale",
-    "difficulty": "medium",
-    "status": "reviewed",
-    "stem": "An operations team adds an explicit cache_control breakpoint on a 1,200-token system prompt for an internal agent running on Claude Opus 4.6. When reviewing usage metrics on response objects across thousands of sequential requests, the team observes that both cache_creation_input_tokens and cache_read_input_tokens consistently return zero, yet requests succeed without errors. What explains this metric behavior, and what action resolves it?",
-    "options": [
-      {
-        "id": "a",
-        "text": "The breakpoint was declared on a system block rather than a user turn, which requires specifying an explicit lookback window parameter in the request header."
-      },
-      {
-        "id": "b",
-        "text": "Prompt caching failed due to a missing organizational beta header, which silently bypasses caching and processes requests at baseline token prices."
-      },
-      {
-        "id": "c",
-        "text": "The system prompt expired between sequential requests, causing the cache manager to omit cache usage attributes from the standard response metadata."
-      },
-      {
-        "id": "d",
-        "text": "The prompt falls below the model's minimum cacheable token threshold of 4,096 tokens, so expanding the static context past that minimum enables caching."
-      }
-    ],
-    "correct": [
-      "d"
-    ],
-    "explanation": "Prompts must meet a minimum token threshold to qualify for prompt caching (for example, 4,096 tokens on Claude Opus 4.6 and Opus 4.5, 1,024 or 2,048 on several other models, and 512 on recent models). When a prompt falls short of the threshold for that model and platform, the request is processed normally without caching, no error is returned, and both cache_creation_input_tokens and cache_read_input_tokens report 0. Expanding the reusable prefix past the model's minimum threshold enables cache creation and subsequent cache reads.",
-    "distractorNotes": {
-      "a": "System blocks are completely valid positions for cache breakpoints; cache prefixes are evaluated in order of tools, system, and messages without requiring a lookback parameter.",
-      "b": "Prompt caching is a generally available feature that does not require an opt-in beta header on active Claude models.",
-      "c": "When a cache entry expires, the subsequent request writes a new cache entry and reports a positive value for cache_creation_input_tokens rather than returning zero."
-    },
-    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/prompt-caching",
-    "sourceNote": "Prompts below the minimum cacheable length are processed without caching; cache_creation and cache_read tokens both report 0",
     "sourceCheckedAt": "2026-11-18"
   },
   {
@@ -448,5 +368,85 @@
     "sourceUrl": "https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-latency",
     "sourceNote": "For time-sensitive applications, use Claude Haiku at low effort with constrained max_tokens to minimize response latency",
     "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-cost-and-latency-optimization-at-scale-012",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "cost-and-latency-optimization-at-scale",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A research agent has a latency target of 8 seconds per user query. After the team enabled streaming, time-to-first-token fell below one second, but end-to-end query latency barely moved. Traces show a typical turn in which Claude returns four tool_use blocks in a single response: independent, read-only lookups against separate internal APIs, each taking about 1.8 seconds. The harness executes them one after another and then sends the results back. Which change most reduces total query latency?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Set disable_parallel_tool_use to true inside tool_choice, so each response carries one smaller tool call that the harness can dispatch sooner."
+      },
+      {
+        "id": "b",
+        "text": "Add a cache breakpoint after the tool definitions and system prompt, so each follow-up request skips reprocessing the shared prefix."
+      },
+      {
+        "id": "c",
+        "text": "Return each tool_result in its own user message as soon as that lookup finishes, so Claude can begin reasoning on the early results."
+      },
+      {
+        "id": "d",
+        "text": "Run the four lookups concurrently in the harness, then return every tool_result together in the next user message, matched by tool_use_id."
+      }
+    ],
+    "correct": [
+      "d"
+    ],
+    "explanation": "Streaming improves time-to-first-token, but the traces show total latency is dominated by tool execution: four 1.8-second lookups run serially cost about 7 seconds per turn. The API does not prescribe an execution order for multiple tool_use blocks, and independent, read-only operations are usually safe to run in parallel for lower latency, which collapses the turn to roughly the slowest single lookup. All tool_result blocks then go back together in the next user message, matched to their calls by tool_use_id, which also keeps Claude making parallel calls on later turns.",
+    "distractorNotes": {
+      "a": "With parallel tool use disabled, Claude calls at most one tool per response, so the four lookups need four model round trips on top of the same serial execution time; total latency rises.",
+      "b": "Caching the prefix reduces the input-processing share of each follow-up request, but the traces locate the delay in serial tool execution, which caching does not touch.",
+      "c": "Sending a separate user message for each tool result is the most common formatting error the docs warn about; it breaks the rule that all results return together and teaches Claude to stop making parallel calls."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use",
+    "sourceNote": "Execution semantics: independent read-only calls can run in parallel for lower latency; return all tool_result blocks in one user message",
+    "sourceCheckedAt": "2026-11-23"
+  },
+  {
+    "id": "ccdv-p-cost-and-latency-optimization-at-scale-013",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "cost-and-latency-optimization-at-scale",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A support platform runs a model cascade: each conversation starts on a lower-cost model, and a router escalates any turn its classifier scores as complex to a larger model, then drops back for the next turn. Every conversation carries a 20,000-token cached prefix of policies and tools. Finance reports that input spend per conversation rose 40% after the cascade launched. With cache diagnostics enabled on every turn, turns following an escalation or a drop-back report cache_miss_reason type model_changed and near-zero cache_read_input_tokens. Which change addresses the cause?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Make the routing decision per conversation rather than per turn, keeping each conversation on one model so its cached prefix stays readable."
+      },
+      {
+        "id": "b",
+        "text": "Switch the shared prefix to the 1-hour cache duration, because escalated turns take long enough that the 5-minute cache entries are expiring."
+      },
+      {
+        "id": "c",
+        "text": "Move per-turn values out of the system prompt and into the user message, since a changing system prompt invalidates the cached prefix."
+      },
+      {
+        "id": "d",
+        "text": "Pass as previous_message_id the last response served by the same model, so the comparison and the cache read target a matching entry."
+      }
+    ],
+    "correct": [
+      "a"
+    ],
+    "explanation": "Cache diagnostics reports the earliest point where a request diverged from the previous one. model_changed means the model differs from the previous request, typically because a router, A/B test or fallback selected a different model, and the cache is per-model. Every escalation and every drop-back therefore pays to process the 20,000-token prefix again instead of reading it from cache. The documented fix is to hold the model constant within a cached conversation, so routing decided once per conversation keeps the prefix readable.",
+    "distractorNotes": {
+      "b": "Expiry shows up as diagnostics null with low cache reads, meaning the requests matched but no entry remained; a model_changed result says the request itself changed, which a longer duration does not fix.",
+      "c": "That is the remedy for system_changed. Diagnostics report the earliest divergence only, and here it is the model; the system prompt is not what changed.",
+      "d": "previous_message_id only selects which stored fingerprint the comparison runs against; it does not influence which cache entry is read, so it would change the report without changing the miss."
+    },
+    "sourceUrl": "https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics",
+    "sourceNote": "Cache miss reason types: model_changed (router or fallback picked another model; cache is per-model; hold the model constant)",
+    "sourceCheckedAt": "2026-11-23"
   }
 ]

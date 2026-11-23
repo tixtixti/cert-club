@@ -40,46 +40,6 @@
     "sourceCheckedAt": "2026-11-18"
   },
   {
-    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-002",
-    "cert": "ccdv-p",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "agent-fleet-operations-for-software-delivery",
-    "difficulty": "medium",
-    "status": "reviewed",
-    "stem": "A software delivery team orchestrates multiple subagents running in parallel git worktrees to implement complementary microservices refactoring tasks. Each subagent is configured with worktree isolation, but when the subagents inspect the repository tree, they do not find the commits and branch state created by an earlier preparation script on the current local feature branch. Why does this occur, and how should the team configure Claude Code to branch worktrees from their local work?",
-    "options": [
-      {
-        "id": "a",
-        "text": "By default worktrees branch from the default branch, so execute git checkout on the feature branch inside an env block before launching the subagents."
-      },
-      {
-        "id": "b",
-        "text": "Worktrees branch by default from the remote default branch, so set worktree.baseRef to head in settings to branch from local HEAD."
-      },
-      {
-        "id": "c",
-        "text": "Subagent worktrees inherit the remote tracking branch, so pass the current branch name as the value for the worktree.baseRef configuration key."
-      },
-      {
-        "id": "d",
-        "text": "Isolated worktrees require manual branch rebasing, so configure a PreToolUse hook to run git rebase origin/main on each newly created worktree."
-      }
-    ],
-    "correct": [
-      "b"
-    ],
-    "explanation": "By default, Claude Code creates new worktrees using fresh mode, which branches from the repository's default branch on the remote (such as origin/main) rather than local uncommitted or unpushed work. Setting worktree.baseRef to 'head' in Claude Code settings instructs it to create new worktrees from the current local HEAD, preserving in-progress commits and feature-branch state. The setting only accepts 'fresh' or 'head', not arbitrary branch names.",
-    "distractorNotes": {
-      "a": "Running git checkout inside an env block does not alter how Claude Code creates the initial worktree branch or base ref.",
-      "c": "The worktree.baseRef setting strictly accepts 'fresh' or 'head'; passing a specific branch name is invalid and not supported.",
-      "d": "Rebasing against origin/main in a PreToolUse hook would overwrite local feature branch commits rather than basing the worktree on local HEAD."
-    },
-    "sourceUrl": "https://code.claude.com/docs/en/worktrees",
-    "sourceNote": "worktree.baseRef accepts fresh or head to determine whether worktrees branch from origin default branch or local HEAD",
-    "sourceCheckedAt": "2026-11-18"
-  },
-  {
     "id": "ccdv-p-agent-fleet-operations-for-software-delivery-003",
     "cert": "ccdv-p",
     "schemaVersion": 1,
@@ -202,46 +162,6 @@
     },
     "sourceUrl": "https://code.claude.com/docs/en/code-review-customize",
     "sourceNote": "Code Review honors severity lowering, exclusions, and nit caps only on protected default or base branches",
-    "sourceCheckedAt": "2026-11-18"
-  },
-  {
-    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-006",
-    "cert": "ccdv-p",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "agent-fleet-operations-for-software-delivery",
-    "difficulty": "medium",
-    "status": "reviewed",
-    "stem": "A repository maintainer attempts to tune Code Review by adding localized review instructions across multiple directories. They place a root REVIEW.md at the repository root, as well as subdirectory files at tests/unit/REVIEW.md and vendor/deps/REVIEW.md to adjust rules for test fixtures and external dependencies. When pull requests modify files in these directories, the check run reveals that neither subdirectory file was applied. Why does Code Review skip these subdirectory instruction files?",
-    "options": [
-      {
-        "id": "a",
-        "text": "Code Review ignores subdirectory REVIEW.md files located in or below directories matching test, example, generated, or third-party names."
-      },
-      {
-        "id": "b",
-        "text": "Subdirectory instruction files are restricted to a single nesting level, so nested paths like tests/unit/ are ignored during review discovery."
-      },
-      {
-        "id": "c",
-        "text": "Code Review requires subdirectory review rules to be linked via Markdown hyperlinks inside the repository root REVIEW.md file."
-      },
-      {
-        "id": "d",
-        "text": "Subdirectory review instructions apply solely when committed under .claude/rules/ rather than within project source trees."
-      }
-    ],
-    "correct": [
-      "a"
-    ],
-    "explanation": "Code Review explicitly disallows subdirectory REVIEW.md files inside or below directories with reserved names, regardless of depth or casing. These include test directories (such as test, tests, __tests__, fixtures), example directories (example, samples, demo), generated code (generated), and third-party code (vendor, third_party, node_modules, deps). Rules governing these directories must be declared in the root REVIEW.md or in an unreserved parent directory's REVIEW.md.",
-    "distractorNotes": {
-      "b": "Code Review permits subdirectory REVIEW.md files at deeper nesting levels, provided none of the parent folders carry reserved directory names.",
-      "c": "Markdown links inside REVIEW.md are not parsed as file includes; file includes use the @ symbol for root files and are limited to eight files.",
-      "d": "Subdirectory review instructions belong in REVIEW.md files in unreserved directories, whereas .claude/rules/ is for Claude Code session rules."
-    },
-    "sourceUrl": "https://code.claude.com/docs/en/code-review-customize",
-    "sourceNote": "Code Review ignores subdirectory REVIEW.md in test, example, generated, and third-party directories",
     "sourceCheckedAt": "2026-11-18"
   },
   {
@@ -455,46 +375,6 @@
     "sourceCheckedAt": "2026-11-18"
   },
   {
-    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-012",
-    "cert": "ccdv-p",
-    "schemaVersion": 1,
-    "type": "single",
-    "domain": "agent-fleet-operations-for-software-delivery",
-    "difficulty": "hard",
-    "status": "reviewed",
-    "stem": "A developer is troubleshooting why their Claude Code session starts with an unexpected model. Their user settings file (~/.claude/settings.json) sets model to haiku, while the repository's shared project settings (.claude/settings.json) specifies sonnet. In their project local file (.claude/settings.local.json), they set model to opus. The developer launches the session using claude --settings '{\"model\": \"haiku\"}'. Assuming no managed settings lock the model and no environment variables are set, which value is selected, and why?",
-    "options": [
-      {
-        "id": "a",
-        "text": "haiku, because command-line settings passed via --settings override project local, shared project, and user settings."
-      },
-      {
-        "id": "b",
-        "text": "opus, because project local settings (.claude/settings.local.json) take precedence over temporary command-line parameters."
-      },
-      {
-        "id": "c",
-        "text": "sonnet, because checked-in repository settings (.claude/settings.json) override local developer customizations by default."
-      },
-      {
-        "id": "d",
-        "text": "haiku, because user settings (~/.claude/settings.json) act as the final fallback and supersede uncommitted local configuration."
-      }
-    ],
-    "correct": [
-      "a"
-    ],
-    "explanation": "Claude Code evaluates configuration keys through a defined precedence hierarchy: Managed settings > Command line (--settings) > Project local settings (.claude/settings.local.json) > Shared project settings (.claude/settings.json) > User settings (~/.claude/settings.json). Because --settings sits directly below managed settings, the 'haiku' value specified on the command line overrides the 'opus' in project local settings, the 'sonnet' in shared project settings, and the default in user settings.",
-    "distractorNotes": {
-      "b": "Project local settings sit below command-line --settings in the precedence stack, so --settings overrides .claude/settings.local.json.",
-      "c": "Shared project settings sit below both command-line arguments and project local settings, so they are overridden.",
-      "d": "User settings have the lowest precedence among all settings files and never supersede command-line flags or local project settings."
-    },
-    "sourceUrl": "https://code.claude.com/docs/en/settings",
-    "sourceNote": "Settings precedence in order is managed settings, command line (--settings), project local, shared project, user",
-    "sourceCheckedAt": "2026-11-18"
-  },
-  {
     "id": "ccdv-p-agent-fleet-operations-for-software-delivery-013",
     "cert": "ccdv-p",
     "schemaVersion": 1,
@@ -573,5 +453,130 @@
     "sourceUrl": "https://code.claude.com/docs/en/permission-modes",
     "sourceNote": "bypassPermissions refuses root or sudo privileges on Linux and macOS; run as a non-root user",
     "sourceCheckedAt": "2026-11-18"
+  },
+  {
+    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-015",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "agent-fleet-operations-for-software-delivery",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "Agent-authored pull requests now outnumber what a platform team's human reviewers can read. The team enabled Code Review on its busiest repositories and, for six weeks, compared its findings with human reviewer verdicts without letting it affect merges. Important findings matched confirmed bugs closely, most Nits were dismissed, and a few reviews timed out. The team now wants Important findings to hold a merge while Nits stay advisory and engineers keep the final merge decision. What should the team do?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Mark the Claude Code Review check run as a required status check in branch protection, so a review reporting an Important finding holds the merge until it is fixed."
+      },
+      {
+        "id": "b",
+        "text": "Turn on the branch protection rule requiring conversation resolution, so an open finding thread holds the merge until the author pushes a fix or resolves the thread."
+      },
+      {
+        "id": "c",
+        "text": "Run a CI job that reads the check run's severity line and fails when the Important count is above zero, treating a missing line as no verdict, and require that job."
+      },
+      {
+        "id": "d",
+        "text": "Raise the repository to the Deep review level with reviews after every push, so the check run concludes as a failure once the verification step confirms a bug."
+      }
+    ],
+    "correct": [
+      "c"
+    ],
+    "explanation": "Code Review suits a comment-only calibration phase because its check run concludes as neutral and never as a failure, so a finished review cannot fail a required check. To gate after calibration, the documented route is your own CI: read the last line of the check run Details text, an HTML comment holding severity counts as JSON, and fail the job when the normal key (the Important count) is above zero. A missing line must be treated as no verdict rather than zero findings, because failed, timed-out, cancelled or superseded reviews carry no such line. Nits stay advisory and the merge decision stays with the team.",
+    "distractorNotes": {
+      "a": "The Claude Code Review check run concludes as neutral, or skipped, and never as a failure, so requiring it would pass every finished review regardless of its Important findings.",
+      "b": "Requiring conversation resolution holds the merge on every finding thread, including the Nits and pre-existing findings the calibration showed should stay advisory.",
+      "d": "The review level trades depth against speed and cost; at any level the check run still never concludes as a failure, so it cannot hold a merge on its own."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/code-review-pull-requests",
+    "sourceNote": "Check run never fails; gate from own CI on the severity line normal count, treating a missing line as no verdict",
+    "sourceCheckedAt": "2026-11-23"
+  },
+  {
+    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-016",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "multi",
+    "domain": "agent-fleet-operations-for-software-delivery",
+    "difficulty": "hard",
+    "status": "reviewed",
+    "stem": "A security team deploys managed-settings.json with an allowedMcpServers list of approved servers written as serverName entries (github, jira), plus allowManagedPermissionRulesOnly: true. A quarterly audit finds developers running unvetted stdio MCP servers: some added extra allowedMcpServers entries to their own ~/.claude/settings.json, and one registered an unvetted local server under the name github. The team wants to keep an approved catalog that developers add servers from themselves. Which TWO changes close both gaps? Select TWO.",
+    "options": [
+      {
+        "id": "a",
+        "text": "Set allowManagedMcpServersOnly to true alongside the managed allowlist, since the permission-rules lock does not enforce the MCP allowlist."
+      },
+      {
+        "id": "b",
+        "text": "Move the allowlist into the repository's committed .claude/settings.json so that it travels with every checkout and applies to all sessions."
+      },
+      {
+        "id": "c",
+        "text": "Add strictKnownMarketplaces to managed settings so that developers can install MCP servers only from the approved plugin marketplace."
+      },
+      {
+        "id": "d",
+        "text": "Replace the serverName entries with serverCommand and serverUrl entries, so a match depends on what actually runs instead of a label."
+      },
+      {
+        "id": "e",
+        "text": "Add a managed deniedMcpServers list naming each unvetted server label found in the audit, since a denylist match overrides allowlists."
+      }
+    ],
+    "correct": [
+      "a",
+      "d"
+    ],
+    "explanation": "Without allowManagedMcpServersOnly, allowlists from every settings scope merge, including a developer's ~/.claude/settings.json, so users can broaden the managed list; allowManagedPermissionRulesOnly locks only permission rules and does not enforce the MCP allowlist. Setting the MCP lock in managed settings keeps only the managed allowlist. Separately, a serverName entry matches the user-assigned label and is not a security control, since anyone can call a server github; serverCommand entries for stdio servers and serverUrl entries for remote servers match what actually runs, and once present a bare name match no longer counts for that server type.",
+    "distractorNotes": {
+      "b": "Project settings are another merging scope; without the managed lock, a developer's user-level allowlist entries still combine with it, so the broadening gap stays open.",
+      "c": "strictKnownMarketplaces governs which plugin marketplace sources can be added; servers registered directly with claude mcp add or in user configuration are not plugins and are untouched.",
+      "e": "A denylist match does block a server, but serverName entries match a renameable label, and an unvetted server labelled github still passes the name-based allowlist."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/managed-mcp",
+    "sourceNote": "allowManagedMcpServersOnly stops user allowlists merging; serverName is a label, not a security control",
+    "sourceCheckedAt": "2026-11-23"
+  },
+  {
+    "id": "ccdv-p-agent-fleet-operations-for-software-delivery-017",
+    "cert": "ccdv-p",
+    "schemaVersion": 1,
+    "type": "single",
+    "domain": "agent-fleet-operations-for-software-delivery",
+    "difficulty": "medium",
+    "status": "reviewed",
+    "stem": "A platform team runs a nightly cloud scheduled task, formerly a routine, that upgrades dependencies, runs the test suite and opens a draft pull request. It uses the Default cloud environment. The team's alerting watches the task's History and pages on-call only when a run's row ends with Error. For a week no row has shown an error, yet no pull requests appeared; the run transcripts show package installs from the company's private registry failing with 403 responses. Which change best fixes both the failure and the escalation gap?",
+    "options": [
+      {
+        "id": "a",
+        "text": "Add the private registry to the task as a connector, since connector traffic is routed through Anthropic's servers without an Allowed domains entry, and keep paging on Error rows."
+      },
+      {
+        "id": "b",
+        "text": "Allow the registry host in the task's cloud environment, and have each run post its outcome, a PR link or a blocker, to a team channel through a connector, alerting when none arrives."
+      },
+      {
+        "id": "c",
+        "text": "Allow the registry host in the task's cloud environment; after that, a later blocked request makes the run end as Error, so the existing History-based paging becomes reliable."
+      },
+      {
+        "id": "d",
+        "text": "Move the job to a /loop task in a long-lived terminal session on a network that reaches the registry, so blocked installs surface as interactive errors that on-call will see."
+      }
+    ],
+    "correct": [
+      "b"
+    ],
+    "explanation": "A History row says how the session ended, not whether the prompt's work was done: Succeeded means Claude Code reported no failure, and blocked network requests or unfinished work appear in the transcript rather than on the row, so paging on Error misses this failure. The Default environment uses Limited access with the default allowlist, so the private registry host must be added under Allowed domains. Escalation then needs a positive outcome signal the run itself produces, such as a summary posted to Slack through a connector, as the documented backlog example does, with silence treated as a failure.",
+    "distractorNotes": {
+      "a": "Connector routing applies to MCP connector traffic; a package registry reached by the installer is ordinary network egress governed by the environment's Allowed domains.",
+      "c": "Blocked network requests appear in the transcript, not on the History row, so a run whose installs are blocked can still be recorded as Succeeded and the Error-only paging still misses it.",
+      "d": "/loop tasks fire only while the session is running and idle and recurring ones expire after seven days, so this trades an unattended cloud job for one tied to a live terminal."
+    },
+    "sourceUrl": "https://code.claude.com/docs/en/routines",
+    "sourceNote": "History outcome reflects session end, not work done; Default environment is Limited, add hosts to Allowed domains",
+    "sourceCheckedAt": "2026-11-23"
   }
 ]
