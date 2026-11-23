@@ -4,7 +4,7 @@ Standing record of how this bank was built and reviewed, and of the judgement
 calls a future author should not have to rediscover. Chronology lives in git;
 this file holds the reasons.
 
-Recon completed and scaffolded on 2026-11-21 based on the Claude Certified Associate –
+Scaffolded on 2026-11-21 based on the Claude Certified Associate –
 Foundations Exam Guide v1.1 (Effective December 7, 2026, Exam code: CCAO-F).
 
 ## Bank status: `draft`
@@ -27,8 +27,8 @@ The certification assessment reached a **GO-WITH-CONSTRAINTS** verdict:
 - Public, authoritative vendor documentation covers every objective across all six domains (`support.claude.com`, `platform.claude.com`, `academy.claude.com`, and `www.anthropic.com/legal/aup`).
 - Question format is standard scenario-based multiple-choice, requiring no schema extensions.
 - **Constraints:**
-  - *Low sample count:* The official exam guide includes only 3 sample questions (compared to 12 in `ccar-f`), limiting vendor-published calibration items. Authoring must anchor difficulty on the blueprint's detailed task statements and the AI Fluency Framework parameters rather than relying on a rich sample inventory.
-  - *Strict calibration firewall:* No external third-party question sets were supplied; seeds and future batches must derive strictly from public technical documentation rather than sample item rewrites.
+  - _Low sample count:_ The official exam guide includes only 3 sample questions (compared to 12 in `ccar-f`), limiting vendor-published calibration items. Authoring must anchor difficulty on the blueprint's detailed task statements and the AI Fluency Framework parameters rather than relying on a rich sample inventory.
+  - _Strict calibration firewall:_ No external third-party question sets were supplied; seeds and future batches must derive strictly from public technical documentation rather than sample item rewrites.
 
 ## Blueprint and weights
 
@@ -54,6 +54,7 @@ Exam specs from blueprint:
 ### Skill breakdown
 
 Section 5 of the exam guide outlines 21 skill areas across the six content domains:
+
 - Domain 1: Prompt Construction; Task Decomposition and Sequencing; Prompt Diagnosis and Iteration
 - Domain 2: Output Evaluation and Fitness for Purpose; Hallucination Detection and Verification; Review Depth and Escalation; Output Adaptation and Format Selection
 - Domain 3: Capability Selection; Model and Effort Selection; Context and Memory Management
@@ -69,42 +70,45 @@ Audited against the 140-question bank:
 
 - **Distribution**: Proportional across all 6 domains matching 2× exam targets (21 / 28 / 21 / 25 / 21 / 24, 0 delta).
 - **Item formats**: 108 single-select, 32 multi-select (31 select-two, 1 select-three).
-- **Difficulty breakdown**: 2 easy (single), 107 medium (90 single, 17 multi), 31 hard (16 single, 15 multi).
-- **Sourcing**: 54 distinct authoritative pages across `support.claude.com`, `platform.claude.com`, `academy.claude.com`, `anthropic.com/legal/aup`, and the official exam guide PDF.
-- **Single-select position distribution**: 29 A / 28 B / 24 C / 27 D (max 26.9%, well within 50% ceiling).
-- **Option length delta**: Correct options average 1.43 characters shorter than distractors (median -0.33 chars), within the ±10 character limit.
-- **Longest option as key share**: 20 of 108 single-select items (18.5%), well below the 45% ceiling.
+- **Difficulty breakdown**: 1 easy (single), 108 medium (91 single, 17 multi), 31 hard (16 single, 15 multi).
+- **Sourcing**: 51 distinct authoritative pages across `support.claude.com`, `platform.claude.com`, `academy.claude.com`, `anthropic.com/legal/aup`, `anthropic.com/legal/commercial-terms`, and the official exam guide PDF. Five Domain 6 items still cite only the exam guide (`responsible-...-009`, `-010`, `-016`, `-017`, `-018`); they test organizational-policy reasoning that no product page owns, and are the first candidates for re-citation if a fitting first-party page appears.
+- **Single-select position distribution**: 24 A / 30 B / 25 C / 29 D (max 27.8%, well within 50% ceiling).
+- **Option length delta**: Correct options average 1.47 characters shorter than distractors (median -0.33 chars), within the ±10 character limit.
+- **Longest option as key share**: 17 of 108 single-select items (15.7%), well below the 45% ceiling.
 - **Distractor notes coverage**: 100% of options across all 140 questions carry complete distractor notes.
 - **Bias guards**: All three pass cleanly (`positionBias`, `lengthBiasMeanDelta`, `longestOptionIsKey`).
 
 ### Known coverage limits
 
-- **Skill area granularity**: The guide's 21 skill areas carry no published percentage weights, so coverage is verified at domain level only.
+- **Skill area granularity**: The guide's 21 skill areas carry no published percentage weights, so coverage is verified at domain level only. A manual skill mapping on 2026-11-23 found every skill carrying at least five items.
+- **Multi-symptom degradation**: Sample 2's two-layer shape is under-represented in Domain 5; `configuration-...-022` adds a live-sync knowledge-layer case, but a two-symptom item is still a gap worth one future slot.
+- **Appropriateness classification**: Domain 6 now exercises all three verdicts — inappropriate (`responsible-...-001`, `-026`), appropriate (`-025`, `-002`) — but "appropriate with safeguards" is still tested only indirectly (`-003`).
+- **Cowork-sourced Domain 4 items**: `workflow-...-008`, `-029` and others rely on Cowork help pages and tutorials. Cowork is not named in the guide's candidate profile, but its approval and scope guidance is the only first-party statement of the delegation principles the skill tests; recorded as intent, not drift.
 
 ## Source classification
 
 Evaluated against the repository's two non-negotiable tests (Gate and Authority):
 
-| Candidate Source                                            | Gate | Authority | Disposition       | Notes                                                                                                                              |
-| ----------------------------------------------------------- | ---- | --------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Official Exam Guide PDF (`cc.sj-cdn.net`)                   | Pass | Pass      | **Citable**       | Canonical vendor blueprint hosted on official Skilljar instructor CDN.                                                             |
-| Claude Help Center (`support.claude.com/en/articles/*`)     | Pass | Pass      | **Citable**       | Authoritative user reference for Projects, Artifacts, Connectors, Skills, Memory, and Incognito mode.                               |
-| Claude Platform Documentation (`platform.claude.com/docs/*`)| Pass | Pass      | **Citable**       | Authoritative reference for prompt engineering techniques, model tiers, and reasoning parameters. Accessible as `.md`.             |
-| Claude Academy Tutorials (`academy.claude.com/tutorials/*`)| Pass | Pass      | **Citable**       | Official public education tutorials, including the AI Fluency Index report defining the four competencies (Delegation, Description, Discernment, Diligence). |
-| Anthropic Usage Policy (`www.anthropic.com/legal/aup`)      | Pass | Pass      | **Citable**       | Canonical vendor policy governing appropriate use cases, high-risk requirements, and data protection boundaries.                   |
-| Anthropic Partner Academy courses                           | Fail | Pass      | **Excluded**      | Gated behind partner/user login. The test is registration, not price.                                                              |
-| Course landing pages / marketing syllabi                    | Pass | Pass      | **Readable only** | Evidence of curriculum scope only; never cite for technical facts.                                                                 |
-| Third-party dumps, GitHub mirrors, unofficial guides        | Pass | Fail      | **Excluded**      | Unverified third-party copies fail authority test.                                                                                 |
+| Candidate Source                                             | Gate | Authority | Disposition       | Notes                                                                                                                  |
+| ------------------------------------------------------------ | ---- | --------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Official Exam Guide PDF (`cc.sj-cdn.net`)                    | Pass | Pass      | **Citable**       | Canonical vendor blueprint hosted on official Skilljar instructor CDN.                                                 |
+| Claude Help Center (`support.claude.com/en/articles/*`)      | Pass | Pass      | **Citable**       | Authoritative user reference for Projects, Artifacts, Connectors, Skills, Memory, and Incognito mode.                  |
+| Claude Platform Documentation (`platform.claude.com/docs/*`) | Pass | Pass      | **Citable**       | Authoritative reference for prompt engineering techniques, model tiers, and reasoning parameters. Accessible as `.md`. |
+| Claude Academy Tutorials (`academy.claude.com/tutorials/*`)  | Pass | Pass      | **Citable**       | Official public education tutorials, including the AI Fluency Index report defining the four competencies.             |
+| Anthropic Usage Policy (`www.anthropic.com/legal/aup`)       | Pass | Pass      | **Citable**       | Canonical vendor policy governing appropriate use cases, high-risk requirements, and data protection boundaries.       |
+| Anthropic Partner Academy courses                            | Fail | Pass      | **Excluded**      | Gated behind partner/user login. The test is registration, not price.                                                  |
+| Course landing pages / marketing syllabi                     | Pass | Pass      | **Readable only** | Evidence of curriculum scope only; never cite for technical facts.                                                     |
+| Third-party dumps, GitHub mirrors, unofficial guides         | Pass | Fail      | **Excluded**      | Unverified third-party copies fail authority test.                                                                     |
 
 ## Official sample question inventory
 
-Section 7 of the exam guide carries three official sample items (one each in Domains 2, 5, and 6), establishing the cognitive-level anchor for the bank:
+Section 7 of the exam guide carries three official sample items (one each in Domains 2, 5, and 6), establishing the cognitive-level anchor for the bank. Re-read against v1.1 on 2026-11-23 — an earlier summary here described the v1.0 samples, and the guide's changelog records that v1.1 revised them. Parameters only:
 
-1. **Question 1** (Domain 2: Output Evaluation): Business practitioner evaluating model discrepancies against customer-supplied data. Key: detect and pinpoint source discrepancies rather than assuming model correctness.
-2. **Question 2** (Domain 5: Configuration): Managing shared project knowledge and connector freshness under team onboarding constraints. Key: project instructions and scoped file boundaries.
-3. **Question 3** (Domain 6: Governance): Navigating data handling, privacy boundaries, and policy diligence for sensitive workflows. Key: combine privacy safeguards with workflow utility.
+1. **Sample 1** (Domain 2, Hallucination Detection): an external deliverable containing precise, attributed specifics the practitioner has not yet checked. Tested judgement: independent verification against sources before external use. Distractor shapes: trust the presence of citations; self-verification by the model; over-correction that discards everything.
+2. **Sample 2** (Domain 5, Configuration Lifecycle): a long-stable configuration whose output shifted, with **two symptoms pointing to two different layers** while other layers are stated as unchanged. Tested judgement: attribute each symptom to its layer. Distractor shapes: fix an unchanged layer; remove a component; escalate model/effort.
+3. **Sample 3** (Domain 6, Data Protection): a policy that permits analysis only on transformed data. Tested judgement: transform before upload, including a non-obvious identifier source. Distractor shapes: retention controls mistaken for disclosure controls; access restriction; transform after upload.
 
-All three samples require a business practitioner to choose an action under concrete workplace constraints (alternatives plausible in other contexts, stated constraint dictating best response). Unsampled domains (Domains 1, 3, and 4) use this identical decision depth by analogy. This is a format and cognitive depth anchor, not a source of scenarios or tested facts.
+All three are single-select, four options, stems of roughly 60–80 words, and each turns on a stated constraint that makes one plausible action correct. Unsampled domains (Domains 1, 3, and 4) use this identical decision depth by analogy. This is a format and cognitive depth anchor, not a source of scenarios or tested facts.
 
 ## Calibration principles and deliberate headroom
 
@@ -119,27 +123,39 @@ All three samples require a business practitioner to choose an action under conc
   - _Review depth grounding_ (`output-...-001`): Grounds review depth in Anthropic's diligence tutorial (`academy.claude.com`) rather than the Artifacts help page.
   - _Handoff decision grounding_ (`workflow-...-001`): Grounds escalation handoffs in platform customer-support guidance rather than blueprint objective text.
 - **Key conceptual and boundary adjudications**:
-  - _Prompt engineering & XML boundaries_ (`task-...-001`, `-020`): XML tags separate feedback from instructions, not an injection guarantee. Distractors use scenario-supplied labels.
+  - _Prompt engineering & XML boundaries_ (`task-...-020`): Prompt revisions are judged on an unused, labeled mix rather than the example used while editing. (`task-...-001`, the XML-delimiting item, was retired 2026-11-23 as answerable from the stem.)
+  - _Prompt chaining & surface boundaries_ (`task-...-024`): Resolved draft-vs-refine ambiguity in prompt chaining by specifying claude.ai workflow context.
+  - _Integration & surface scope_ (`workflow-...-031`): Stated web application action requires integration/connector when browser/computer-use surfaces are explicitly excluded.
   - _Output evaluation & calculation checks_ (`output-...-005`, `-012`, `-016`, `-021`, `-025`): Distinguished detecting discrepancies from locating them; allowed for zero downtime; confined order risk to non-returnable stock; separated calculation checks so errors cannot mask each other.
   - _Capability, context & memory isolation_ (`capability-...-001`, `-005`, `-008`, `-020`): Strictly distinguished conversation history from memory, chat image attachments from project knowledge files, search previews from retrieved pages, and project instructions from project memory.
-  - _Workflow integration & evidence boundaries_ (`workflow-...-003`, `-005`, `-010`, `-012`, `-014`, `-017`–`-019`, `-022`): Distinguished web from connected evidence, blanks from missing records, and handoffs from error-free outcomes. Tightened checkpoint, permission, and Skill selection/release alternatives.
-  - _Project configuration & freshness_ (`configuration-...-001`, `-003`, `-004`, `-006`, `-007`, `-009`, `-015`, `-017`): Explicit project scope, separation, freshness, and onboarding constraints; narrowed notes on Gmail retrieval, Drive images, and project content management.
-  - _Governance & data protection scoping_ (`responsible-...-001`, `-006`, `-010`, `-011`): Scoped policy claims to actual product recommendation; distinguished indirect identification from direct name removal, and disabled connectors from unused ones.
+  - _Workflow integration & evidence boundaries_ (`workflow-...-003`, `-005`, `-010`, `-014`, `-018`, `-019`, `-022`): Distinguished web from connected evidence, blanks from missing records, and handoffs from error-free outcomes. Tightened checkpoint, permission, and Skill selection/release alternatives.
+  - _Project configuration & freshness_ (`configuration-...-003`, `-004`, `-006`, `-007`, `-009`, `-015`, `-017`): Explicit project scope, separation, freshness, and onboarding constraints; narrowed notes on Gmail retrieval, Drive images, and project content management.
+  - _Governance & data protection scoping_ (`responsible-...-001`, `-006`, `-010`): Scoped policy claims to actual product recommendation; distinguished indirect identification from direct name removal.
 
 ## Maintenance audits
 
-### 2× bank authoring, cold evaluation & difficulty calibration (2026-11-21)
+### Initial authoring, calibration, and cold evaluation (2026-11-21)
 
-Comprehensive initial authoring and verification pass achieving the 140-question (2×) baseline:
+- **Scope**: Expanded 6 initial seeds to 140 original questions across all 6 domains in proportion to blueprint weights (21 / 28 / 21 / 25 / 21 / 24).
+- **Adversarial cold evaluation**: 140/140 answer sets independently cold-derived against live vendor documentation; 108 confirmed intact, 32 refined for technical precision across D1 (2), D2 (5), D3 (4), D4 (8), D5 (9), and D6 (4) with identical keys reconfirmed. 100% key accuracy (0 miskeys).
+- **Difficulty calibration**: 121 items confirmed calibrated without change; 19 items hardened across D1 (5), D3 (7), D4 (3), and D5 (4) to remove subtle role cues and tighten boundaries. D2 and D6 confirmed naturally above sample depth. All 19 re-solved cold and reconfirmed.
+- **Source verification**: All 54 distinct documentation pages and exam guide PDF verified live (HTTP 200).
+- **Balance and bias reconciliation**: Zero blueprint delta; all bias guards pass cleanly (`positionBias` 29/28/24/27, `lengthBiasMeanDelta` -1.43 chars, `longestOptionIsKey` 18.5%, 100% distractor notes).
 
-- **Authoring**: Expanded 6 initial seeds to 140 original questions across all 6 domains in proportion to blueprint weights (21 / 28 / 21 / 25 / 21 / 24).
-- **Independent cold evaluation**: All 140 questions independently solved against stems, choices, and cited sources without viewing keys or explanations:
-  - 108 items confirmed intact as written.
-  - 32 items refined for technical precision and reconfirmed against identical keys (Domain 1: 2, Domain 2: 5, Domain 3: 4, Domain 4: 8, Domain 5: 9, Domain 6: 4).
-  - 0 unsupported or miskeyed items (100% key accuracy).
-- **Difficulty calibration & hardening**: Calibrated against official workplace decision depth:
-  - 19 items hardened to remove subtle role cues or tighten alternative boundaries (Domain 1: 5, Domain 3: 7, Domain 4: 3, Domain 5: 4).
-  - Domains 2 and 6 assessed as sitting naturally above the sample anchor without edits.
-  - All 19 hardened items independently re-solved cold; all 19 keys reconfirmed.
-- **Source verification & liveness**: All 54 distinct cited documentation pages and the exam guide PDF verified live (HTTP 200). 0 stale URLs.
-- **Bias guards & bank checks**: All three bias guards pass cleanly (`positionBias` 29/28/24/27, `lengthBiasMeanDelta` -1.43 chars, `longestOptionIsKey` 18.5%). 100% distractor notes coverage. `npm run check` clean (457 tests).
+### Duplicate and weak-item fix pass (2026-11-23)
+
+- **Scope**: Net-zero replacement batch resolving 9 duplicate clusters and retiring 9 weak stems. Bank maintained at 140/140 reviewed items (21 / 28 / 21 / 25 / 21 / 24).
+- **Retired items (20)**:
+  - _Duplicates (11 items, 1 survivor kept per cluster)_: `task-...-006` (kept `output-...-024`); `task-...-011`, `capability-...-017` (kept `configuration-...-004`); `configuration-...-005` (kept `workflow-...-014`); `configuration-...-016` (kept `workflow-...-019`); `configuration-...-018` (kept `capability-...-019`); `workflow-...-011` (kept `output-...-017`); `workflow-...-012` (kept `output-...-020`); `workflow-...-017` (kept `configuration-...-020`); `output-...-019`, `workflow-...-025` (kept `responsible-...-019`, `-023`).
+  - _Weak stems / transparent keys (9 items)_: `task-...-001`, `configuration-...-001` (stem giveaways); `output-...-022` (trivial format item); `workflow-...-021`, `-023`, `responsible-...-022` (generic verification); `responsible-...-008`, `-011`, `-014` (key restates stem constraints).
+- **Authored items (20)**:
+  - Domain 1 (`022`–`024`): Missing default context, instruction rationale, approval checkpoints.
+  - Domain 2 (`029`–`030`): Hallucinated capability claims, doc snapshot vs live dashboard.
+  - Domain 3 (`022`): Extended thinking vs Research.
+  - Domain 4 (`026`–`031`): Recent information, automation ownership boundaries, research → code analysis, manual approval checkpoints, Skill ownership handoff, connector dependencies.
+  - Domain 5 (`022`–`025`): Live-synced Docs degradation, instruction vs knowledge vs Skill placement, Project isolation, organization instruction precedence.
+  - Domain 6 (`025`–`028`): Fixed-formula exclusion from high-risk requirements, prohibited trustworthiness scoring, memory-off vs incognito, dedicated working folder for local file access.
+  - _New sources_: Usage Policy exclusions / Universal Usage Standards, Artifacts collaboration tutorial, Cowork safety, Skills sharing, Projects, organization instructions, Google Workspace connectors, and hallucinated capabilities guide.
+- **Re-citations**: `responsible-...-020` re-cited from exam guide to Anthropic bias tutorial (paired-prompt testing, language disparities).
+- **Cold evaluation**: 20/20 answer sets verified cold against vendor docs (0 miskeys). 5 items refined for distractor quality and key precision before final confirmation (`configuration-...-025`, `responsible-...-025`, `task-...-022`, `task-...-024`, `workflow-...-031`). All 140 bank items confirmed `status: "reviewed"`.
+- **Standing notes**: Minor stem-to-key echoes noted for future hardening pass in `configuration-...-022`–`025`, `output-...-029`, `task-...-022`, `-024`, and `workflow-...-026`, `-031`.
