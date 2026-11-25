@@ -2,8 +2,10 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 import { DraftNotice } from "../components";
+import { ClaudeExport } from "../components/ClaudeActions";
 import { ErrorState, LoadingState } from "../components/PageStatus";
 import { useAsyncResource } from "../hooks/use-async-resource";
+import { buildMissedQuestionsExport } from "../lib/claude";
 import { loadCertContent } from "../lib/content";
 import {
   answerCountLabel,
@@ -204,6 +206,21 @@ export function ResultsPage() {
       ? failedRetakeDisabledHint
       : `Only the ${failedCount} question${failedCount === 1 ? "" : "s"} answered incorrectly or skipped in this quiz.`;
 
+  const missedQuestions = reviewQuestions
+    .filter(
+      (question) => !scoreAnswer(question, attempt.answers[question.id] ?? []),
+    )
+    .map((question) => ({
+      question,
+      selectedOptionIds: attempt.answers[question.id] ?? [],
+      domainName: domainNames.get(question.domain),
+    }));
+  const claudeExportText = buildMissedQuestionsExport(
+    manifest.name,
+    missedQuestions,
+    reviewQuestions.length,
+  );
+
   function handleRetake(mode: RetakeMode): void {
     const navigationState: RetakeNavigationState = {
       retake: {
@@ -381,6 +398,12 @@ export function ResultsPage() {
           </div>
         </div>
       </section>
+
+      <ClaudeExport
+        exportText={claudeExportText}
+        missedCount={missedQuestions.length}
+        fileName={`${manifest.cert}-missed-${attempt.completedAt.slice(0, 10)}.md`}
+      />
 
       <div className={`page-heading ${styles.reviewHeading}`}>
         <div>
