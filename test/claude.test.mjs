@@ -2,7 +2,10 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  CLAUDE_NEW_CHAT_URL,
+  buildExplainPrompt,
   buildMissedQuestionsExport,
+  claudeChatUrl,
   formatQuestionForClaude,
 } from "../src/lib/claude.ts";
 
@@ -56,6 +59,14 @@ test("formatQuestionForClaude reports a skipped question and omits empty notes",
   assert.doesNotMatch(text, /Why the other options are wrong/);
 });
 
+test("buildExplainPrompt names the certification and embeds the question", () => {
+  const prompt = buildExplainPrompt("Demo Cert", question(), ["c"]);
+
+  assert.match(prompt, /studying for the Demo Cert certification/);
+  assert.match(prompt, /Which service stores objects\?/);
+  assert.match(prompt, /My answer: A\n/);
+});
+
 test("buildMissedQuestionsExport numbers every missed question", () => {
   const missed = [
     { question: question({ id: "one" }), selectedOptionIds: ["b"] },
@@ -66,4 +77,12 @@ test("buildMissedQuestionsExport numbers every missed question", () => {
   assert.match(text, /Demo Cert practice session and missed 2 of 5 questions/);
   assert.match(text, /## Question 1 of 2/);
   assert.match(text, /## Question 2 of 2/);
+});
+
+test("claudeChatUrl prefills short prompts and falls back for long ones", () => {
+  assert.equal(
+    claudeChatUrl("why? a&b"),
+    `${CLAUDE_NEW_CHAT_URL}?q=why%3F%20a%26b`,
+  );
+  assert.equal(claudeChatUrl("x".repeat(10000)), CLAUDE_NEW_CHAT_URL);
 });

@@ -1,3 +1,10 @@
+.explainRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
 .exportCard {
   margin-top: 1.75rem;
   border: 1px solid var(--border-default);

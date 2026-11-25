@@ -9,6 +9,11 @@ import type { Question } from "../types";
 
 export const CLAUDE_NEW_CHAT_URL = "https://claude.ai/new";
 
+/* Encoded URLs past a few thousand characters are unreliable across browsers
+ * and servers, so a prompt that would exceed this opens an empty chat and the
+ * learner pastes the copied prompt instead. */
+const MAX_PREFILLED_URL_LENGTH = 6000;
+
 /* Same lettering as getOptionLabel in quiz.ts. Kept local so this module has
  * no runtime imports, which is what lets the Node test runner load it. */
 const getOptionLabel = (index: number) => String.fromCharCode(65 + index);
@@ -65,6 +70,28 @@ export function formatQuestionForClaude(
   return lines.join("\n");
 }
 
+export function buildExplainPrompt(
+  certName: string,
+  question: Question,
+  selectedOptionIds: readonly string[],
+  domainName?: string,
+): string {
+  return [
+    `I'm studying for the ${certName} certification and got this practice question wrong. Help me understand it.`,
+    "",
+    "Please:",
+    "1. Explain why the correct answer is right, in plain language.",
+    "2. Explain the misconception behind the answer I picked.",
+    "3. Point out the words in the question that should have steered me to the right answer.",
+    "4. Then ask me one new question on the same concept to check I understood, and wait for my answer.",
+    "",
+    "Treat the cited source as the authority; if you are unsure about a detail, say so rather than guess.",
+    "",
+    "---",
+    formatQuestionForClaude(question, selectedOptionIds, domainName),
+  ].join("\n");
+}
+
 export function buildMissedQuestionsExport(
   certName: string,
   missed: readonly MissedQuestion[],
@@ -93,4 +120,10 @@ export function buildMissedQuestionsExport(
     ),
   ]);
   return [...header, ...body].join("\n");
+}
+
+/** A claude.ai link that opens a new chat with the prompt already typed in. */
+export function claudeChatUrl(prompt: string): string {
+  const url = `${CLAUDE_NEW_CHAT_URL}?q=${encodeURIComponent(prompt)}`;
+  return url.length <= MAX_PREFILLED_URL_LENGTH ? url : CLAUDE_NEW_CHAT_URL;
 }

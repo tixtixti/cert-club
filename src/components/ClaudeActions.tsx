@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { CLAUDE_NEW_CHAT_URL } from "../lib/claude";
+import { CLAUDE_NEW_CHAT_URL, claudeChatUrl } from "../lib/claude";
 import styles from "./ClaudeActions.module.css";
 
 type CopyState = "idle" | "copied" | "failed";
@@ -33,6 +33,36 @@ function copyLabel(state: CopyState, idleLabel: string): string {
   if (state === "copied") return "Copied";
   if (state === "failed") return "Copy failed";
   return idleLabel;
+}
+
+export interface ExplainWithClaudeProps {
+  prompt: string;
+}
+
+/** Shown beside a missed question: opens claude.ai with the prompt typed in. */
+export function ExplainWithClaude({ prompt }: ExplainWithClaudeProps) {
+  const [copyState, copy] = useCopy(prompt);
+
+  return (
+    <div className={styles.explainRow}>
+      <a
+        className="button button-secondary"
+        href={claudeChatUrl(prompt)}
+        target="_blank"
+        rel="noreferrer"
+      >
+        Explain with Claude
+        <span aria-hidden="true">↗</span>
+      </a>
+      <button type="button" className="button button-secondary" onClick={copy}>
+        {copyLabel(copyState, "Copy prompt")}
+      </button>
+      <span className="sr-only" role="status">
+        {copyState === "copied" ? "Prompt copied to clipboard." : ""}
+        {copyState === "failed" ? "Could not copy the prompt." : ""}
+      </span>
+    </div>
+  );
 }
 
 export interface ClaudeExportProps {
